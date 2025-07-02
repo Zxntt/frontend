@@ -1,6 +1,8 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import Navigation from "./(marketing)/components/Navigation";
+import Footer from "./(marketing)/components/Footer";
 
 
 const geistSans = Geist({
@@ -26,6 +28,7 @@ export default function RootLayout({ children }) {
       >
         <Navigation />
         {children}
+        <Footer />
       </body>
     </html>
   );
