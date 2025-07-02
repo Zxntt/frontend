@@ -4,7 +4,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Navigation from "./(marketing)/components/Navigation";
 import Footer from "./(marketing)/components/Footer";
 
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -23,12 +22,16 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Navigation />
-        {children}
-        <Footer />
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <div className='container-fluid'>
+          <div className='row'>
+            <div className='col-12'>
+              <Navigation />
+              {children}
+              <Footer />
+            </div>
+          </div>
+        </div>
       </body>
     </html>
   );
