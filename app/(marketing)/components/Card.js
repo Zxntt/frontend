@@ -15,9 +15,9 @@ export default function Card() {
         {cars.map((car, index) => (
           <div className='col-sm-10 col-md-6 col-lg-4 d-flex justify-content-center' key={index}>
             
-            {/* เฟรมกรอบมีแสงขอบ + hover scale */}
+            {/* ลด padding จาก p-1 เป็น p-0 */}
             <div 
-              className="card-wrapper rounded-4 p-1" 
+              className="card-wrapper rounded-4 p-0" 
               style={{
                 background: 'linear-gradient(135deg, #ff416c, #ff4b2b)',
                 boxShadow: '0 0 20px rgba(255, 75, 43, 0.3)',
@@ -28,18 +28,18 @@ export default function Card() {
                 className="card shadow-lg rounded-4 overflow-hidden border-0 bg-dark text-white" 
                 style={{ width: '20rem' }}
               >
-                <div style={{ position: 'relative', width: '100%', height: '200px' }}>
+                <div style={{ position: 'relative', width: '100%', height: '200px', marginTop: 0 }}>
                   <Image
                     src={car.src}
                     alt={car.name}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="rounded-top-4"
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: 'cover', marginTop: 0 }}
                     priority={index === 0}
                   />
                 </div>
-                <div className="card-body text-center">
+                <div className="card-body text-center pt-2"> {/* ลด padding top ถ้าเยอะ */}
                   <h5 className="card-title fw-bold mb-0" style={{ fontSize: '1.25rem' }}>
                     🚗 {car.name} 🚗
                   </h5>
