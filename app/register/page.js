@@ -1,162 +1,401 @@
 "use client";
 
+import { useState } from "react";
 import Head from "next/head";
 
-export default function RegisterPage() {
+export default function MotoGPAuth() {
+  const [isLogin, setIsLogin] = useState(true);
+
+  function toggleForms() {
+    setIsLogin((prev) => !prev);
+  }
+
+  function handleLoginSubmit(e) {
+    e.preventDefault();
+    alert("🏁 Welcome back to the racing championship!");
+  }
+
+  function handleRegisterSubmit(e) {
+    e.preventDefault();
+    alert("🏆 Welcome to MotoGP Championship! Your racing career starts now!");
+  }
+
   return (
     <>
       <Head>
-        <title>Register - Mogto GP</title>
-        <meta charSet="UTF-8" />
+        <title>MotoGP Racing - Authentication</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
+          rel="stylesheet"
+        />
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/font/bootstrap-icons.min.css"
           rel="stylesheet"
         />
       </Head>
 
-      <div className="register-box">
-        <h2>🏁 MOGTO GP REGISTER 🏁</h2>
-        <form>
-          <input type="text" placeholder="ชื่อผู้ใช้" required />
-          <input type="email" placeholder="อีเมล" required />
-          <input type="password" placeholder="รหัสผ่าน" required />
-          <input type="password" placeholder="ยืนยันรหัสผ่าน" required />
-          <button type="submit">สมัครสมาชิก</button>
-        </form>
-        <div className="footer">© 2025 Mogto GP</div>
-      </div>
-
-      <style jsx>{`
-        :global(body) {
+      <style>{`
+        /* ใส่ CSS ตามเดิม */
+        :root {
+          --motogp-red: #dc143c;
+          --motogp-blue: #0066cc;
+          --motogp-black: #0f0f0f;
+          --motogp-white: #ffffff;
+          --motogp-gray: #1f1f1f;
+          --motogp-dark-red: #8b0000;
+          --motogp-dark-blue: #003d7a;
+          --racing-gradient: linear-gradient(135deg, #dc143c 0%, #0066cc 50%, #000000 100%);
+          --track-gradient: linear-gradient(90deg, #0f0f0f 0%, #1f1f1f 50%, #0f0f0f 100%);
+          --accent-gradient: linear-gradient(45deg, #dc143c 0%, #0066cc 100%);
+          --motogp-yellow: #ffd700;
+        }
+        body {
+          font-family: 'Rajdhani', sans-serif;
+          background: var(--track-gradient);
+          min-height: 100vh;
           margin: 0;
           padding: 0;
-          background: linear-gradient(135deg, #05091f, #000000);
-          font-family: 'Orbitron', sans-serif;
+          color: var(--motogp-white);
+          overflow-x: hidden;
+          position: relative;
+        }
+        .auth-container {
           display: flex;
-          justify-content: center;
+          min-height: 100vh;
           align-items: center;
-          height: 100vh;
-          overflow: hidden;
-          color: #eee;
+          justify-content: center;
+          padding: 20px;
         }
-
-        .register-box {
-          background: linear-gradient(145deg, #0d0d20, #12122f);
-          border: 3px solid #ff003c;
-          box-shadow:
-            0 0 25px #001a99cc,
-            0 0 30px #ff003ccc,
-            inset 0 0 20px #ff003c99;
-          padding: 50px 40px;
+        .auth-card {
+          background: rgba(15, 15, 15, 0.95);
           border-radius: 20px;
-          width: 360px;
-          text-align: center;
+          padding: 40px;
+          max-width: 450px;
+          width: 100%;
+          box-shadow: 
+              0 20px 40px rgba(220, 20, 60, 0.4),
+              0 0 0 1px rgba(0, 102, 204, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(15px);
           position: relative;
           overflow: hidden;
-          transition: box-shadow 0.3s ease;
+          animation: slideUp 0.8s ease-out;
+          border: 2px solid transparent;
+          background-clip: padding-box;
+          color: var(--motogp-white);
         }
-
-        .register-box::before {
-          content: "";
+        @keyframes slideUp {
+          from {
+              opacity: 0;
+              transform: translateY(50px);
+          }
+          to {
+              opacity: 1;
+              transform: translateY(0);
+          }
+        }
+        .speed-indicator {
           position: absolute;
-          top: -50%;
-          left: -50%;
-          width: 200%;
-          height: 200%;
-          background:
-            radial-gradient(circle at center, #ff003cbb, transparent 70%),
-            radial-gradient(circle at center, #001a99bb, transparent 70%);
-          animation: pulse 4s infinite alternate;
-          z-index: 0;
-          border-radius: 20px;
-          filter: blur(30px);
+          top: 20px;
+          right: 20px;
+          font-family: 'Orbitron', monospace;
+          font-size: 0.9rem;
+          color: var(--motogp-yellow);
+          opacity: 0.7;
         }
-
-        @keyframes pulse {
-          0% {
-            transform: rotate(0deg) scale(1);
-          }
-          100% {
-            transform: rotate(360deg) scale(1.1);
-          }
-        }
-
-        .register-box * {
-          position: relative;
-          z-index: 1;
-        }
-
-        .register-box h2 {
+        .motogp-logo {
+          text-align: center;
           margin-bottom: 30px;
-          font-size: 32px;
-          text-shadow: 0 0 20px #ff003c, 0 0 30px #001a99;
-          letter-spacing: 2px;
-          color: #ff003c;
-          font-weight: 700;
         }
-
-        form input[type='text'],
-        form input[type='email'],
-        form input[type='password'] {
-          background: #0a0a1f;
-          border: 2px solid #001a66;
-          outline: none;
-          padding: 14px 15px;
-          margin: 14px 0;
-          width: 100%;
-          border-radius: 12px;
-          color: #eee;
-          font-size: 16px;
-          transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        .motogp-title {
           font-family: 'Orbitron', monospace;
-          box-shadow: inset 0 0 12px #000022;
+          font-weight: 900;
+          font-size: 2.5rem;
+          background: var(--racing-gradient);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          text-transform: uppercase;
+          letter-spacing: 3px;
+          margin-bottom: 10px;
+          animation: titleGlow 3s ease-in-out infinite;
         }
-
-        form input[type='text']:focus,
-        form input[type='email']:focus,
-        form input[type='password']:focus {
-          border-color: #ff003c;
-          box-shadow:
-            0 0 15px #ff003cbb,
-            inset 0 0 18px #ff003ccc;
-          background: #121234;
+        @keyframes titleGlow {
+          0%, 100% { filter: brightness(1); }
+          50% { filter: brightness(1.3); }
         }
-
-        form button {
-          background: linear-gradient(90deg, #ff003c, #001a99);
+        .racing-subtitle {
+          background: var(--accent-gradient);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+          font-weight: 600;
+          font-size: 1.1rem;
+          letter-spacing: 1px;
+        }
+        .form-control {
+          background: rgba(31, 31, 31, 0.9);
+          border: 2px solid rgba(0, 102, 204, 0.4);
+          color: var(--motogp-white);
+          font-family: 'Rajdhani', sans-serif;
+          font-size: 1.1rem;
+          padding: 15px 20px;
+          border-radius: 10px;
+          transition: all 0.3s ease;
+        }
+        .form-control:focus {
+          background: rgba(31, 31, 31, 1);
+          border-color: var(--motogp-red);
+          box-shadow: 0 0 20px rgba(220, 20, 60, 0.4);
+          color: var(--motogp-white);
+        }
+        .form-control::placeholder {
+          color: rgba(255, 255, 255, 0.6);
+        }
+        .input-group {
+          margin-bottom: 20px;
+        }
+        .input-group-text {
+          background: var(--motogp-red);
+          border: 2px solid var(--motogp-red);
+          color: var(--motogp-white);
+          border-radius: 10px 0 0 10px;
+        }
+        .btn-racing {
+          background: var(--racing-gradient);
           border: none;
-          color: white;
-          padding: 16px;
-          width: 100%;
-          margin-top: 30px;
-          font-size: 20px;
+          color: var(--motogp-white);
+          font-family: 'Orbitron', monospace;
           font-weight: 700;
-          border-radius: 14px;
-          cursor: pointer;
+          font-size: 1.2rem;
+          padding: 15px 30px;
+          border-radius: 50px;
+          text-transform: uppercase;
           letter-spacing: 2px;
-          transition: box-shadow 0.3s ease, transform 0.2s ease;
-          font-family: 'Orbitron', monospace;
-          box-shadow: 0 0 18px #ff003c, 0 0 18px #001a99;
+          width: 100%;
+          transition: all 0.3s ease;
+          position: relative;
+          overflow: hidden;
         }
-
-        form button:hover {
-          box-shadow:
-            0 0 28px #ff003c,
-            0 0 38px #001a99,
-            0 0 48px #ff003c,
-            0 0 58px #001a99;
-          transform: scale(1.07);
+        .btn-racing:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 10px 25px rgba(225, 6, 0, 0.4);
+          filter: brightness(1.1);
         }
-
-        .footer {
-          margin-top: 30px;
-          font-size: 13px;
-          color: #888;
-          letter-spacing: 1.2px;
-          font-family: 'Orbitron', monospace;
-          text-shadow: 0 0 8px #000a;
+        .btn-switch {
+          background: transparent;
+          border: 2px solid var(--motogp-yellow);
+          color: var(--motogp-yellow);
+          font-family: 'Rajdhani', sans-serif;
+          font-weight: 600;
+          padding: 10px 25px;
+          border-radius: 25px;
+          text-decoration: none;
+          display: inline-block;
+          transition: all 0.3s ease;
+          margin-top: 20px;
+          cursor: pointer;
+        }
+        .btn-switch:hover {
+          background: var(--motogp-yellow);
+          color: var(--motogp-black);
+          transform: scale(1.05);
+        }
+        .racing-divider {
+          height: 2px;
+          background: var(--racing-gradient);
+          margin: 30px 0;
+          border-radius: 2px;
+        }
+        .social-login {
+          display: flex;
+          gap: 10px;
+          margin-top: 20px;
+        }
+        .social-btn {
+          flex: 1;
+          padding: 12px;
+          border: 2px solid rgba(255, 255, 255, 0.2);
+          background: rgba(44, 44, 44, 0.6);
+          color: var(--motogp-white);
+          border-radius: 10px;
+          transition: all 0.3s ease;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+        }
+        .social-btn:hover {
+          border-color: var(--motogp-yellow);
+          background: rgba(255, 215, 0, 0.1);
+          color: var(--motogp-white);
+          transform: translateY(-2px);
+        }
+        .form-check-input {
+          background: rgba(44, 44, 44, 0.8);
+          border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        .form-check-input:checked {
+          background-color: var(--motogp-yellow);
+          border-color: var(--motogp-yellow);
+        }
+        .form-check-label {
+          color: rgba(255, 255, 255, 0.8);
+          font-size: 0.95rem;
+        }
+        @media (max-width: 576px) {
+          .auth-card {
+            padding: 30px 20px;
+            margin: 10px;
+          }
+          .motogp-title {
+            font-size: 2rem;
+          }
         }
       `}</style>
+
+      <div className="auth-container">
+        <div className="auth-card">
+          <div className="speed-indicator">
+            <i className="bi bi-speedometer2"></i> MAX SPEED
+          </div>
+
+          <div className="motogp-logo">
+            <div className="motogp-title">MotoGP</div>
+            <div className="racing-subtitle">Racing Championship</div>
+          </div>
+
+          {isLogin ? (
+            <form id="loginForm" onSubmit={handleLoginSubmit}>
+              <div className="mb-4">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-person-fill"></i>
+                  </span>
+                  <input type="email" className="form-control" placeholder="Racing Email" required />
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-shield-lock-fill"></i>
+                  </span>
+                  <input type="password" className="form-control" placeholder="Secret Password" required />
+                </div>
+              </div>
+
+              <div className="form-check mb-4">
+                <input className="form-check-input" type="checkbox" id="rememberMe" />
+                <label className="form-check-label" htmlFor="rememberMe">
+                  Remember my racing profile
+                </label>
+              </div>
+
+              <button type="submit" className="btn btn-racing">
+                <i className="bi bi-flag-fill me-2"></i>
+                Start Racing
+              </button>
+
+              <div className="racing-divider"></div>
+
+              <div className="social-login">
+                <a href="#" className="social-btn">
+                  <i className="bi bi-google"></i>
+                  Google
+                </a>
+                <a href="#" className="social-btn">
+                  <i className="bi bi-facebook"></i>
+                  Facebook
+                </a>
+              </div>
+
+              <div className="text-center mt-4">
+                <span className="text-muted">New to MotoGP Racing? </span>
+                <button type="button" className="btn-switch" onClick={toggleForms}>
+                  Join the Championship
+                </button>
+              </div>
+            </form>
+          ) : (
+            <form id="registerForm" onSubmit={handleRegisterSubmit}>
+              <div className="mb-3">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-person-badge-fill"></i>
+                  </span>
+                  <input type="text" className="form-control" placeholder="Racing Name" required />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-envelope-fill"></i>
+                  </span>
+                  <input type="email" className="form-control" placeholder="Racing Email" required />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-shield-lock-fill"></i>
+                  </span>
+                  <input type="password" className="form-control" placeholder="Secret Password" required />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-shield-check-fill"></i>
+                  </span>
+                  <input type="password" className="form-control" placeholder="Confirm Password" required />
+                </div>
+              </div>
+
+              <div className="mb-3">
+                <div className="input-group">
+                  <span className="input-group-text">
+                    <i className="bi bi-motorcycle"></i>
+                  </span>
+                  <select className="form-control" required>
+                    <option value="">Choose your favorite team</option>
+                    <option value="ducati">Ducati</option>
+                    <option value="yamaha">Yamaha</option>
+                    <option value="honda">Honda</option>
+                    <option value="suzuki">Suzuki</option>
+                    <option value="ktm">KTM</option>
+                    <option value="aprilia">Aprilia</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="form-check mb-4">
+                <input className="form-check-input" type="checkbox" id="agreeTerms" required />
+                <label className="form-check-label" htmlFor="agreeTerms">
+                  I agree to the Racing Terms & Conditions
+                </label>
+              </div>
+
+              <button type="submit" className="btn btn-racing">
+                <i className="bi bi-trophy-fill me-2"></i>
+                Join Championship
+              </button>
+
+              <div className="text-center mt-4">
+                <span className="text-muted">Already a racer? </span>
+                <button type="button" className="btn-switch" onClick={toggleForms}>
+                  Back to Track
+                </button>
+              </div>
+            </form>
+          )}
+        </div>
+      </div>
     </>
   );
 }

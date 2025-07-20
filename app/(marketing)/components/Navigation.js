@@ -5,10 +5,10 @@ import { useState, useEffect } from "react";
 
 export default function Navigation() {
   const pathname = usePathname();
-  const [theme, setTheme] = useState("light");
+  const [theme, setTheme] = useState("dark");
 
   useEffect(() => {
-    document.body.className = theme === "dark" ? "bg-dark text-light" : "bg-light text-dark";
+    document.body.className = theme === "dark" ? "bg-black text-white" : "bg-light text-dark";
   }, [theme]);
 
   const toggleTheme = () => {
@@ -16,11 +16,19 @@ export default function Navigation() {
   };
 
   return (
-    <nav className={`navbar navbar-expand-lg shadow-sm sticky-top ${theme === "dark" ? "navbar-dark bg-dark" : "navbar-light bg-light"}`}>
+    <nav
+      className={`navbar navbar-expand-lg shadow-sm sticky-top ${
+        theme === "dark" ? "navbar-dark bg-black" : "navbar-light bg-light"
+      }`}
+    >
       <div className="container">
-        <Link href="/" className="navbar-brand fw-bold d-flex align-items-center gap-2 text-primary">
-          <i className="bi bi-fire-fill fs-4 animate-fire"></i>
-          <span>MotoGP</span>
+        <Link href="/" className="navbar-brand fw-bold d-flex align-items-center gap-2 text-danger">
+          <img
+            src={theme === "dark" ? "/images/logo/1.png" : "/images/logo/2.png"}
+            alt="MotoGP Logo"
+            width={200}
+            height={120}
+          />
         </Link>
 
         <button
@@ -38,52 +46,64 @@ export default function Navigation() {
         <div className="collapse navbar-collapse" id="navbarMain">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
             <li className="nav-item">
-              <Link href="/" className={`nav-link ${pathname === "/" ? "active fw-bold text-primary" : "nav-link-hover"}`}>
+              <Link
+                href="/"
+                className={`nav-link ${pathname === "/" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+              >
                 Home
               </Link>
             </li>
 
+            {/* Dropdown Menu: Marketing */}
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle nav-link-hover"
+                href="#"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                href="#"
               >
-                Marketing
+                Information
               </a>
               <ul className="dropdown-menu shadow-sm rounded-3 border-0">
                 <li>
-                  <Link href="/marketing/about" className="dropdown-item dropdown-item-hover">
-                    About
+                  <Link href="/marketing/Team" className="dropdown-item dropdown-item-hover">
+                    Team
                   </Link>
                 </li>
                 <li>
-                  <Link href="/marketing/service" className="dropdown-item dropdown-item-hover">
-                    Services
+                  <Link href="/marketing/Rider" className="dropdown-item dropdown-item-hover">
+                    Rider
                   </Link>
                 </li>
                 <li>
-                  <Link href="/marketing/contact" className="dropdown-item dropdown-item-hover">
-                    Contact
+                  <Link href="/marketing/Car" className="dropdown-item dropdown-item-hover">
+                    Car
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/marketing/Manager" className="dropdown-item dropdown-item-hover">
+                    Manager
                   </Link>
                 </li>
               </ul>
             </li>
 
             <li className="nav-item">
-              <Link href="/register" className={`nav-link ${pathname === "/register" ? "active fw-bold text-primary" : "nav-link-hover"}`}>
+              <Link
+                href="/register"
+                className={`nav-link ${pathname === "/register" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+              >
                 Register
               </Link>
             </li>
           </ul>
 
           <div className="d-flex align-items-center gap-3">
-            {/* Theme toggle switch styled */}
+            {/* Theme toggle */}
             <button
               onClick={toggleTheme}
-              className="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2 px-3 py-1 rounded-pill"
+              className="btn btn-outline-danger btn-sm d-flex align-items-center gap-2 px-3 py-1 rounded-pill"
               title="Toggle Theme"
             >
               {theme === "dark" ? (
@@ -93,13 +113,13 @@ export default function Navigation() {
                 </>
               ) : (
                 <>
-                  <i className="bi bi-moon-stars-fill fs-5 text-primary"></i>
+                  <i className="bi bi-moon-stars-fill fs-5 text-danger"></i>
                   <span className="d-none d-md-inline fw-semibold">Dark Mode</span>
                 </>
               )}
             </button>
 
-            <Link href="/login" className="btn btn-primary btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill">
+            <Link href="/login" className="btn btn-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill">
               <i className="bi bi-box-arrow-in-right fs-5"></i> <span className="d-none d-md-inline">Login</span>
             </Link>
           </div>
@@ -112,9 +132,9 @@ export default function Navigation() {
           transition: color 0.3s ease, transform 0.2s ease;
         }
         .nav-link-hover:hover {
-          color: #ff4b2b;
+          color: #420107ff;
           transform: scale(1.05);
-          text-shadow: 0 0 8px #ff4b2b;
+          text-shadow: 0 0 8px #420107ff;
         }
 
         .dropdown-item-hover {
@@ -122,27 +142,11 @@ export default function Navigation() {
           cursor: pointer;
         }
         .dropdown-item-hover:hover {
-          background-color: #ff4b2b;
+          background-color: #420107ff;
           color: white;
           font-weight: 600;
         }
 
-        /* Fire icon flicker animation */
-        @keyframes flicker {
-          0%, 100% {
-            opacity: 1;
-          }
-          50% {
-            opacity: 0.6;
-          }
-        }
-        .animate-fire {
-          animation: flicker 1.5s infinite;
-          color: #ff4b2b;
-          filter: drop-shadow(0 0 6px #ff4b2b);
-        }
-
-        /* Navbar shadow smoother */
         nav.navbar {
           transition: background-color 0.4s ease;
           backdrop-filter: saturate(180%) blur(10px);
