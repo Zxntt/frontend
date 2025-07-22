@@ -22,6 +22,7 @@ export default function Navigation() {
       }`}
     >
       <div className="container">
+        {/* LOGO */}
         <Link href="/" className="navbar-brand fw-bold d-flex align-items-center gap-2 text-danger">
           <img
             src={theme === "dark" ? "/images/logo/1.png" : "/images/logo/2.png"}
@@ -31,6 +32,7 @@ export default function Navigation() {
           />
         </Link>
 
+        {/* TOGGLER */}
         <button
           className="navbar-toggler"
           type="button"
@@ -43,6 +45,7 @@ export default function Navigation() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
+        {/* NAVBAR MENU */}
         <div className="collapse navbar-collapse" id="navbarMain">
           <ul className="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
             <li className="nav-item">
@@ -54,41 +57,62 @@ export default function Navigation() {
               </Link>
             </li>
 
-            {/* Dropdown Menu: Marketing */}
+            {/* DROPDOWN: INFORMATION */}
             <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle nav-link-hover"
-                href="#"
+              <button
+                className="nav-link dropdown-toggle nav-link-hover btn btn-link"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                style={{ textDecoration: "none" }}
               >
                 Information
-              </a>
+              </button>
               <ul className="dropdown-menu shadow-sm rounded-3 border-0">
                 <li>
-                  <Link href="/marketing/Team" className="dropdown-item dropdown-item-hover">
-                    Team
+                  <Link
+                    href="/information/team"
+                    className={`dropdown-item dropdown-item-hover ${
+                      pathname === "/app/information/team/page.js" ? "active text-danger fw-bold" : ""
+                    }`}
+                  >
+                    <i className="bi bi-people-fill me-2"></i> Team
                   </Link>
                 </li>
                 <li>
-                  <Link href="/marketing/Rider" className="dropdown-item dropdown-item-hover">
-                    Rider
+                  <Link
+                    href="/information/rider"
+                    className={`dropdown-item dropdown-item-hover ${
+                      pathname === "/information/rider" ? "active text-danger fw-bold" : ""
+                    }`}
+                  >
+                    <i className="bi bi-person-bounding-box me-2"></i> Rider
                   </Link>
                 </li>
                 <li>
-                  <Link href="/marketing/Car" className="dropdown-item dropdown-item-hover">
-                    Car
+                  <Link
+                    href="/information/car"
+                    className={`dropdown-item dropdown-item-hover ${
+                      pathname === "/information/car" ? "active text-danger fw-bold" : ""
+                    }`}
+                  >
+                    <i className="bi bi-truck-front-fill me-2"></i> Car
                   </Link>
                 </li>
                 <li>
-                  <Link href="/marketing/Manager" className="dropdown-item dropdown-item-hover">
-                    Manager
+                  <Link
+                    href="/information/manager"
+                    className={`dropdown-item dropdown-item-hover ${
+                      pathname === "/information/manager" ? "active text-danger fw-bold" : ""
+                    }`}
+                  >
+                    <i className="bi bi-person-gear me-2"></i> Manager
                   </Link>
                 </li>
               </ul>
             </li>
 
+            {/* REGISTER */}
             <li className="nav-item">
               <Link
                 href="/register"
@@ -99,8 +123,9 @@ export default function Navigation() {
             </li>
           </ul>
 
+          {/* RIGHT MENU: TOGGLE + LOGIN */}
           <div className="d-flex align-items-center gap-3">
-            {/* Theme toggle */}
+            {/* THEME TOGGLE */}
             <button
               onClick={toggleTheme}
               className="btn btn-outline-danger btn-sm d-flex align-items-center gap-2 px-3 py-1 rounded-pill"
@@ -119,6 +144,7 @@ export default function Navigation() {
               )}
             </button>
 
+            {/* LOGIN BUTTON */}
             <Link href="/login" className="btn btn-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill">
               <i className="bi bi-box-arrow-in-right fs-5"></i> <span className="d-none d-md-inline">Login</span>
             </Link>
@@ -126,6 +152,7 @@ export default function Navigation() {
         </div>
       </div>
 
+      {/* STYLE */}
       <style jsx>{`
         .nav-link-hover {
           color: inherit;
@@ -151,7 +178,6 @@ export default function Navigation() {
           transition: background-color 0.4s ease;
           backdrop-filter: saturate(180%) blur(10px);
           -webkit-backdrop-filter: saturate(180%) blur(10px);
-          background-color: var(--bs-navbar-bg) !important;
         }
       `}</style>
     </nav>
