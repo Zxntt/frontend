@@ -1,0 +1,80 @@
+/* Container หลักของหน้า login */
+.authContainer {
+  display: flex;
+  min-height: 100vh;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+  font-family: 'Arial', sans-serif;
+}
+
+/* Card ของ form */
+.authCard {
+  background: rgba(15, 15, 15, 0.95);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 
+    0 20px 40px rgba(220, 20, 60, 0.4),
+    0 0 0 1px rgba(0, 102, 204, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(15px);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Header หรือชื่อ form */
+.authHeader {
+  color: #fff;
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Input field */
+.authInput {
+  width: 100%;
+  padding: 12px 16px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 1rem;
+}
+
+.authInput::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ปุ่ม submit */
+.btnRacing {
+  background: linear-gradient(45deg, #dc143c, #0066cc);
+  color: white;
+  font-weight: bold;
+  border: none;
+  padding: 12px 20px;
+  width: 100%;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.btnRacing:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(220, 20, 60, 0.5),
+              0 0 0 2px rgba(0, 102, 204, 0.3);
+}
+
+/* Link หรือข้อความลิงก์ */
+.authLink {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #06f;
+  text-decoration: underline;
+  cursor: pointer;
+}
