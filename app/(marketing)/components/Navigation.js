@@ -1,158 +1,182 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 export default function Navigation() {
   const pathname = usePathname();
   const [theme, setTheme] = useState("dark");
+  const [showNavbar, setShowNavbar] = useState(true);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     document.body.className = theme === "dark" ? "bg-black text-white" : "bg-light text-dark";
   }, [theme]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
+        // เลื่อนลง ให้ซ่อน navbar
+        setShowNavbar(false);
+      } else {
+        // เลื่อนขึ้น ให้แสดง navbar
+        setShowNavbar(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
   };
 
   return (
-    <nav
-      className={`navbar navbar-expand-lg shadow-sm sticky-top ${
-        theme === "dark" ? "navbar-dark bg-black" : "navbar-light bg-light"
-      }`}
-    >
-      <div className="container">
-        {/* LOGO */}
-        <Link href="/" className="navbar-brand fw-bold d-flex align-items-center gap-2 text-danger">
-          <img
-            src={theme === "dark" ? "/images/logo/1.png" : "/images/logo/2.png"}
-            alt="MotoGP Logo"
-            width={200}
-            height={120}
-          />
-        </Link>
+    <>
+      <nav
+        className={`navbar navbar-expand-lg shadow-sm sticky-top ${
+          theme === "dark" ? "navbar-dark bg-black" : "navbar-light bg-light"
+        } ${showNavbar ? "nav-visible" : "nav-hidden"}`}
+      >
+        <div className="container">
+          {/* LOGO */}
+          <Link href="/" className="navbar-brand fw-bold d-flex align-items-center gap-2 text-danger">
+            <img
+              src={theme === "dark" ? "/images/logo/1.png" : "/images/logo/2.png"}
+              alt="MotoGP Logo"
+              width={200}
+              height={120}
+            />
+          </Link>
 
-        {/* TOGGLER */}
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarMain"
-          aria-controls="navbarMain"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+          {/* TOGGLER */}
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarMain"
+            aria-controls="navbarMain"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
 
-        {/* NAVBAR MENU */}
-        <div className="collapse navbar-collapse" id="navbarMain">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
-            <li className="nav-item">
-              <Link
-                href="/"
-                className={`nav-link ${pathname === "/" ? "active fw-bold text-danger" : "nav-link-hover"}`}
-              >
-                Home
-              </Link>
-            </li>
+          {/* NAVBAR MENU */}
+          <div className="collapse navbar-collapse" id="navbarMain">
+            <ul className="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
+              <li className="nav-item">
+                <Link
+                  href="/"
+                  className={`nav-link ${pathname === "/" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+                >
+                  Home
+                </Link>
+              </li>
 
-            {/* DROPDOWN: INFORMATION */}
-            <li className="nav-item dropdown">
+              {/* DROPDOWN: INFORMATION */}
+              <li className="nav-item dropdown">
+                <button
+                  className="nav-link dropdown-toggle nav-link-hover btn btn-link"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                  style={{ textDecoration: "none" }}
+                >
+                  Information
+                </button>
+                <ul className="dropdown-menu shadow-sm rounded-3 border-0">
+                  <li>
+                    <Link
+                      href="/information/team"
+                      className={`dropdown-item dropdown-item-hover ${
+                        pathname === "/information/team" ? "active text-danger fw-bold" : ""
+                      }`}
+                    >
+                      <i className="bi bi-people-fill me-2"></i> Team
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/information/rider"
+                      className={`dropdown-item dropdown-item-hover ${
+                        pathname === "/information/rider" ? "active text-danger fw-bold" : ""
+                      }`}
+                    >
+                      <i className="bi bi-person-bounding-box me-2"></i> Rider
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/information/car"
+                      className={`dropdown-item dropdown-item-hover ${
+                        pathname === "/information/car" ? "active text-danger fw-bold" : ""
+                      }`}
+                    >
+                      <i className="bi bi-truck-front-fill me-2"></i> Car
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/information/manager"
+                      className={`dropdown-item dropdown-item-hover ${
+                        pathname === "/information/manager" ? "active text-danger fw-bold" : ""
+                      }`}
+                    >
+                      <i className="bi bi-person-gear me-2"></i> Manager
+                    </Link>
+                  </li>
+                </ul>
+              </li>
+
+              {/* REGISTER */}
+              <li className="nav-item">
+                <Link
+                  href="/register"
+                  className={`nav-link ${pathname === "/register" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+                >
+                  Register
+                </Link>
+              </li>
+            </ul>
+
+            {/* RIGHT MENU: TOGGLE + LOGIN */}
+            <div className="d-flex align-items-center gap-3">
+              {/* THEME TOGGLE */}
               <button
-                className="nav-link dropdown-toggle nav-link-hover btn btn-link"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                style={{ textDecoration: "none" }}
+                onClick={toggleTheme}
+                className="btn btn-outline-danger btn-sm d-flex align-items-center gap-2 px-3 py-1 rounded-pill"
+                title="Toggle Theme"
               >
-                Information
+                {theme === "dark" ? (
+                  <>
+                    <i className="bi bi-sun-fill fs-5 text-warning"></i>
+                    <span className="d-none d-md-inline fw-semibold">Light Mode</span>
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-moon-stars-fill fs-5 text-danger"></i>
+                    <span className="d-none d-md-inline fw-semibold">Dark Mode</span>
+                  </>
+                )}
               </button>
-              <ul className="dropdown-menu shadow-sm rounded-3 border-0">
-                <li>
-                  <Link
-                    href="/information/team"
-                    className={`dropdown-item dropdown-item-hover ${
-                      pathname === "/app/information/team/page.js" ? "active text-danger fw-bold" : ""
-                    }`}
-                  >
-                    <i className="bi bi-people-fill me-2"></i> Team
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/information/rider"
-                    className={`dropdown-item dropdown-item-hover ${
-                      pathname === "/information/rider" ? "active text-danger fw-bold" : ""
-                    }`}
-                  >
-                    <i className="bi bi-person-bounding-box me-2"></i> Rider
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/information/car"
-                    className={`dropdown-item dropdown-item-hover ${
-                      pathname === "/information/car" ? "active text-danger fw-bold" : ""
-                    }`}
-                  >
-                    <i className="bi bi-truck-front-fill me-2"></i> Car
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/information/manager"
-                    className={`dropdown-item dropdown-item-hover ${
-                      pathname === "/information/manager" ? "active text-danger fw-bold" : ""
-                    }`}
-                  >
-                    <i className="bi bi-person-gear me-2"></i> Manager
-                  </Link>
-                </li>
-              </ul>
-            </li>
 
-            {/* REGISTER */}
-            <li className="nav-item">
+              {/* LOGIN BUTTON */}
               <Link
-                href="/register"
-                className={`nav-link ${pathname === "/register" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+                href="/login"
+                className="btn btn-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
               >
-                Register
+                <i className="bi bi-box-arrow-in-right fs-5"></i> <span className="d-none d-md-inline">Login</span>
               </Link>
-            </li>
-          </ul>
-
-          {/* RIGHT MENU: TOGGLE + LOGIN */}
-          <div className="d-flex align-items-center gap-3">
-            {/* THEME TOGGLE */}
-            <button
-              onClick={toggleTheme}
-              className="btn btn-outline-danger btn-sm d-flex align-items-center gap-2 px-3 py-1 rounded-pill"
-              title="Toggle Theme"
-            >
-              {theme === "dark" ? (
-                <>
-                  <i className="bi bi-sun-fill fs-5 text-warning"></i>
-                  <span className="d-none d-md-inline fw-semibold">Light Mode</span>
-                </>
-              ) : (
-                <>
-                  <i className="bi bi-moon-stars-fill fs-5 text-danger"></i>
-                  <span className="d-none d-md-inline fw-semibold">Dark Mode</span>
-                </>
-              )}
-            </button>
-
-            {/* LOGIN BUTTON */}
-            <Link href="/login" className="btn btn-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill">
-              <i className="bi bi-box-arrow-in-right fs-5"></i> <span className="d-none d-md-inline">Login</span>
-            </Link>
+            </div>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* STYLE */}
       <style jsx>{`
         .nav-link-hover {
           color: inherit;
@@ -175,11 +199,27 @@ export default function Navigation() {
         }
 
         nav.navbar {
-          transition: background-color 0.4s ease;
-          backdrop-filter: saturate(180%) blur(10px);
-          -webkit-backdrop-filter: saturate(180%) blur(10px);
-        }
+  transition: background-color 0.4s ease, transform 0.3s ease, opacity 0.3s ease;
+  backdrop-filter: saturate(180%) blur(10px);
+  -webkit-backdrop-filter: saturate(180%) blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+}
+
+.nav-hidden {
+  transform: translateY(-100%);
+  opacity: 0;
+  pointer-events: none; /* ปิดการคลิกเมื่อซ่อน */
+}
+
+.nav-visible {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
       `}</style>
-    </nav>
+    </>
   );
 }
