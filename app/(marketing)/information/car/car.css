@@ -1,0 +1,293 @@
+.page-Car::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(220, 53, 69, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(0, 123, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.page-Car .container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.page-Car h1 {
+  font-family: 'Arial Black', 'Segoe UI', sans-serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(45deg, #dc3545, #007bff, #dc3545);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: racing-gradient 3s ease-in-out infinite;
+  text-shadow: 0 0 30px rgba(220, 53, 69, 0.5);
+  position: relative;
+}
+
+.page-Car h1::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #dc3545, #007bff, #dc3545, transparent);
+  border-radius: 2px;
+}
+
+@keyframes racing-gradient {
+  0%, 100% { background-position: 0% center; }
+  50% { background-position: 100% center; }
+}
+
+.page-Car table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 20px;
+  border: none !important;
+}
+
+.page-Car td {
+  background: linear-gradient(145deg, #1a1a1a, #0d0d0d);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  border-radius: 15px;
+  box-shadow: 
+    0 8px 25px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(220, 53, 69, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  padding: 0;
+  vertical-align: top;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-Car td::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(220, 53, 69, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.page-Car td:hover::before {
+  left: 100%;
+}
+
+.page-Car td:hover {
+  transform: translateY(-12px) scale(1.02);
+  box-shadow: 
+    0 15px 40px rgba(0, 0, 0, 0.6),
+    0 0 0 2px #dc3545,
+    0 0 20px rgba(220, 53, 69, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-image: linear-gradient(45deg, #dc3545, #007bff) 1;
+}
+
+.page-Car td img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 13px 13px 0 0;
+  border-bottom: 4px solid transparent;
+  border-image: linear-gradient(90deg, #dc3545, #007bff, #dc3545) 1;
+  transition: all 0.4s ease;
+  filter: contrast(1.1) saturate(1.2);
+}
+
+.page-Car td:hover img {
+  filter: contrast(1.2) saturate(1.4) brightness(1.1);
+  transform: scale(1.05);
+}
+
+.page-Car td div {
+  margin: 15px;
+  font-weight: 800;
+  font-size: 1.2rem;
+  font-family: 'Arial Black', 'Segoe UI', sans-serif;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  user-select: none;
+  background: linear-gradient(45deg, #dc3545, #007bff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+  padding: 10px 0;
+}
+
+.page-Car td div::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #dc3545, #007bff);
+  border-radius: 1px;
+}
+
+/* Racing stripe animation on hover */
+.page-Car td:hover div {
+  animation: text-glow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes text-glow {
+  from { 
+    text-shadow: 0 0 5px rgba(220, 53, 69, 0.5), 0 0 10px rgba(0, 123, 255, 0.3);
+  }
+  to { 
+    text-shadow: 0 0 10px rgba(220, 53, 69, 0.8), 0 0 20px rgba(0, 123, 255, 0.6);
+  }
+}
+
+.page-Car td:empty {
+  background: none;
+  box-shadow: none;
+  cursor: default;
+  pointer-events: none;
+}
+
+/* Racing circuit lines */
+.page-Car::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -50px;
+  width: 200px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #dc3545, transparent);
+  transform: translateY(-50%) rotate(-45deg);
+  opacity: 0.3;
+  animation: circuit-line 4s ease-in-out infinite;
+}
+
+@keyframes circuit-line {
+  0%, 100% { opacity: 0.3; transform: translateY(-50%) rotate(-45deg) translateX(0); }
+  50% { opacity: 0.6; transform: translateY(-50%) rotate(-45deg) translateX(20px); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-Car h1 {
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+  }
+  
+  .page-Car table, .page-Car tbody, .page-Car tr {
+    display: block;
+    width: 100%;
+  }
+  
+  .page-Car tr {
+    margin-bottom: 1rem;
+  }
+  
+  .page-Car td {
+    display: inline-block;
+    width: calc(50% - 25px);
+    margin: 12px;
+  }
+  
+  .page-Car td img {
+    height: 160px;
+  }
+}
+
+@media (max-width: 480px) {
+  .page-Car h1 {
+    font-size: 2rem;
+    letter-spacing: 1px;
+  }
+  
+  .page-Car td {
+    width: 100%;
+    margin: 15px 0;
+  }
+  
+  .page-Car td img {
+    height: 180px;
+  }
+  
+  .page-Car .container {
+    padding: 2rem 0.5rem;
+  }
+}
+.page-Car .Car-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 13px;
+}
+
+.page-rider .rider-img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 13px;
+  display: block;
+}
+
+.page-rider .rider-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.page-rider .rider-number {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #ffc107;
+}
+
+.page-rider .rider-name {
+  font-weight: 800;
+  font-size: 1.2rem;
+  font-family: 'Arial Black', 'Segoe UI', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.page-rider .rider-country {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #ddd;
+}
+
+.page-rider .rider-country img {
+  border-radius: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.page-rider .rider-team {
+  color: #aaa;
+}
