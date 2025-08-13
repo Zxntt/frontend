@@ -6,7 +6,7 @@ export default function Home() {
     <>
       <Carousel />
       <h1 className="text-4xl text-center text-red-700 my-4">
-        Top Teams
+      - Top Rider -
       </h1>
       <Card />
     </>

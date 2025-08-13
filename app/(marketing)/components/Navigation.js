@@ -132,6 +132,16 @@ export default function Navigation() {
                   </li>
                 </ul>
               </li>
+              
+                {/* STANDINGS */}
+  <li className="nav-item">
+    <Link
+      href="/standings"
+      className={`nav-link ${pathname === "/standings" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+    >
+      Standings
+    </Link>
+  </li>
 
               {/* REGISTER */}
               <li className="nav-item">
@@ -144,7 +154,7 @@ export default function Navigation() {
               </li>
             </ul>
 
-            {/* RIGHT MENU: TOGGLE + LOGIN */}
+            {/* RIGHT MENU: TOGGLE + ADMIN + LOGIN */}
             <div className="d-flex align-items-center gap-3">
               {/* THEME TOGGLE */}
               <button
@@ -165,12 +175,22 @@ export default function Navigation() {
                 )}
               </button>
 
+              {/* ADMIN BUTTON */}
+              <Link
+                href="/admin"
+                className="btn btn-warning btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
+              >
+                <i className="bi bi-gear-fill fs-5"></i>
+                <span className="d-none d-md-inline">Admin</span>
+              </Link>
+
               {/* LOGIN BUTTON */}
               <Link
                 href="/login"
                 className="btn btn-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
               >
-                <i className="bi bi-box-arrow-in-right fs-5"></i> <span className="d-none d-md-inline">Login</span>
+                <i className="bi bi-box-arrow-in-right fs-5"></i>
+                <span className="d-none d-md-inline">Login</span>
               </Link>
             </div>
           </div>
@@ -199,26 +219,25 @@ export default function Navigation() {
         }
 
         nav.navbar {
-  transition: background-color 0.4s ease, transform 0.3s ease, opacity 0.3s ease;
-  backdrop-filter: saturate(180%) blur(10px);
-  -webkit-backdrop-filter: saturate(180%) blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: 9999;
-}
+          transition: background-color 0.4s ease, transform 0.3s ease, opacity 0.3s ease;
+          backdrop-filter: saturate(180%) blur(10px);
+          -webkit-backdrop-filter: saturate(180%) blur(10px);
+          position: sticky;
+          top: 0;
+          z-index: 9999;
+        }
 
-.nav-hidden {
-  transform: translateY(-100%);
-  opacity: 0;
-  pointer-events: none; /* ปิดการคลิกเมื่อซ่อน */
-}
+        .nav-hidden {
+          transform: translateY(-100%);
+          opacity: 0;
+          pointer-events: none;
+        }
 
-.nav-visible {
-  transform: translateY(0);
-  opacity: 1;
-  pointer-events: auto;
-}
-
+        .nav-visible {
+          transform: translateY(0);
+          opacity: 1;
+          pointer-events: auto;
+        }
       `}</style>
     </>
   );

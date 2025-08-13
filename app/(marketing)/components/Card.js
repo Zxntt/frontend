@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 export default function Card() {
   const cars = [
-    { src: "/images/card/1.jpg", name: "Rx7" },
-    { src: "/images/card/22.jpg", name: "Supra" },
-    { src: "/images/card/33.jpg", name: "Nsx" },
+    { src: "/images/card/1.png", name: "Marc Márquez" },
+    { src: "/images/card/2.png", name: "Álex Márquez Alentà" },
+    { src: "/images/card/3.png", name: "Francesco Bagnaia" },
   ];
 
   return (
@@ -41,7 +41,7 @@ export default function Card() {
                 </div>
                 <div className="card-body text-center pt-2">
                   <h5 className="card-title fw-bold mb-0" style={{ fontSize: '1.25rem' }}>
-                    🚗 {car.name} 🚗
+                    - {car.name} -
                   </h5>
                 </div>
               </div>
