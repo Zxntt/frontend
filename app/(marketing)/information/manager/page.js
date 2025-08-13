@@ -26,7 +26,7 @@ export default function Manager() {
     <div className="page-manager">
       <div className="container py-5">
         <h1 className="display-5 fw-bold text-center text-danger mb-5">
-          - MotoGP Team -
+          - Manager -
         </h1>
 
         <table className="table table-bordered text-center align-middle">
