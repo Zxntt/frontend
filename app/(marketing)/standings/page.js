@@ -55,7 +55,7 @@ export default function MotoGPStandings() {
 
   useEffect(() => {
     loadStandings();
-    const interval = setInterval(loadStandings, 30000);
+    const interval = setInterval(loadStandings, 300000);
     return () => clearInterval(interval);
   }, []);
 
