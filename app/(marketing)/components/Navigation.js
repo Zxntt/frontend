@@ -177,7 +177,7 @@ export default function Navigation() {
 
               {/* ADMIN BUTTON */}
               <Link
-                href="/admin"
+                href="/admin/users"
                 className="btn btn-warning btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
               >
                 <i className="bi bi-gear-fill fs-5"></i>
