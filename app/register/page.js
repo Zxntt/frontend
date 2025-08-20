@@ -1,229 +1,192 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import Swal from "sweetalert2";
-import Head from "next/head";
-import "./reg.css";
+import { useState } from 'react'
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/navigation'
+import './reg.css'
 
-export default function MotoGPAuth() {
-  const [isLogin, setIsLogin] = useState(true);
+export default function Register() {
+  const [firstname, setFirstname] = useState('')
+  const [fullname, setFullname] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [address, setAddress] = useState('')
+  const [sex, setSex] = useState('')
+  const [birthday, setBirthday] = useState('')
+  const [agreed, setAgreed] = useState(false)
 
-  // Register form state
-  const [firstname, setFirstname] = useState("");
-  const [fullname, setFullname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const router = useRouter()
 
-  function toggleForms() {
-    setIsLogin((prev) => !prev);
-  }
+  const handleSubmit = async (e) => {
+    e.preventDefault()
 
-  function handleLoginSubmit(e) {
-    e.preventDefault();
-    Swal.fire({
-      icon: "success",
-      title: "🏁 Welcome back!",
-      text: "You are now logged in to MotoGP Racing!",
-    });
-  }
+    if (password !== confirmPassword) {
+      Swal.fire({
+        icon: 'error',
+        title: 'รหัสผ่านไม่ตรงกัน',
+        text: 'กรุณากรอกรหัสผ่านให้ตรงกัน',
+      })
+      return
+    }
 
-  async function handleRegisterSubmit(e) {
-    e.preventDefault();
+    if (!agreed) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'กรุณายอมรับเงื่อนไข',
+        text: 'คุณต้องยอมรับเงื่อนไขก่อนสมัครสมาชิก',
+      })
+      return
+    }
+
     try {
-      const res = await fetch("http://itdev.cmtc.ac.th:3000/api/users", {
-        method: "POST",
+      const res = await fetch('http://itdev.cmtc.ac.th:3000/api/users', {
+        method: 'POST',
         headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           firstname,
-          fullname,
           lastname,
+          fullname,
           username,
           password,
+          address,
+          sex,
+          birthday,
         }),
-      });
+      })
 
-      const result = await res.json();
+      const data = await res.json()
 
       if (res.ok) {
         Swal.fire({
-          icon: "success",
-          title: "สมัครสมาชิกสำเร็จ!",
-          text: "ยินดีต้อนรับเข้าสู่ MotoGP Championship!",
-        });
-        setIsLogin(true);
+          icon: 'success',
+          title: 'สมัครสมาชิกสำเร็จ',
+          text: 'คุณสามารถเข้าสู่ระบบได้แล้ว',
+        })
+
+        // Reset
+        setFirstname('')
+        setFullname('')
+        setLastname('')
+        setUsername('')
+        setPassword('')
+        setConfirmPassword('')
+        setAddress('')
+        setSex('')
+        setBirthday('')
+        setAgreed(false)
+
+        router.push('/login')
       } else {
         Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด",
-          text: result.message || "ไม่สามารถสมัครสมาชิกได้",
-        });
+          icon: 'error',
+          title: 'เกิดข้อผิดพลาด',
+          text: data.message || 'ไม่สามารถสมัครสมาชิกได้',
+        })
       }
     } catch (error) {
       Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด",
-        text: "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้",
-      });
+        icon: 'error',
+        title: 'ข้อผิดพลาดเครือข่าย',
+        text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
+      })
     }
   }
 
   return (
-    <>
-      <Head>
-        <title>MotoGP Racing - Authentication</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/font/bootstrap-icons.min.css"
-          rel="stylesheet"
-        />
-      </Head>
+    <div className="register-page">
+      <div className="register-container">
+        <form onSubmit={handleSubmit} className="register-form">
+          <h2 className="form-title">Create Account</h2>
 
-      <div className="auth-container">
-        <div className="auth-card">
-          <div className="speed-indicator">
-            <i className="bi bi-speedometer2"></i> MAX SPEED
-          </div>
+          <select value={firstname} onChange={(e) => setFirstname(e.target.value)} required>
+            <option value="" disabled hidden>Select Firstname</option>
+            <option value="Mr.">Mr.</option>
+            <option value="Ms.">Ms.</option>
+            <option value="Mrs.">Mrs.</option>
+            <option value="Other">Other</option>
+          </select>
 
-          <div className="motogp-logo">
-            <div className="motogp-title">MotoGP</div>
-            <div className="racing-subtitle">Racing Championship</div>
-          </div>
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={fullname}
+            onChange={(e) => setFullname(e.target.value)}
+            required
+          />
 
-          {isLogin ? (
-            <form onSubmit={handleLoginSubmit}>
-              <div className="mb-4">
-                <div className="input-group">
-                  <span className="input-group-text">
-                    <i className="bi bi-person-fill"></i>
-                  </span>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Racing Email"
-                    required
-                  />
-                </div>
-              </div>
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastname}
+            onChange={(e) => setLastname(e.target.value)}
+            required
+          />
 
-              <div className="mb-4">
-                <div className="input-group">
-                  <span className="input-group-text">
-                    <i className="bi bi-shield-lock-fill"></i>
-                  </span>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Password"
-                    required
-                  />
-                </div>
-              </div>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
 
-              <button type="submit" className="btn btn-racing">
-                <i className="bi bi-flag-fill me-2"></i> Start Racing
-              </button>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-              <div className="racing-divider"></div>
+          <input
+            type="password"
+            placeholder="Confirm Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
 
-              <div className="social-login">
-                <a href="#" className="social-btn">
-                  <i className="bi bi-google"></i> Google
-                </a>
-                <a href="#" className="social-btn">
-                  <i className="bi bi-facebook"></i> Facebook
-                </a>
-              </div>
+          <input
+            placeholder="Address"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            required
+          />
 
-              <div className="text-center mt-4">
-                <span className="text-muted">New to MotoGP Racing? </span>
-                <button
-                  type="button"
-                  className="btn-switch"
-                  onClick={toggleForms}
-                >
-                  Join the Championship
-                </button>
-              </div>
-            </form>
-          ) : (
-            <form onSubmit={handleRegisterSubmit}>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="คำนำหน้า"
-                  value={firstname}
-                  onChange={(e) => setFirstname(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="ชื่อ"
-                  value={fullname}
-                  onChange={(e) => setFullname(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="นามสกุล"
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="ชื่อผู้ใช้ (Username)"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="รหัสผ่าน"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
+          <select value={sex} onChange={(e) => setSex(e.target.value)} required>
+            <option value="" disabled hidden>Select sex</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
 
-              <button type="submit" className="btn btn-racing">
-                <i className="bi bi-trophy-fill me-2"></i> สมัครสมาชิก
-              </button>
+          <input
+            type="date"
+            value={birthday}
+            onChange={(e) => setBirthday(e.target.value)}
+            required
+          />
 
-              <div className="text-center mt-4">
-                <span className="text-muted">Already a racer? </span>
-                <button
-                  type="button"
-                  className="btn-switch"
-                  onClick={toggleForms}
-                >
-                  Back to Track
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
+          <label className="checkbox-container">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+            />
+            <span>I agree to the terms and conditions</span>
+          </label>
+
+          <button type="submit">Register</button>
+
+          <p className="login-link">
+            Already have an account? <a href="/login">Login</a>
+          </p>
+        </form>
       </div>
-    </>
-  );
+    </div>
+  )
 }

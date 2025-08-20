@@ -1,229 +1,190 @@
-"use client";
+'use client';
+import Swal from 'sweetalert2';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import './login.css';
 
-import { useState } from "react";
-import Swal from "sweetalert2";
-import Head from "next/head";
-import "./login.css";
+export default function Login() {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [agreed, setAgreed] = useState(false);
+  const router = useRouter();
 
-export default function MotoGPAuth() {
-  const [isLogin, setIsLogin] = useState(true);
-
-  // Register form state
-  const [firstname, setFirstname] = useState("");
-  const [fullname, setFullname] = useState("");
-  const [lastname, setLastname] = useState("");
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-
-  function toggleForms() {
-    setIsLogin((prev) => !prev);
-  }
-
-  function handleLoginSubmit(e) {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    Swal.fire({
-      icon: "success",
-      title: "🏁 Welcome back!",
-      text: "You are now logged in to MotoGP Racing!",
-    });
-  }
 
-  async function handleRegisterSubmit(e) {
-    e.preventDefault();
+    const adminUser = {
+      username: 'admin',
+      password: 'admin123',
+      fullname: 'Admin',
+      role: 'admin',
+    };
+
     try {
-      const res = await fetch("http://itdev.cmtc.ac.th:3000/api/users", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
+      if (!username || !password) {
+        Swal.fire({
+          icon: 'error',
+          title: 'กรุณากรอกชื่อผู้ใช้และรหัสผ่าน',
+        });
+        return;
+      }
+
+      // 🔒 Local Admin
+      if (username === adminUser.username && password === adminUser.password) {
+        localStorage.setItem('token', 'dummy-token');
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            username: adminUser.username,
+            fullname: adminUser.fullname,
+            role: adminUser.role,
+          })
+        );
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('isAdminConfirmed', 'true');
+
+        Swal.fire({
+          icon: 'success',
+          title: 'เข้าสู่ระบบสำเร็จ (Admin)',
+          text: `ยินดีต้อนรับ ${adminUser.fullname}`,
+        }).then(() => {
+          router.push('/');
+          router.refresh(); // ✅ Refresh เพื่อให้ Navigation รู้ว่า login แล้ว
+        });
+        return;
+      }
+
+      // 👥 Local Users
+      const localUsers = [
+        {
+          username: 'Fang',
+          password: '123456',
+          fullname: 'Supalerk Audomkasop',
+          role: 'student',
         },
-        body: JSON.stringify({
-          firstname,
-          fullname,
-          lastname,
-          username,
-          password,
-        }),
+        {
+          username: 'Teacher',
+          password: '123',
+          fullname: 'อาจารย์',
+          role: 'teacher',
+        },
+      ];
+
+      const foundUser = localUsers.find(
+        (u) => u.username === username && u.password === password
+      );
+
+      if (foundUser) {
+        localStorage.setItem('token', 'dummy-token');
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            username: foundUser.username,
+            fullname: foundUser.fullname,
+            role: foundUser.role,
+          })
+        );
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('isAdminConfirmed', foundUser.role === 'admin' ? 'true' : 'false');
+
+        Swal.fire({
+          icon: 'success',
+          title: 'เข้าสู่ระบบสำเร็จ',
+          text: `ยินดีต้อนรับ ${foundUser.fullname}`,
+        }).then(() => {
+          router.push('/');
+          router.refresh(); // ✅ Refresh ทันทีหลัง login
+        });
+        return;
+      }
+
+      // 🔐 Call backend (optional)
+      const res = await fetch('http://itdev.cmtc.ac.th:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
       });
 
-      const result = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch {
+        data = {};
+      }
 
-      if (res.ok) {
+      if (res.ok && data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('isAdminConfirmed', data.user?.role === 'admin' ? 'true' : 'false');
+
         Swal.fire({
-          icon: "success",
-          title: "สมัครสมาชิกสำเร็จ!",
-          text: "ยินดีต้อนรับเข้าสู่ MotoGP Championship!",
+          icon: 'success',
+          title: 'เข้าสู่ระบบสำเร็จ',
+          text: `ยินดีต้อนรับ ${data.user?.fullname || username}`,
+        }).then(() => {
+          router.push('/');
+          router.refresh(); // ✅ สำคัญที่สุด!
         });
-        setIsLogin(true);
       } else {
         Swal.fire({
-          icon: "error",
-          title: "เกิดข้อผิดพลาด",
-          text: result.message || "ไม่สามารถสมัครสมาชิกได้",
+          icon: 'error',
+          title: 'เข้าสู่ระบบไม่สำเร็จ',
+          text:
+            data?.message ||
+            data?.error ||
+            'ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง',
         });
       }
     } catch (error) {
+      console.error('Login error:', error);
       Swal.fire({
-        icon: "error",
-        title: "เกิดข้อผิดพลาด",
-        text: "ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้",
+        icon: 'error',
+        title: 'ข้อผิดพลาดเครือข่าย',
+        text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
       });
     }
-  }
+  };
 
   return (
-    <>
-      <Head>
-        <title>MotoGP Racing - Authentication</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css"
-          rel="stylesheet"
-        />
-        <link
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.0/font/bootstrap-icons.min.css"
-          rel="stylesheet"
-        />
-      </Head>
+    <div className="login-page">
+      <div className="login-container">
+        <form onSubmit={handleSubmit} className="login-form">
+          <h2 className="form-title">Login</h2>
 
-      <div className="auth-container">
-        <div className="auth-card">
-          <div className="speed-indicator">
-            <i className="bi bi-speedometer2"></i> MAX SPEED
-          </div>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
 
-          <div className="motogp-logo">
-            <div className="motogp-title">MotoGP</div>
-            <div className="racing-subtitle">Racing Championship</div>
-          </div>
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
 
-          {isLogin ? (
-            <form onSubmit={handleLoginSubmit}>
-              <div className="mb-4">
-                <div className="input-group">
-                  <span className="input-group-text">
-                    <i className="bi bi-person-fill"></i>
-                  </span>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Racing Email"
-                    required
-                  />
-                </div>
-              </div>
+          <label className="checkbox-container">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+            />
+            <span>Remember Me</span>
+          </label>
 
-              <div className="mb-4">
-                <div className="input-group">
-                  <span className="input-group-text">
-                    <i className="bi bi-shield-lock-fill"></i>
-                  </span>
-                  <input
-                    type="password"
-                    className="form-control"
-                    placeholder="Password"
-                    required
-                  />
-                </div>
-              </div>
-
-              <button type="submit" className="btn btn-racing">
-                <i className="bi bi-flag-fill me-2"></i> Start Racing
-              </button>
-
-              <div className="racing-divider"></div>
-
-              <div className="social-login">
-                <a href="#" className="social-btn">
-                  <i className="bi bi-google"></i> Google
-                </a>
-                <a href="#" className="social-btn">
-                  <i className="bi bi-facebook"></i> Facebook
-                </a>
-              </div>
-
-              <div className="text-center mt-4">
-                <span className="text-muted">New to MotoGP Racing? </span>
-                <button
-                  type="button"
-                  className="btn-switch"
-                  onClick={toggleForms}
-                >
-                  Join the Championship
-                </button>
-              </div>
-            </form>
-          ) : (
-            <form onSubmit={handleRegisterSubmit}>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="คำนำหน้า"
-                  value={firstname}
-                  onChange={(e) => setFirstname(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="ชื่อ"
-                  value={fullname}
-                  onChange={(e) => setFullname(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="นามสกุล"
-                  value={lastname}
-                  onChange={(e) => setLastname(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="ชื่อผู้ใช้ (Username)"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="mb-3">
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="รหัสผ่าน"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-              </div>
-
-              <button type="submit" className="btn btn-racing">
-                <i className="bi bi-trophy-fill me-2"></i> สมัครสมาชิก
-              </button>
-
-              <div className="text-center mt-4">
-                <span className="text-muted">Already a racer? </span>
-                <button
-                  type="button"
-                  className="btn-switch"
-                  onClick={toggleForms}
-                >
-                  Back to Track
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
+          <button type="submit">Login</button>
+          <p className="register-link">
+            Don’t have an account? <a href="/register">Register</a>
+          </p>
+        </form>
       </div>
-    </>
+    </div>
   );
 }

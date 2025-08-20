@@ -7,29 +7,38 @@ export default function Navigation() {
   const pathname = usePathname();
   const [theme, setTheme] = useState("dark");
   const [showNavbar, setShowNavbar] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const lastScrollY = useRef(0);
 
+  // Theme toggle effect
   useEffect(() => {
     document.body.className = theme === "dark" ? "bg-black text-white" : "bg-light text-dark";
   }, [theme]);
 
+  // Scroll hide/show navbar
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
-        // เลื่อนลง ให้ซ่อน navbar
         setShowNavbar(false);
       } else {
-        // เลื่อนขึ้น ให้แสดง navbar
         setShowNavbar(true);
       }
       lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // ✅ Check login & admin status after every navigation
+  useEffect(() => {
+    const loginStatus = localStorage.getItem("isLoggedIn") === "true";
+    const adminStatus = localStorage.getItem("isAdminConfirmed") === "true";
+    setIsLoggedIn(loginStatus);
+    setIsAdmin(adminStatus);
+  }, [pathname]);
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -47,7 +56,7 @@ export default function Navigation() {
           <Link href="/" className="navbar-brand fw-bold d-flex align-items-center gap-2 text-danger">
             <img
               src={theme === "dark" ? "/images/logo/1.png" : "/images/logo/2.png"}
-              alt="MotoGP Logo"
+              alt="Logo"
               width={200}
               height={120}
             />
@@ -132,16 +141,16 @@ export default function Navigation() {
                   </li>
                 </ul>
               </li>
-              
-                {/* STANDINGS */}
-  <li className="nav-item">
-    <Link
-      href="/standings"
-      className={`nav-link ${pathname === "/standings" ? "active fw-bold text-danger" : "nav-link-hover"}`}
-    >
-      Standings
-    </Link>
-  </li>
+
+              {/* STANDINGS */}
+              <li className="nav-item">
+                <Link
+                  href="/standings"
+                  className={`nav-link ${pathname === "/standings" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+                >
+                  Standings
+                </Link>
+              </li>
 
               {/* REGISTER */}
               <li className="nav-item">
@@ -154,7 +163,7 @@ export default function Navigation() {
               </li>
             </ul>
 
-            {/* RIGHT MENU: TOGGLE + ADMIN + LOGIN */}
+            {/* RIGHT MENU */}
             <div className="d-flex align-items-center gap-3">
               {/* THEME TOGGLE */}
               <button
@@ -175,28 +184,44 @@ export default function Navigation() {
                 )}
               </button>
 
-              {/* ADMIN BUTTON */}
-              <Link
-                href="/admin/users"
-                className="btn btn-warning btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
-              >
-                <i className="bi bi-gear-fill fs-5"></i>
-                <span className="d-none d-md-inline">Admin</span>
-              </Link>
+              {/* ✅ ADMIN BUTTON */}
+              {isLoggedIn && isAdmin && (
+                <Link
+                  href="/admin/users"
+                  className="btn btn-warning btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
+                >
+                  <i className="bi bi-shield-lock-fill fs-5"></i>
+                  <span className="d-none d-md-inline">Admin</span>
+                </Link>
+              )}
 
-              {/* LOGIN BUTTON */}
-              <Link
-                href="/login"
-                className="btn btn-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
-              >
-                <i className="bi bi-box-arrow-in-right fs-5"></i>
-                <span className="d-none d-md-inline">Login</span>
-              </Link>
+              {/* LOGIN / LOGOUT */}
+              {isLoggedIn ? (
+                <button
+                  onClick={() => {
+                    localStorage.clear();
+                    window.location.reload();
+                  }}
+                  className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
+                >
+                  <i className="bi bi-box-arrow-right fs-5"></i>
+                  <span className="d-none d-md-inline">Logout</span>
+                </button>
+              ) : (
+                <Link
+                  href="/login"
+                  className="btn btn-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
+                >
+                  <i className="bi bi-box-arrow-in-right fs-5"></i>
+                  <span className="d-none d-md-inline">Login</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>
       </nav>
 
+      {/* STYLES */}
       <style jsx>{`
         .nav-link-hover {
           color: inherit;
@@ -233,7 +258,7 @@ export default function Navigation() {
           pointer-events: none;
         }
 
-        .nav-visible {
+      .nav-visible {
           transform: translateY(0);
           opacity: 1;
           pointer-events: auto;
