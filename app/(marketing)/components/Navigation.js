@@ -11,12 +11,18 @@ export default function Navigation() {
   const [isAdmin, setIsAdmin] = useState(false);
   const lastScrollY = useRef(0);
 
-  // Theme toggle effect
+  // ✅ Theme toggle effect (ใช้ classList แทน className)
   useEffect(() => {
-    document.body.className = theme === "dark" ? "bg-black text-white" : "bg-light text-dark";
+    if (theme === "dark") {
+      document.body.classList.add("bg-black", "text-white");
+      document.body.classList.remove("bg-light", "text-dark");
+    } else {
+      document.body.classList.add("bg-light", "text-dark");
+      document.body.classList.remove("bg-black", "text-white");
+    }
   }, [theme]);
 
-  // Scroll hide/show navbar
+  // ✅ Scroll hide/show navbar
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -27,12 +33,11 @@ export default function Navigation() {
       }
       lastScrollY.current = currentScrollY;
     };
-
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Check login & admin status after every navigation
+  // ✅ Check login & admin status
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn") === "true";
     const adminStatus = localStorage.getItem("isAdminConfirmed") === "true";
@@ -40,25 +45,34 @@ export default function Navigation() {
     setIsAdmin(adminStatus);
   }, [pathname]);
 
-  const toggleTheme = () => {
-    setTheme(theme === "dark" ? "light" : "dark");
+  const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
+
+  const handleLogout = () => {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("isAdminConfirmed");
+    setIsLoggedIn(false);
+    setIsAdmin(false);
+    window.location.href = "/"; // redirect กลับหน้าแรก
   };
 
   return (
     <>
       <nav
-        className={`navbar navbar-expand-lg shadow-sm sticky-top ${
+        className={`navbar navbar-expand-lg shadow-sm ${
           theme === "dark" ? "navbar-dark bg-black" : "navbar-light bg-light"
         } ${showNavbar ? "nav-visible" : "nav-hidden"}`}
       >
         <div className="container">
           {/* LOGO */}
-          <Link href="/" className="navbar-brand fw-bold d-flex align-items-center gap-2 text-danger">
+          <Link
+            href="/"
+            className="navbar-brand fw-bold d-flex align-items-center gap-2 text-danger"
+          >
             <img
               src={theme === "dark" ? "/images/logo/1.png" : "/images/logo/2.png"}
               alt="Logo"
-              width={200}
-              height={120}
+              width={180}
+              height={100}
             />
           </Link>
 
@@ -81,13 +95,15 @@ export default function Navigation() {
               <li className="nav-item">
                 <Link
                   href="/"
-                  className={`nav-link ${pathname === "/" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+                  className={`nav-link ${
+                    pathname === "/" ? "active fw-bold text-danger" : "nav-link-hover"
+                  }`}
                 >
                   Home
                 </Link>
               </li>
 
-              {/* DROPDOWN: INFORMATION */}
+              {/* DROPDOWN */}
               <li className="nav-item dropdown">
                 <button
                   className="nav-link dropdown-toggle nav-link-hover btn btn-link"
@@ -99,64 +115,44 @@ export default function Navigation() {
                   Information
                 </button>
                 <ul className="dropdown-menu shadow-sm rounded-3 border-0">
-                  <li>
-                    <Link
-                      href="/information/team"
-                      className={`dropdown-item dropdown-item-hover ${
-                        pathname === "/information/team" ? "active text-danger fw-bold" : ""
-                      }`}
-                    >
-                      <i className="bi bi-people-fill me-2"></i> Team
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/information/rider"
-                      className={`dropdown-item dropdown-item-hover ${
-                        pathname === "/information/rider" ? "active text-danger fw-bold" : ""
-                      }`}
-                    >
-                      <i className="bi bi-person-bounding-box me-2"></i> Rider
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/information/car"
-                      className={`dropdown-item dropdown-item-hover ${
-                        pathname === "/information/car" ? "active text-danger fw-bold" : ""
-                      }`}
-                    >
-                      <i className="bi bi-truck-front-fill me-2"></i> Car
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      href="/information/manager"
-                      className={`dropdown-item dropdown-item-hover ${
-                        pathname === "/information/manager" ? "active text-danger fw-bold" : ""
-                      }`}
-                    >
-                      <i className="bi bi-person-gear me-2"></i> Manager
-                    </Link>
-                  </li>
+                  {[
+                    { href: "/information/team", label: "Team", icon: "bi-people-fill" },
+                    { href: "/information/rider", label: "Rider", icon: "bi-person-bounding-box" },
+                    { href: "/information/car", label: "Car", icon: "bi-truck-front-fill" },
+                    { href: "/information/manager", label: "Manager", icon: "bi-person-gear" },
+                  ].map((item) => (
+                    <li key={item.href}>
+                      <Link
+                        href={item.href}
+                        className={`dropdown-item dropdown-item-hover ${
+                          pathname === item.href ? "active text-danger fw-bold" : ""
+                        }`}
+                      >
+                        <i className={`bi ${item.icon} me-2`}></i>
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </li>
 
-              {/* STANDINGS */}
               <li className="nav-item">
                 <Link
                   href="/standings"
-                  className={`nav-link ${pathname === "/standings" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+                  className={`nav-link ${
+                    pathname === "/standings" ? "active fw-bold text-danger" : "nav-link-hover"
+                  }`}
                 >
                   Standings
                 </Link>
               </li>
 
-              {/* REGISTER */}
               <li className="nav-item">
                 <Link
                   href="/register"
-                  className={`nav-link ${pathname === "/register" ? "active fw-bold text-danger" : "nav-link-hover"}`}
+                  className={`nav-link ${
+                    pathname === "/register" ? "active fw-bold text-danger" : "nav-link-hover"
+                  }`}
                 >
                   Register
                 </Link>
@@ -174,17 +170,17 @@ export default function Navigation() {
                 {theme === "dark" ? (
                   <>
                     <i className="bi bi-sun-fill fs-5 text-warning"></i>
-                    <span className="d-none d-md-inline fw-semibold">Light Mode</span>
+                    <span className="d-none d-md-inline fw-semibold">Light</span>
                   </>
                 ) : (
                   <>
                     <i className="bi bi-moon-stars-fill fs-5 text-danger"></i>
-                    <span className="d-none d-md-inline fw-semibold">Dark Mode</span>
+                    <span className="d-none d-md-inline fw-semibold">Dark</span>
                   </>
                 )}
               </button>
 
-              {/* ✅ ADMIN BUTTON */}
+              {/* ADMIN */}
               {isLoggedIn && isAdmin && (
                 <Link
                   href="/admin/users"
@@ -198,10 +194,7 @@ export default function Navigation() {
               {/* LOGIN / LOGOUT */}
               {isLoggedIn ? (
                 <button
-                  onClick={() => {
-                    localStorage.clear();
-                    window.location.reload();
-                  }}
+                  onClick={handleLogout}
                   className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
                 >
                   <i className="bi bi-box-arrow-right fs-5"></i>
@@ -228,9 +221,9 @@ export default function Navigation() {
           transition: color 0.3s ease, transform 0.2s ease;
         }
         .nav-link-hover:hover {
-          color: #420107ff;
+          color: #dc3545;
           transform: scale(1.05);
-          text-shadow: 0 0 8px #420107ff;
+          text-shadow: 0 0 8px rgba(220, 53, 69, 0.6);
         }
 
         .dropdown-item-hover {
@@ -238,7 +231,7 @@ export default function Navigation() {
           cursor: pointer;
         }
         .dropdown-item-hover:hover {
-          background-color: #420107ff;
+          background-color: #dc3545;
           color: white;
           font-weight: 600;
         }
@@ -258,7 +251,7 @@ export default function Navigation() {
           pointer-events: none;
         }
 
-      .nav-visible {
+        .nav-visible {
           transform: translateY(0);
           opacity: 1;
           pointer-events: auto;

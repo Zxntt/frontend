@@ -4,11 +4,13 @@ export default function Footer() {
   return (
     <footer className="footer mt-5">
       <div className="container text-center py-4">
-        <p className="mb-3 fs-6 text-light">
+        {/* COPYRIGHT */}
+        <p className="mb-3 fs-6">
           &copy; {new Date().getFullYear()}{" "}
           <strong className="brand-name">MyBrand</strong>. All rights reserved.
         </p>
 
+        {/* SOCIAL ICONS */}
         <div className="social-icons d-flex justify-content-center gap-4 fs-4">
           <a
             href="https://facebook.com"
@@ -40,16 +42,17 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* STYLES */}
       <style jsx>{`
         .footer {
-          background: linear-gradient(135deg, #1e1e2f, #121212);
-          color: #ccc;
-          box-shadow: 0 -2px 10px rgba(255, 75, 43, 0.1);
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+          color: #aaa;
+          border-top: 1px solid rgba(255, 255, 255, 0.08);
+          transition: background-color 0.4s ease, color 0.3s ease;
         }
 
         .brand-name {
-          color: #ff4b2b;
+          color: #dc3545; /* ใช้สีหลักเดียวกับปุ่ม/ธีม */
         }
 
         .social-link {
@@ -58,20 +61,18 @@ export default function Footer() {
         }
 
         .social-link:hover {
-          transform: scale(1.3);
-          color: #ff4b2b;
+          transform: scale(1.25);
+          color: #dc3545; /* default hover เป็นสีแดง theme */
         }
 
         .social-link.facebook:hover {
           color: #3b5998;
         }
-
         .social-link.twitter:hover {
           color: #1da1f2;
         }
-
         .social-link.github:hover {
-          color: #ffffff;
+          color: #f0f0f0;
         }
 
         @media (max-width: 576px) {

@@ -1,114 +1,540 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+/* MotoGP Premium Login Theme - Ultra Modern */
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
 
-body {
+:root {
+  --primary-black: #000000;
+  --deep-black: #0a0a0a;
+  --carbon-black: #1a1a1a;
+  --racing-red: #ff0037;
+  --neon-red: #ff1744;
+  --electric-blue: #00d4ff;
+  --cyber-blue: #0066ff;
+  --platinum: #e8eaed;
+  --silver: #c4c7ca;
+  --gold: #ffd700;
+  
+  --gradient-primary: linear-gradient(135deg, var(--racing-red) 0%, var(--primary-black) 30%, var(--cyber-blue) 70%, var(--electric-blue) 100%);
+  --gradient-secondary: linear-gradient(45deg, var(--neon-red), var(--electric-blue));
+  --gradient-card: linear-gradient(145deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
+  --gradient-input: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(26, 26, 26, 0.8));
+}
+
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Montserrat', sans-serif;
-  height: 100vh;
-  background: white;
+}
+
+body {
+  font-family: 'Exo 2', sans-serif;
+  background: var(--primary-black);
+  overflow-x: hidden;
+  color: var(--platinum);
 }
 
 .login-page {
+  background: var(--primary-black);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(255, 0, 55, 0.15) 0%, transparent 50%),
+    radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
+    conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255, 23, 68, 0.05) 60deg, transparent 120deg),
+    linear-gradient(180deg, var(--primary-black) 0%, var(--deep-black) 100%);
+  min-height: 100vh;
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background-image: url('/images/ball/Login.jpg');
-  margin: 0;
-  padding: 0;
 }
 
-/* ตัวกล่องฟอร์ม */
-.login-container {
-  background: white;
-  padding: 40px 30px;
-  border-radius: 15px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+/* Animated Background Elements */
+.login-page::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  max-width: 400px;
-  box-sizing: border-box;
+  height: 100%;
+  background: 
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 98px,
+      rgba(255, 23, 68, 0.03) 100px,
+      rgba(255, 23, 68, 0.03) 102px,
+      transparent 104px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 48px,
+      rgba(0, 212, 255, 0.02) 50px,
+      rgba(0, 212, 255, 0.02) 52px,
+      transparent 54px
+    );
+  animation: gridMove 20s linear infinite;
+  z-index: 1;
 }
 
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(100px, 50px); }
+}
 
-.login-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+.login-page::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(2px 2px at 20px 30px, rgba(255, 23, 68, 0.3), transparent),
+    radial-gradient(2px 2px at 40px 70px, rgba(0, 212, 255, 0.3), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(255, 215, 0, 0.4), transparent),
+    radial-gradient(1px 1px at 130px 80px, rgba(255, 23, 68, 0.2), transparent);
+  background-size: 200px 100px;
+  animation: sparkle 8s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+@keyframes sparkle {
+  0% { opacity: 0.3; transform: scale(1); }
+  100% { opacity: 0.7; transform: scale(1.1); }
+}
+
+/* Racing Motorcycle Animation */
+.racing-bike {
+  position: absolute;
+  font-size: 3rem;
+  top: 15%;
+  animation: raceTrack 12s linear infinite;
+  opacity: 0.4;
+  z-index: 1;
+  filter: drop-shadow(0 0 10px rgba(255, 23, 68, 0.5));
+}
+
+@keyframes raceTrack {
+  0% { 
+    left: -10%;
+    transform: translateY(0) rotate(0deg);
+  }
+  25% { 
+    left: 25%;
+    transform: translateY(-20px) rotate(-5deg);
+  }
+  50% { 
+    left: 50%;
+    transform: translateY(0) rotate(0deg);
+  }
+  75% { 
+    left: 75%;
+    transform: translateY(-15px) rotate(3deg);
+  }
+  100% { 
+    left: 110%;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.login-card {
+  background: var(--gradient-card);
+  backdrop-filter: blur(25px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  padding: 3.5rem 3rem;
+  max-width: 480px;
+  width: 90%;
+  position: relative;
+  z-index: 10;
+  box-shadow: 
+    0 32px 64px rgba(0, 0, 0, 0.4),
+    0 16px 32px rgba(255, 0, 55, 0.1),
+    0 8px 16px rgba(0, 212, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+  transform: perspective(1000px) rotateX(2deg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.login-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-primary);
+  border-radius: 24px;
+  padding: 2px;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask-composite: xor;
+  opacity: 0.8;
+  z-index: -1;
+}
+
+.login-card:hover {
+  transform: perspective(1000px) rotateX(0deg) translateY(-5px);
+  box-shadow: 
+    0 40px 80px rgba(0, 0, 0, 0.5),
+    0 20px 40px rgba(255, 0, 55, 0.2),
+    0 10px 20px rgba(0, 212, 255, 0.2);
+}
+
+/* Logo Section */
+.login-logo {
+  font-size: 5rem;
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  margin-bottom: 1rem;
+  position: relative;
+  filter: drop-shadow(0 0 20px rgba(255, 23, 68, 0.3));
+  animation: pulse 3s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.login-logo::before {
+  content: '🏁';
+  position: absolute;
+  top: -15px;
+  right: -20px;
+  font-size: 2rem;
+  animation: flag 2.5s ease-in-out infinite;
+}
+
+.login-logo::after {
+  content: '⚡';
+  position: absolute;
+  bottom: -10px;
+  left: -15px;
+  font-size: 1.5rem;
+  animation: electric 1.8s ease-in-out infinite;
+}
+
+@keyframes flag {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(-15deg) scale(1.1); }
+}
+
+@keyframes electric {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.3); }
 }
 
 .form-title {
+  font-family: 'Orbitron', monospace;
+  font-weight: 800;
+  font-size: 2.5rem;
+  background: linear-gradient(135deg, var(--platinum) 0%, var(--gold) 50%, var(--platinum) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   text-align: center;
-  margin-bottom: 10px;
-  color: #333;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  position: relative;
+  text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
 }
 
-.login-form input,
-.login-form select {
-  padding: 12px 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background: #f7f7f7;
-  font-size: 14px;
-  transition: 0.3s ease;
+.form-title::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--gradient-secondary);
+  border-radius: 2px;
+  animation: underlineGlow 2s ease-in-out infinite alternate;
 }
 
-.login-form input:focus,
-.login-form select:focus {
-  border-color: #ff4b2b;
-  outline: none;
-  background: #fff;
+@keyframes underlineGlow {
+  0% { width: 60px; opacity: 0.7; }
+  100% { width: 80px; opacity: 1; }
 }
 
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  color: #444;
+.subtitle {
+  color: var(--silver);
+  font-size: 1.1rem;
+  font-weight: 300;
+  text-align: center;
+  margin-bottom: 2rem;
+  letter-spacing: 1px;
 }
 
-.checkbox-container input {
-  transform: scale(1.2);
+/* Input Fields */
+.custom-input {
+  background: var(--gradient-input) !important;
+  border: 2px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 16px !important;
+  color: var(--platinum) !important;
+  font-size: 1.2rem !important;
+  font-family: 'Exo 2', sans-serif !important;
+  font-weight: 400 !important;
+  padding: 1.2rem 1.5rem !important;
+  width: 100% !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative;
+  backdrop-filter: blur(10px) !important;
+  -webkit-text-fill-color: var(--platinum) !important;
+  -webkit-appearance: none !important;
+  appearance: none !important;
 }
 
-.login-form button {
-  padding: 12px;
-  background: linear-gradient(to right, #ff4b2b, #ff416c);
-  color: white;
-  font-weight: bold;
+.custom-input:focus {
+  outline: none !important;
+  border-color: var(--neon-red) !important;
+  background: linear-gradient(145deg, rgba(255, 0, 55, 0.1), rgba(26, 26, 26, 0.9)) !important;
+  box-shadow: 
+    0 0 0 4px rgba(255, 23, 68, 0.2),
+    0 8px 32px rgba(255, 23, 68, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+  transform: translateY(-3px) scale(1.02) !important;
+  color: var(--platinum) !important;
+  -webkit-text-fill-color: var(--platinum) !important;
+}
+
+.custom-input::placeholder {
+  color: var(--silver) !important;
+  font-weight: 300 !important;
+  opacity: 0.7 !important;
+}
+
+/* Force white text in all input states */
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+  color: var(--platinum) !important;
+  -webkit-text-fill-color: var(--platinum) !important;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+  color: var(--platinum) !important;
+  -webkit-text-fill-color: var(--platinum) !important;
+}
+
+/* Autofill styles override */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-text-fill-color: var(--platinum) !important;
+  -webkit-box-shadow: 0 0 0px 1000px var(--carbon-black) inset !important;
+  transition: background-color 5000s ease-in-out 0s !important;
+}
+.form-check-input {
+  background: var(--gradient-input);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  width: 1.4em;
+  height: 1.4em;
+  transition: all 0.3s ease;
+}
+
+.form-check-input:checked {
+  background: var(--gradient-secondary);
+  border-color: var(--neon-red);
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(255, 23, 68, 0.5);
+}
+
+.form-check-label {
+  color: var(--silver);
+  font-weight: 400;
+  margin-left: 0.7rem;
+  font-size: 1rem;
+}
+
+/* Premium Button */
+.btn-gradient {
+  background: var(--gradient-primary);
   border: none;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background 0.3s ease, transform 0.2s ease;
+  border-radius: 16px;
+  color: white;
+  font-family: 'Orbitron', monospace;
+  font-weight: 700;
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 1.3rem 2rem;
+  width: 100%;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 32px rgba(255, 0, 55, 0.3),
+    0 4px 16px rgba(0, 212, 255, 0.2);
 }
 
-.login-form button:hover {
-  background: #ff3a2b;
+.btn-gradient::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-gradient:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 16px 48px rgba(255, 0, 55, 0.4),
+    0 8px 24px rgba(0, 212, 255, 0.3),
+    0 0 40px rgba(255, 23, 68, 0.2);
+}
+
+.btn-gradient:hover::before {
+  left: 100%;
+}
+
+.btn-gradient:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Register Link */
+.register-link {
+  color: var(--silver);
+  font-size: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.text-gradient {
+  background: var(--gradient-secondary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.text-gradient:hover {
+  filter: drop-shadow(0 0 8px rgba(255, 23, 68, 0.6));
   transform: translateY(-2px);
 }
 
-.register-link {
-  text-align: center;
-  font-size: 13px;
-  color: #555;
+/* Racing Elements */
+.login-form {
+  position: relative;
 }
 
-.register-link a {
-  color: #ff4b2b;
-  text-decoration: none;
-  font-weight: bold;
+.login-form::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  left: -20px;
+  right: -20px;
+  height: 4px;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+  opacity: 0.6;
+  animation: raceLineTop 3s ease-in-out infinite;
 }
 
-.register-link a:hover {
-  text-decoration: underline;
+.login-form::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: -20px;
+  right: -20px;
+  height: 4px;
+  background: var(--gradient-primary);
+  border-radius: 2px;
+  opacity: 0.6;
+  animation: raceLineBottom 3s ease-in-out infinite;
+}
+
+@keyframes raceLineTop {
+  0%, 100% { width: 40%; left: 0; }
+  50% { width: 60%; left: 40%; }
+}
+
+@keyframes raceLineBottom {
+  0%, 100% { width: 50%; right: 0; }
+  50% { width: 70%; right: 30%; }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .login-card {
+    padding: 2.5rem 2rem;
+    margin: 1rem;
+    border-radius: 20px;
+  }
+  
+  .form-title {
+    font-size: 2rem;
+    letter-spacing: 2px;
+  }
+  
+  .login-logo {
+    font-size: 4rem;
+  }
 }
 
 @media (max-width: 480px) {
-  .login-container {
-    padding: 30px 20px;
+  .login-card {
+    padding: 2rem 1.5rem;
   }
+  
+  .form-title {
+    font-size: 1.8rem;
+    letter-spacing: 1px;
+  }
+  
+  .login-logo {
+    font-size: 3.5rem;
+  }
+  
+  .custom-input {
+    font-size: 1.1rem;
+    padding: 1rem 1.2rem;
+  }
+  
+  .btn-gradient {
+    font-size: 1.1rem;
+    padding: 1.2rem 1.8rem;
+  }
+}
 
-  .login-form input {
-    font-size: 13px;
+/* Performance Optimizations */
+.login-card,
+.custom-input,
+.btn-gradient {
+  will-change: transform;
+}
+
+/* Add Racing Bike Element */
+.racing-bike:before {
+  content: '🏍️';
+}
+
+/* Additional Premium Effects */
+@keyframes neonPulse {
+  0%, 100% { 
+    box-shadow: 
+      0 0 5px rgba(255, 23, 68, 0.5),
+      0 0 10px rgba(255, 23, 68, 0.3),
+      0 0 15px rgba(255, 23, 68, 0.2);
+  }
+  50% { 
+    box-shadow: 
+      0 0 10px rgba(255, 23, 68, 0.8),
+      0 0 20px rgba(255, 23, 68, 0.6),
+      0 0 30px rgba(255, 23, 68, 0.4);
   }
 }
