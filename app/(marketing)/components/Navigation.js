@@ -9,9 +9,10 @@ export default function Navigation() {
   const [showNavbar, setShowNavbar] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [user, setUser] = useState(null);
   const lastScrollY = useRef(0);
 
-  // ✅ Theme toggle effect (ใช้ classList แทน className)
+  // ✅ Theme toggle
   useEffect(() => {
     if (theme === "dark") {
       document.body.classList.add("bg-black", "text-white");
@@ -37,12 +38,17 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Check login & admin status
+  // ✅ โหลดสถานะ login และ user จาก localStorage
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn") === "true";
     const adminStatus = localStorage.getItem("isAdminConfirmed") === "true";
+    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+
     setIsLoggedIn(loginStatus);
     setIsAdmin(adminStatus);
+    if (storedUser) {
+      setUser(storedUser);
+    }
   }, [pathname]);
 
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
@@ -50,9 +56,11 @@ export default function Navigation() {
   const handleLogout = () => {
     localStorage.removeItem("isLoggedIn");
     localStorage.removeItem("isAdminConfirmed");
+    localStorage.removeItem("user");
     setIsLoggedIn(false);
     setIsAdmin(false);
-    window.location.href = "/"; // redirect กลับหน้าแรก
+    setUser(null);
+    window.location.href = "/";
   };
 
   return (
@@ -191,22 +199,52 @@ export default function Navigation() {
                 </Link>
               )}
 
-              {/* LOGIN / LOGOUT */}
+              {/* LOGIN / PROFILE */}
               {isLoggedIn ? (
-                <button
-                  onClick={handleLogout}
-                  className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
-                >
-                  <i className="bi bi-box-arrow-right fs-5"></i>
-                  <span className="d-none d-md-inline">Logout</span>
-                </button>
+                <div className="dropdown">
+                  <button
+                    className="btn btn-profile d-flex align-items-center gap-2 px-3 py-1 rounded-pill dropdown-toggle"
+                    id="profileDropdown"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <div className="profile-avatar d-flex justify-content-center align-items-center fw-bold">
+                      {user?.username ? user.username[0].toUpperCase() : "U"}
+                    </div>
+                    <span className="d-none d-md-inline fw-semibold">
+                      {user?.username || "User"}
+                    </span>
+                  </button>
+                  <ul
+                    className="dropdown-menu dropdown-menu-end profile-menu"
+                    aria-labelledby="profileDropdown"
+                  >
+                    <li>
+                      <div className="dropdown-item-text d-flex align-items-center gap-2">
+                        <div className="profile-avatar d-flex justify-content-center align-items-center fw-bold">
+                          {user?.username ? user.username[0].toUpperCase() : "U"}
+                        </div>
+                        <div>
+                          <div className="fw-bold">{user?.username || "User"}</div>
+                          <small className="text-muted">Rider Member</small>
+                        </div>
+                      </div>
+                    </li>
+                    <li><hr className="dropdown-divider" /></li>
+                    <li>
+                      <button className="dropdown-item text-danger fw-semibold" onClick={handleLogout}>
+                        <i className="bi bi-box-arrow-right me-2"></i> ออกจากระบบ
+                      </button>
+                    </li>
+                  </ul>
+                </div>
               ) : (
                 <Link
                   href="/login"
-                  className="btn btn-danger btn-sm d-flex align-items-center gap-1 fw-semibold px-3 py-1 rounded-pill"
+                  className="btn btn-login fw-semibold d-flex align-items-center gap-2 px-3 py-1"
                 >
                   <i className="bi bi-box-arrow-in-right fs-5"></i>
-                  <span className="d-none d-md-inline">Login</span>
+                  <span className="fw-bold">Login</span>
                 </Link>
               )}
             </div>
@@ -224,16 +262,6 @@ export default function Navigation() {
           color: #dc3545;
           transform: scale(1.05);
           text-shadow: 0 0 8px rgba(220, 53, 69, 0.6);
-        }
-
-        .dropdown-item-hover {
-          transition: background-color 0.3s ease, color 0.3s ease;
-          cursor: pointer;
-        }
-        .dropdown-item-hover:hover {
-          background-color: #dc3545;
-          color: white;
-          font-weight: 600;
         }
 
         nav.navbar {
@@ -255,6 +283,92 @@ export default function Navigation() {
           transform: translateY(0);
           opacity: 1;
           pointer-events: auto;
+        }
+
+        /* Login Button - Glow */
+        .btn-login {
+          position: relative;
+          background: linear-gradient(135deg, #ff0000, #dc3545, #a00028);
+          border: 2px solid rgba(255, 255, 255, 0.15);
+          color: #fff !important;
+          font-weight: 700;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          border-radius: 50px;
+          padding: 0.6rem 1.4rem;
+          transition: all 0.4s ease;
+          box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          gap: 0.4rem;
+          overflow: hidden;
+          z-index: 1;
+        }
+
+        .btn-login::before {
+          content: '';
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 150%;
+          height: 150%;
+          border-radius: 50%;
+          background: radial-gradient(circle, rgba(255,0,0,0.5) 0%, transparent 70%);
+          transform: translate(-50%, -50%) scale(0.8);
+          opacity: 0.6;
+          z-index: -1;
+          animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+          0% {
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 0.3;
+          }
+          100% {
+            transform: translate(-50%, -50%) scale(0.8);
+            opacity: 0.6;
+          }
+        }
+
+        .btn-login:hover {
+          background: linear-gradient(135deg, #ff3333, #ff1a1a, #dc143c);
+          box-shadow: 0 0 25px rgba(255, 0, 0, 0.9), 0 0 50px rgba(255, 0, 0, 0.7);
+          transform: scale(1.05);
+        }
+
+        /* Profile Button */
+        .btn-profile {
+          background: #111;
+          border: 1px solid #dc3545;
+          color: #fff;
+          transition: all 0.3s ease;
+        }
+        .btn-profile:hover {
+          background: #dc3545;
+          border-color: #ff4d4d;
+          box-shadow: 0 0 12px rgba(220, 53, 69, 0.8);
+        }
+
+        .profile-avatar {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: linear-gradient(145deg, #dc3545, #a00028);
+          color: #fff;
+          font-size: 0.9rem;
+          box-shadow: 0 0 6px rgba(220, 53, 69, 0.7);
+        }
+
+        .profile-menu {
+          background: #fffdfdff;
+          border: 1px solid #dc3545;
+          border-radius: 10px;
+          box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
         }
       `}</style>
     </>

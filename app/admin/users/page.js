@@ -12,7 +12,7 @@ export default function User() {
 
     const token = localStorage.getItem('token');
      if (!token) {
-       router.push('/signin');
+       router.push('/adminlogin');
        return;
      }
 

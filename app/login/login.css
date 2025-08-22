@@ -1,161 +1,145 @@
-/* MotoGP Premium Login Theme - Ultra Modern */
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@100;200;300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap');
-
 :root {
-  --primary-black: #000000;
-  --deep-black: #0a0a0a;
-  --carbon-black: #1a1a1a;
-  --racing-red: #ff0037;
+  /* MotoGP Racing Colors - Black Red Blue Theme */
+  --racing-black: #000000;
+  --carbon-black: #111111;
+  --matte-black: #0a0a0a;
+  --racing-red: #e60012;
+  --flame-red: #ff0000;
   --neon-red: #ff1744;
-  --electric-blue: #00d4ff;
-  --cyber-blue: #0066ff;
-  --platinum: #e8eaed;
-  --silver: #c4c7ca;
-  --gold: #ffd700;
+  --racing-blue: #003d82;
+  --electric-blue: #0066cc;
+  --neon-blue: #2196f3;
+  --chrome-silver: #c0c0c0;
+  --titanium: #8a8a8a;
+  --racing-white: #ffffff;
   
-  --gradient-primary: linear-gradient(135deg, var(--racing-red) 0%, var(--primary-black) 30%, var(--cyber-blue) 70%, var(--electric-blue) 100%);
-  --gradient-secondary: linear-gradient(45deg, var(--neon-red), var(--electric-blue));
-  --gradient-card: linear-gradient(145deg, rgba(26, 26, 26, 0.95) 0%, rgba(10, 10, 10, 0.98) 100%);
-  --gradient-input: linear-gradient(145deg, rgba(0, 0, 0, 0.4), rgba(26, 26, 26, 0.8));
+  /* MotoGP Black Red Blue Gradients */
+  --gradient-fire: linear-gradient(135deg, #ff0000 0%, #e60012 50%, #000000 100%);
+  --gradient-speed: linear-gradient(135deg, #2196f3 0%, #0066cc 50%, #003d82 100%);
+  --gradient-carbon: linear-gradient(145deg, #000000 0%, #111111 50%, #000000 100%);
+  --gradient-chrome: linear-gradient(135deg, #c0c0c0 0%, #ffffff 50%, #8a8a8a 100%);
+  --gradient-motogp: linear-gradient(45deg, #e60012 0%, #000000 33%, #2196f3 66%, #e60012 100%);
+  --gradient-engine: radial-gradient(ellipse at center, #ff1744 0%, #e60012 40%, #000000 100%);
+  
+  /* MotoGP Shadows - Black Red Blue */
+  --shadow-aggressive: 
+    0 25px 60px rgba(230, 0, 18, 0.4),
+    0 15px 40px rgba(0, 0, 0, 0.8),
+    0 8px 25px rgba(255, 23, 68, 0.3);
+  --shadow-speed: 
+    0 20px 50px rgba(0, 61, 130, 0.4),
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 5px 15px rgba(33, 150, 243, 0.3);
+  --shadow-chrome: 
+    0 15px 40px rgba(192, 192, 192, 0.2),
+    0 8px 20px rgba(0, 0, 0, 0.4);
+  --shadow-engine: 
+    0 30px 80px rgba(255, 23, 68, 0.5),
+    0 20px 50px rgba(0, 0, 0, 0.8),
+    inset 0 2px 0 rgba(255, 255, 255, 0.1);
 }
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-  font-family: 'Exo 2', sans-serif;
-  background: var(--primary-black);
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--racing-black);
+  color: var(--racing-white);
   overflow-x: hidden;
-  color: var(--platinum);
+  perspective: 1500px;
+  position: relative;
 }
 
+/* Racing Track Background with Tire Marks */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent 0px,
+      transparent 2px,
+      rgba(220, 20, 60, 0.03) 3px,
+      rgba(220, 20, 60, 0.03) 5px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent 0px,
+      transparent 8px,
+      rgba(14, 165, 233, 0.02) 9px,
+      rgba(14, 165, 233, 0.02) 12px
+    ),
+    radial-gradient(circle at 20% 20%, rgba(230, 0, 18, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+    var(--racing-black);
+  z-index: -1;
+}
+
+/* Main Racing Arena */
 .login-page {
-  background: var(--primary-black);
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(255, 0, 55, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 90% 80%, rgba(0, 212, 255, 0.15) 0%, transparent 50%),
-    conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(255, 23, 68, 0.05) 60deg, transparent 120deg),
-    linear-gradient(180deg, var(--primary-black) 0%, var(--deep-black) 100%);
   min-height: 100vh;
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-/* Animated Background Elements */
-.login-page::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: relative;
+  padding: 2rem 1rem;
   background: 
-    repeating-linear-gradient(
-      90deg,
-      transparent,
-      transparent 98px,
-      rgba(255, 23, 68, 0.03) 100px,
-      rgba(255, 23, 68, 0.03) 102px,
-      transparent 104px
-    ),
-    repeating-linear-gradient(
-      0deg,
-      transparent,
-      transparent 48px,
-      rgba(0, 212, 255, 0.02) 50px,
-      rgba(0, 212, 255, 0.02) 52px,
-      transparent 54px
-    );
-  animation: gridMove 20s linear infinite;
-  z-index: 1;
+    conic-gradient(from 45deg at 50% 0%, transparent 0deg, rgba(230, 0, 18, 0.05) 45deg, transparent 90deg),
+    conic-gradient(from 225deg at 50% 100%, transparent 0deg, rgba(33, 150, 243, 0.05) 45deg, transparent 90deg);
 }
 
-@keyframes gridMove {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(100px, 50px); }
-}
-
+/* Racing Speed Lines */
 .login-page::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
+  right: 0;
+  bottom: 0;
   background: 
-    radial-gradient(2px 2px at 20px 30px, rgba(255, 23, 68, 0.3), transparent),
-    radial-gradient(2px 2px at 40px 70px, rgba(0, 212, 255, 0.3), transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(255, 215, 0, 0.4), transparent),
-    radial-gradient(1px 1px at 130px 80px, rgba(255, 23, 68, 0.2), transparent);
-  background-size: 200px 100px;
-  animation: sparkle 8s ease-in-out infinite alternate;
-  z-index: 1;
+    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 1%, transparent 2%),
+    linear-gradient(90deg, transparent 20%, rgba(230, 0, 18, 0.03) 21%, transparent 22%),
+    linear-gradient(90deg, transparent 40%, rgba(33, 150, 243, 0.02) 41%, transparent 42%),
+    linear-gradient(90deg, transparent 60%, rgba(251, 191, 36, 0.02) 61%, transparent 62%),
+    linear-gradient(90deg, transparent 80%, rgba(255, 255, 255, 0.01) 81%, transparent 82%);
+  animation: speedLines 3s linear infinite;
+  pointer-events: none;
 }
 
-@keyframes sparkle {
-  0% { opacity: 0.3; transform: scale(1); }
-  100% { opacity: 0.7; transform: scale(1.1); }
+@keyframes speedLines {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
 }
 
-/* Racing Motorcycle Animation */
-.racing-bike {
-  position: absolute;
-  font-size: 3rem;
-  top: 15%;
-  animation: raceTrack 12s linear infinite;
-  opacity: 0.4;
-  z-index: 1;
-  filter: drop-shadow(0 0 10px rgba(255, 23, 68, 0.5));
-}
-
-@keyframes raceTrack {
-  0% { 
-    left: -10%;
-    transform: translateY(0) rotate(0deg);
-  }
-  25% { 
-    left: 25%;
-    transform: translateY(-20px) rotate(-5deg);
-  }
-  50% { 
-    left: 50%;
-    transform: translateY(0) rotate(0deg);
-  }
-  75% { 
-    left: 75%;
-    transform: translateY(-15px) rotate(3deg);
-  }
-  100% { 
-    left: 110%;
-    transform: translateY(0) rotate(0deg);
-  }
-}
-
+/* Racing Engine - Login Card */
 .login-card {
-  background: var(--gradient-card);
-  backdrop-filter: blur(25px) saturate(200%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 24px;
+  background: 
+    var(--gradient-carbon),
+    linear-gradient(145deg, rgba(230, 0, 18, 0.05), rgba(33, 150, 243, 0.03));
+  backdrop-filter: blur(30px) saturate(180%) contrast(120%);
+  border: 3px solid;
+  border-image: var(--gradient-motogp) 1;
+  border-radius: 25px;
   padding: 3.5rem 3rem;
-  max-width: 480px;
-  width: 90%;
+  width: 100%;
+  max-width: 500px;
   position: relative;
   z-index: 10;
-  box-shadow: 
-    0 32px 64px rgba(0, 0, 0, 0.4),
-    0 16px 32px rgba(255, 0, 55, 0.1),
-    0 8px 16px rgba(0, 212, 255, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.2);
-  transform: perspective(1000px) rotateX(2deg);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: var(--shadow-engine);
+  transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-style: preserve-3d;
+  transform: translateZ(0) rotateX(8deg) rotateY(-2deg);
 }
 
+/* Carbon Fiber Texture */
 .login-card::before {
   content: '';
   position: absolute;
@@ -163,220 +147,487 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--gradient-primary);
-  border-radius: 24px;
-  padding: 2px;
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask-composite: xor;
-  -webkit-mask-composite: xor;
-  opacity: 0.8;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      rgba(26, 26, 26, 0.8) 0px,
+      rgba(26, 26, 26, 0.8) 2px,
+      rgba(15, 15, 15, 0.9) 2px,
+      rgba(15, 15, 15, 0.9) 4px
+    );
+  border-radius: 22px;
+  opacity: 0.6;
   z-index: -1;
 }
 
-.login-card:hover {
-  transform: perspective(1000px) rotateX(0deg) translateY(-5px);
-  box-shadow: 
-    0 40px 80px rgba(0, 0, 0, 0.5),
-    0 20px 40px rgba(255, 0, 55, 0.2),
-    0 10px 20px rgba(0, 212, 255, 0.2);
-}
-
-/* Logo Section */
-.login-logo {
-  font-size: 5rem;
-  background: var(--gradient-secondary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-align: center;
-  margin-bottom: 1rem;
-  position: relative;
-  filter: drop-shadow(0 0 20px rgba(255, 23, 68, 0.3));
-  animation: pulse 3s ease-in-out infinite;
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-.login-logo::before {
-  content: '🏁';
-  position: absolute;
-  top: -15px;
-  right: -20px;
-  font-size: 2rem;
-  animation: flag 2.5s ease-in-out infinite;
-}
-
-.login-logo::after {
-  content: '⚡';
-  position: absolute;
-  bottom: -10px;
-  left: -15px;
-  font-size: 1.5rem;
-  animation: electric 1.8s ease-in-out infinite;
-}
-
-@keyframes flag {
-  0%, 100% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(-15deg) scale(1.1); }
-}
-
-@keyframes electric {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50% { opacity: 1; transform: scale(1.3); }
-}
-
-.form-title {
-  font-family: 'Orbitron', monospace;
-  font-weight: 800;
-  font-size: 2.5rem;
-  background: linear-gradient(135deg, var(--platinum) 0%, var(--gold) 50%, var(--platinum) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-align: center;
-  margin-bottom: 0.5rem;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  position: relative;
-  text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-}
-
-.form-title::after {
+/* Racing Glow Effect */
+.login-card::after {
   content: '';
   position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
   bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 3px;
-  background: var(--gradient-secondary);
-  border-radius: 2px;
-  animation: underlineGlow 2s ease-in-out infinite alternate;
+  background: var(--gradient-motogp);
+  border-radius: 30px;
+  z-index: -2;
+  opacity: 0.7;
+  animation: enginePulse 2s ease-in-out infinite alternate;
+  filter: blur(8px);
 }
 
-@keyframes underlineGlow {
-  0% { width: 60px; opacity: 0.7; }
-  100% { width: 80px; opacity: 1; }
+@keyframes enginePulse {
+  0% { 
+    opacity: 0.5; 
+    transform: scale(0.98);
+    filter: blur(8px) hue-rotate(0deg);
+  }
+  100% { 
+    opacity: 0.9; 
+    transform: scale(1.02);
+    filter: blur(12px) hue-rotate(45deg);
+  }
 }
 
-.subtitle {
-  color: var(--silver);
-  font-size: 1.1rem;
-  font-weight: 300;
+.login-card:hover {
+  transform: translateY(-10px) translateZ(30px) rotateX(5deg) rotateY(-1deg);
+  box-shadow: 
+    0 40px 100px rgba(230, 0, 18, 0.3),
+    0 25px 70px rgba(0, 0, 0, 0.6),
+    0 15px 40px rgba(33, 150, 243, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Racing Helmet Avatar */
+.card-header {
   text-align: center;
+  margin-bottom: 3rem;
+  transform-style: preserve-3d;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  background: var(--gradient-engine);
+  border-radius: 50%;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: var(--shadow-aggressive);
+  animation: helmetSpin 4s ease-in-out infinite;
+  transform: translateZ(40px);
+  overflow: hidden;
+}
+
+/* Helmet Reflection */
+.avatar::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: var(--gradient-motogp);
+  border-radius: 50%;
+  z-index: -1;
+  animation: helmetGlow 3s linear infinite;
+  filter: blur(4px);
+}
+
+/* Helmet Visor Reflection */
+.avatar::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  right: 20%;
+  bottom: 20%;
+  background: 
+    linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.8) 0%, 
+      rgba(255, 255, 255, 0.3) 30%,
+      transparent 60%,
+      rgba(192, 192, 192, 0.4) 100%);
+  border-radius: 50%;
+  animation: visorReflect 2s ease-in-out infinite alternate;
+  transform: skewX(-15deg) skewY(5deg);
+}
+
+@keyframes helmetSpin {
+  0%, 100% { 
+    transform: translateZ(40px) rotateY(0deg) rotateX(0deg);
+    filter: hue-rotate(0deg);
+  }
+  25% { 
+    transform: translateZ(45px) rotateY(90deg) rotateX(-10deg);
+    filter: hue-rotate(90deg);
+  }
+  50% { 
+    transform: translateZ(50px) rotateY(180deg) rotateX(0deg);
+    filter: hue-rotate(180deg);
+  }
+  75% { 
+    transform: translateZ(45px) rotateY(270deg) rotateX(10deg);
+    filter: hue-rotate(270deg);
+  }
+}
+
+@keyframes helmetGlow {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1.1); }
+}
+
+@keyframes visorReflect {
+  0% { 
+    opacity: 0.3; 
+    transform: skewX(-15deg) skewY(5deg) translateX(-5px);
+  }
+  100% { 
+    opacity: 0.8; 
+    transform: skewX(-10deg) skewY(0deg) translateX(5px);
+  }
+}
+
+.avatar-inner {
+  font-size: 3.5rem;
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+  animation: engineRev 1.5s ease-in-out infinite alternate;
+  z-index: 2;
+  text-shadow: 0 0 10px var(--neon-red);
+}
+
+@keyframes engineRev {
+  0% { 
+    transform: scale(1) rotate(0deg); 
+    filter: drop-shadow(0 0 20px rgba(255, 7, 58, 0.8));
+  }
+  100% { 
+    transform: scale(1.1) rotate(2deg); 
+    filter: drop-shadow(0 0 30px rgba(14, 165, 233, 0.8));
+  }
+}
+
+/* Racing Title with Speed Effect */
+.card-header h1 {
+  font-family: 'Orbitron', monospace;
+  font-size: 3rem;
+  font-weight: 900;
+  background: var(--gradient-motogp);
+  background-clip: text;
+  margin-bottom: 0.8rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  position: relative;
+  animation: titleSpeed 3s ease-in-out infinite alternate;
+  transform: translateZ(25px);
+  text-shadow: 0 0 30px rgba(230, 0, 18, 0.5);
+}
+
+.card-header h1::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -20px;
+  right: -20px;
+  height: 2px;
+  background: var(--gradient-fire);
+  transform: translateY(-50%) scaleX(0);
+  animation: titleUnderline 2s ease-in-out infinite;
+}
+
+@keyframes titleSpeed {
+  0% { 
+    filter: drop-shadow(0 0 10px rgba(230, 0, 18, 0.5));
+    transform: translateZ(25px) skewX(0deg);
+  }
+  100% { 
+    filter: drop-shadow(0 0 30px rgba(33, 150, 243, 0.8));
+    transform: translateZ(30px) skewX(-2deg);
+  }
+}
+
+@keyframes titleUnderline {
+  0%, 100% { transform: translateY(-50%) scaleX(0); }
+  50% { transform: translateY(-50%) scaleX(1); }
+}
+
+.card-header p {
+  color: var(--titanium);
+  font-size: 1.1rem;
+  font-weight: 500;
+  opacity: 0.9;
+  font-family: 'Saira', sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Racing Input Fields */
+.form-group {
   margin-bottom: 2rem;
+  transform-style: preserve-3d;
+}
+
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--gradient-carbon);
+  border: 2px solid rgba(230, 0, 18, 0.3);
+  border-radius: 20px;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  backdrop-filter: blur(20px) saturate(150%);
+  transform: translateZ(15px);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 -1px 0 rgba(230, 0, 18, 0.2);
+  overflow: hidden;
+}
+
+/* Racing Stripes on Input */
+.input-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-fire);
+  opacity: 0.6;
+}
+
+.input-container::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--gradient-speed);
+  opacity: 0.6;
+}
+
+.input-container:focus-within {
+  border-color: var(--neon-red);
+  box-shadow: 
+    0 0 0 4px rgba(255, 7, 58, 0.3),
+    0 15px 45px rgba(220, 20, 60, 0.3),
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-5px) translateZ(20px);
+  background: 
+    var(--gradient-carbon),
+    radial-gradient(ellipse at center, rgba(255, 7, 58, 0.08), transparent 70%);
+}
+
+.input-container:focus-within::before {
+  background: var(--gradient-track);
+  animation: racingStripe 1s ease-in-out infinite alternate;
+}
+
+@keyframes racingStripe {
+  0% { opacity: 0.6; transform: scaleX(1); }
+  100% { opacity: 1; transform: scaleX(1.1); }
+}
+
+.input-icon {
+  padding: 0 1.2rem;
+  font-size: 1.4rem;
+  color: var(--chrome-silver);
+  min-width: 55px;
+  display: flex;
+  justify-content: center;
+  filter: drop-shadow(0 0 5px rgba(230, 0, 18, 0.3));
+}
+
+.input-container input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  padding: 1.4rem 1.2rem;
+  font-size: 1.2rem;
+  font-family: 'Rajdhani', sans-serif;
+  font-weight: 600;
+  color: var(--racing-white) !important;
+  -webkit-text-fill-color: var(--racing-white) !important;
+  text-transform: uppercase;
   letter-spacing: 1px;
 }
 
-/* Input Fields */
-.custom-input {
-  background: var(--gradient-input) !important;
-  border: 2px solid rgba(255, 255, 255, 0.1) !important;
-  border-radius: 16px !important;
-  color: var(--platinum) !important;
-  font-size: 1.2rem !important;
-  font-family: 'Exo 2', sans-serif !important;
-  font-weight: 400 !important;
-  padding: 1.2rem 1.5rem !important;
-  width: 100% !important;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  position: relative;
-  backdrop-filter: blur(10px) !important;
-  -webkit-text-fill-color: var(--platinum) !important;
-  -webkit-appearance: none !important;
-  appearance: none !important;
-}
-
-.custom-input:focus {
-  outline: none !important;
-  border-color: var(--neon-red) !important;
-  background: linear-gradient(145deg, rgba(255, 0, 55, 0.1), rgba(26, 26, 26, 0.9)) !important;
-  box-shadow: 
-    0 0 0 4px rgba(255, 23, 68, 0.2),
-    0 8px 32px rgba(255, 23, 68, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
-  transform: translateY(-3px) scale(1.02) !important;
-  color: var(--platinum) !important;
-  -webkit-text-fill-color: var(--platinum) !important;
-}
-
-.custom-input::placeholder {
-  color: var(--silver) !important;
-  font-weight: 300 !important;
+.input-container input::placeholder {
+  color: var(--titanium) !important;
   opacity: 0.7 !important;
-}
-
-/* Force white text in all input states */
-input[type="text"],
-input[type="password"],
-input[type="email"] {
-  color: var(--platinum) !important;
-  -webkit-text-fill-color: var(--platinum) !important;
-}
-
-input[type="text"]:focus,
-input[type="password"]:focus,
-input[type="email"]:focus {
-  color: var(--platinum) !important;
-  -webkit-text-fill-color: var(--platinum) !important;
-}
-
-/* Autofill styles override */
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus {
-  -webkit-text-fill-color: var(--platinum) !important;
-  -webkit-box-shadow: 0 0 0px 1000px var(--carbon-black) inset !important;
-  transition: background-color 5000s ease-in-out 0s !important;
-}
-.form-check-input {
-  background: var(--gradient-input);
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  border-radius: 6px;
-  width: 1.4em;
-  height: 1.4em;
-  transition: all 0.3s ease;
-}
-
-.form-check-input:checked {
-  background: var(--gradient-secondary);
-  border-color: var(--neon-red);
-  transform: scale(1.1);
-  box-shadow: 0 0 15px rgba(255, 23, 68, 0.5);
-}
-
-.form-check-label {
-  color: var(--silver);
-  font-weight: 400;
-  margin-left: 0.7rem;
-  font-size: 1rem;
-}
-
-/* Premium Button */
-.btn-gradient {
-  background: var(--gradient-primary);
-  border: none;
-  border-radius: 16px;
-  color: white;
-  font-family: 'Orbitron', monospace;
-  font-weight: 700;
-  font-size: 1.2rem;
-  letter-spacing: 2px;
+  font-weight: 500;
   text-transform: uppercase;
-  padding: 1.3rem 2rem;
+}
+
+/* Racing Button - The Beast */
+.login-btn {
   width: 100%;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--gradient-fire);
+  border: none;
+  border-radius: 20px;
+  padding: 1.6rem 2.5rem;
+  font-family: 'Orbitron', monospace;
+  font-size: 1.3rem;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   overflow: hidden;
-  box-shadow: 
-    0 8px 32px rgba(255, 0, 55, 0.3),
-    0 4px 16px rgba(0, 212, 255, 0.2);
+  box-shadow: var(--shadow-aggressive);
+  margin-top: 2rem;
+  transform: translateZ(10px);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
-.btn-gradient::before {
+/* Engine Fire Effect */
+.login-btn::before {
+  content: '';
+  position: absolute;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
+  background: 
+    radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform: rotate(45deg);
+}
+
+/* Racing Exhaust Glow */
+.login-btn::after {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: var(--gradient-track);
+  border-radius: 23px;
+  z-index: -1;
+  filter: blur(6px);
+  opacity: 0.8;
+  animation: exhaustGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes exhaustGlow {
+  0% { 
+    opacity: 0.6; 
+    transform: scale(1);
+    filter: blur(6px) hue-rotate(0deg);
+  }
+  100% { 
+    opacity: 1; 
+    transform: scale(1.05);
+    filter: blur(8px) hue-rotate(180deg);
+  }
+}
+
+.login-btn:hover {
+  transform: translateY(-8px) translateZ(20px) rotateX(-8deg) scale(1.05);
+  box-shadow: 
+    0 25px 70px rgba(220, 20, 60, 0.5),
+    0 15px 45px rgba(255, 7, 58, 0.4),
+    0 10px 30px rgba(0, 0, 0, 0.6);
+  background: 
+    linear-gradient(135deg, #ff073a 0%, #ff2d00 30%, #dc143c 60%, #ff6600 100%);
+}
+
+.login-btn:hover::before {
+  top: -50%;
+  left: -50%;
+  transform: rotate(45deg) scale(1.2);
+}
+
+.login-btn:active {
+  transform: translateY(-4px) translateZ(15px) rotateX(-4deg) scale(1.02);
+  box-shadow: 
+    0 15px 40px rgba(220, 20, 60, 0.4),
+    0 8px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Racing Divider */
+.divider-section {
+  display: flex;
+  align-items: center;
+  margin: 2.5rem 0;
+  opacity: 0.7;
+}
+
+.divider-line {
+  flex: 1;
+  height: 2px;
+  background: var(--gradient-chrome);
+  position: relative;
+  overflow: hidden;
+}
+
+.divider-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-fire);
+  animation: dividerRace 3s linear infinite;
+}
+
+@keyframes dividerRace {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.divider-text {
+  padding: 0 1.5rem;
+  color: var(--chrome-silver);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-family: 'Orbitron', monospace;
+}
+
+/* Action Buttons - Racing Style */
+.action-buttons {
+  display: flex;
+  gap: 1.2rem;
+  flex-direction: column;
+}
+
+.action-btn {
+  display: block;
+  text-align: center;
+  padding: 1.2rem 2rem;
+  border-radius: 16px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+
+.action-btn.primary {
+  background: var(--gradient-speed);
+  color: white;
+  box-shadow: var(--shadow-speed);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.action-btn.primary::before {
   content: '';
   position: absolute;
   top: 0;
@@ -384,50 +635,38 @@ input:-webkit-autofill:focus {
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-  transition: left 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: left 0.6s ease;
 }
 
-.btn-gradient:hover {
-  transform: translateY(-4px) scale(1.02);
-  box-shadow: 
-    0 16px 48px rgba(255, 0, 55, 0.4),
-    0 8px 24px rgba(0, 212, 255, 0.3),
-    0 0 40px rgba(255, 23, 68, 0.2);
-}
-
-.btn-gradient:hover::before {
+.action-btn.primary:hover::before {
   left: 100%;
 }
 
-.btn-gradient:active {
-  transform: translateY(-2px) scale(0.98);
+.action-btn.primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 12px 35px rgba(30, 58, 138, 0.4),
+    0 6px 20px rgba(14, 165, 233, 0.3);
 }
 
-/* Register Link */
-.register-link {
-  color: var(--silver);
-  font-size: 1rem;
-  text-align: center;
-  margin-top: 2rem;
+.action-btn.secondary {
+  background: var(--gradient-carbon);
+  color: var(--chrome-silver);
+  border: 2px solid rgba(192, 192, 192, 0.3);
+  backdrop-filter: blur(15px);
 }
 
-.text-gradient {
-  background: var(--gradient-secondary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-decoration: none;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  position: relative;
+.action-btn.secondary:hover {
+  background: 
+    var(--gradient-carbon),
+    radial-gradient(ellipse at center, rgba(192, 192, 192, 0.1), transparent);
+  border-color: var(--chrome-silver);
+  color: var(--racing-white);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-chrome);
 }
 
-.text-gradient:hover {
-  filter: drop-shadow(0 0 8px rgba(255, 23, 68, 0.6));
-  transform: translateY(-2px);
-}
-
-/* Racing Elements */
+/* Racing Performance Indicators */
 .login-form {
   position: relative;
 }
@@ -435,106 +674,123 @@ input:-webkit-autofill:focus {
 .login-form::before {
   content: '';
   position: absolute;
-  top: -20px;
-  left: -20px;
-  right: -20px;
+  top: -15px;
+  left: -15px;
+  right: -15px;
   height: 4px;
-  background: var(--gradient-primary);
+  background: var(--gradient-track);
   border-radius: 2px;
   opacity: 0.6;
-  animation: raceLineTop 3s ease-in-out infinite;
+  animation: performanceBar 2s ease-in-out infinite alternate;
 }
 
 .login-form::after {
   content: '';
   position: absolute;
-  bottom: -20px;
-  left: -20px;
-  right: -20px;
+  bottom: -15px;
+  left: -15px;
+  right: -15px;
   height: 4px;
-  background: var(--gradient-primary);
+  background: var(--gradient-track);
   border-radius: 2px;
   opacity: 0.6;
-  animation: raceLineBottom 3s ease-in-out infinite;
+  animation: performanceBar 2s ease-in-out infinite alternate-reverse;
 }
 
-@keyframes raceLineTop {
-  0%, 100% { width: 40%; left: 0; }
-  50% { width: 60%; left: 40%; }
+@keyframes performanceBar {
+  0% { 
+    opacity: 0.4; 
+    transform: scaleX(0.8);
+    filter: hue-rotate(0deg);
+  }
+  100% { 
+    opacity: 0.9; 
+    transform: scaleX(1);
+    filter: hue-rotate(90deg);
+  }
 }
 
-@keyframes raceLineBottom {
-  0%, 100% { width: 50%; right: 0; }
-  50% { width: 70%; right: 30%; }
-}
-
-/* Responsive Design */
+/* Responsive Racing Design */
 @media (max-width: 768px) {
   .login-card {
-    padding: 2.5rem 2rem;
-    margin: 1rem;
-    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    transform: translateZ(0) rotateX(5deg);
   }
   
-  .form-title {
-    font-size: 2rem;
-    letter-spacing: 2px;
+  .card-header h1 {
+    font-size: 2.5rem;
+    letter-spacing: 3px;
   }
   
-  .login-logo {
-    font-size: 4rem;
+  .avatar {
+    width: 85px;
+    height: 85px;
+  }
+  
+  .avatar-inner {
+    font-size: 3rem;
   }
 }
 
 @media (max-width: 480px) {
   .login-card {
-    padding: 2rem 1.5rem;
+    padding: 2.5rem 2rem;
+    margin: 1rem;
   }
   
-  .form-title {
-    font-size: 1.8rem;
-    letter-spacing: 1px;
+  .card-header h1 {
+    font-size: 2rem;
+    letter-spacing: 2px;
   }
   
-  .login-logo {
-    font-size: 3.5rem;
+  .avatar {
+    width: 75px;
+    height: 75px;
   }
   
-  .custom-input {
+  .avatar-inner {
+    font-size: 2.5rem;
+  }
+  
+  .login-btn {
     font-size: 1.1rem;
-    padding: 1rem 1.2rem;
-  }
-  
-  .btn-gradient {
-    font-size: 1.1rem;
-    padding: 1.2rem 1.8rem;
+    letter-spacing: 2px;
   }
 }
 
-/* Performance Optimizations */
+/* Racing Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .login-card {
+    transform: none;
+  }
+  
+  .avatar {
+    transform: none;
+  }
+}
+
+/* High Performance Mode */
 .login-card,
-.custom-input,
-.btn-gradient {
-  will-change: transform;
+.input-container,
+.login-btn,
+.action-btn,
+.avatar {
+  will-change: transform, filter;
+  backface-visibility: hidden;
 }
 
-/* Add Racing Bike Element */
-.racing-bike:before {
-  content: '🏍️';
+/* Racing Checkpoint Indicator */
+.login-card::before {
+  animation: checkpoint 4s ease-in-out infinite;
 }
 
-/* Additional Premium Effects */
-@keyframes neonPulse {
-  0%, 100% { 
-    box-shadow: 
-      0 0 5px rgba(255, 23, 68, 0.5),
-      0 0 10px rgba(255, 23, 68, 0.3),
-      0 0 15px rgba(255, 23, 68, 0.2);
-  }
-  50% { 
-    box-shadow: 
-      0 0 10px rgba(255, 23, 68, 0.8),
-      0 0 20px rgba(255, 23, 68, 0.6),
-      0 0 30px rgba(255, 23, 68, 0.4);
-  }
+@keyframes checkpoint {
+  0%, 100% { opacity: 0.6; }
+  25% { opacity: 0.8; }
 }

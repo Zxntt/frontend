@@ -2,104 +2,146 @@
 import { useState } from 'react'
 import Swal from 'sweetalert2'
 import { useRouter } from 'next/navigation'
-export default function Register() {
+import Link from 'next/link'
+import './reg.css'   // ✅ ใช้ไฟล์ CSS แยกสำหรับ Register
+
+export default function RegisterPage() {
   const router = useRouter()
-  const [firstname, setFirstname] = useState('')
-  const [fullname, setFullname] = useState('')
-  const [lastname, setLastname] = useState('')
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [formData, setFormData] = useState({
+    firstname: '',
+    fullname: '',
+    lastname: '',
+    username: '',
+    password: '',
+    confirmPassword: '',
+    address: '',
+    sex: '',
+    birthday: ''
+  })
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData(prev => ({ ...prev, [name]: value }))
+  }
+
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-    const res = await fetch('https://backend-nextjs-virid.vercel.app/api/users', {
-      method: 'POST',
-      headers: {
-        Accept : 'application/json',
-      },
-      body: JSON.stringify({ firstname, fullname, lastname, username, password }),
-    })
-    const result = await res.json();
-    console.log(result);
-    if (res.ok) {
-      Swal.fire({
-        icon: 'success',
-        title: '<h3>บันทึกข้อมูลเรียบร้อยแล้ว</h3>',
-        showConfirmButton: false,
-        timer: 2000
-        }).then(function () {
-        router.push('/register')
-      });
-      setFirstname('')
-      setFullname('')
-      setLastname('')
-      setUsername('')
-      setPassword('')
-    } else {
-      Swal.fire({
-        title: 'Error!',
-        text: 'เกิดข้อผิดพลาด!',
-        icon: 'error',
-        confirmButtonText: 'ตกลง'
-      })
+    e.preventDefault()
+
+    if (formData.password !== formData.confirmPassword) {
+      Swal.fire({ icon: 'warning', title: 'รหัสผ่านไม่ตรงกัน', text: 'กรุณากรอกให้ตรงกัน' })
+      return
     }
-  } catch (error) {
-    Swal.fire({
-      icon: 'error',
-      title: 'ข้อผิดพลาดเครือข่าย',
-      text: 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้',
-    })
+
+    setIsLoading(true)
+    try {
+      const res = await fetch('https://backend-nextjs-virid.vercel.app/api/users', {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await res.json()
+      if (res.ok) {
+        Swal.fire({ icon: 'success', title: 'บันทึกข้อมูลเรียบร้อยแล้ว', timer: 2000, showConfirmButton: false })
+        router.push('/login')
+      } else {
+        Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาด', text: result.message || 'ไม่สามารถสมัครได้' })
+      }
+    } catch (err) {
+      Swal.fire({ icon: 'error', title: 'เครือข่ายผิดพลาด', text: 'เชื่อมต่อเซิร์ฟเวอร์ไม่ได้' })
+    } finally {
+      setIsLoading(false)
+    }
   }
-  }
+
   return (
-    <div className="max-w-md mx-auto mt-10 p-4 border rounded">
-      <h1 className="text-xl font-bold mb-4">สมัครสมาชิก</h1>
-      <form onSubmit={handleSubmit} className="space-y-3">
-        <select name="firstname" onChange={(e) => setFirstname(e.target.value)} className="w-full border p-2 rounded" required>
-          <option value="">คำนำหน้าชื่อ</option>
-          <option value="นาย">นาย</option>
-          <option value="นาง">นาง</option>
-          <option value="นางสาว">นางสาว</option>
-        </select>
-        <input
-          type="text"
-          placeholder="ชื่อ"
-          value={fullname}
-          onChange={(e) => setFullname(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <input
-          type="text"
-          placeholder="นามสกุล"
-          value={lastname}
-          onChange={(e) => setLastname(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-                <input
-          type="text"
-          placeholder="username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-                <input
-          type="text"
-          placeholder="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full border p-2 rounded"
-          required
-        />
-        <button
-          type="submit"
-          className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          สมัครสมาชิก
-        </button>
-      </form>
+    <div className="register-page">
+      <div className="register-card">
+        <div className="card-header">
+          <div className="avatar"><div className="avatar-icon">🏍️</div></div>
+          <h1>สมัครสมาชิก</h1>
+          <p>เข้าร่วมทีมแข่ง MotoGP</p>
+        </div>
+
+        <form onSubmit={handleSubmit} className="register-form">
+
+          {/* Firstname */}
+          <div className="form-group">
+            <label>Firstname</label>
+            <select name="firstname" value={formData.firstname} onChange={handleChange} required>
+              <option value="">Select Firstname</option>
+              <option value="นาย">นาย</option>
+              <option value="นาง">นาง</option>
+              <option value="นางสาว">นางสาว</option>
+            </select>
+          </div>
+
+          {/* Full Name */}
+          <div className="form-group">
+            <label>Full Name</label>
+            <input type="text" name="fullname" value={formData.fullname} onChange={handleChange} placeholder="Full Name" required />
+          </div>
+
+          {/* Last Name */}
+          <div className="form-group">
+            <label>Last Name</label>
+            <input type="text" name="lastname" value={formData.lastname} onChange={handleChange} placeholder="Last Name" required />
+          </div>
+
+          {/* Username */}
+          <div className="form-group">
+            <label>Username</label>
+            <input type="text" name="username" value={formData.username} onChange={handleChange} placeholder="Username" required />
+          </div>
+
+          {/* Password */}
+          <div className="form-group">
+            <label>Password</label>
+            <input type="password" name="password" value={formData.password} onChange={handleChange} placeholder="Password" required />
+          </div>
+
+          {/* Confirm Password */}
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} placeholder="Confirm Password" required />
+          </div>
+
+          {/* Address */}
+          <div className="form-group">
+            <label>Address</label>
+            <input type="text" name="address" value={formData.address} onChange={handleChange} placeholder="Address" />
+          </div>
+
+          {/* Sex */}
+          <div className="form-group">
+            <label>Sex</label>
+            <select name="sex" value={formData.sex} onChange={handleChange}>
+              <option value="">Select sex</option>
+              <option value="ชาย">ชาย</option>
+              <option value="หญิง">หญิง</option>
+              <option value="อื่นๆ">อื่นๆ</option>
+            </select>
+          </div>
+
+          {/* Birthday */}
+          <div className="form-group">
+            <label>Birthday</label>
+            <input type="date" name="birthday" value={formData.birthday} onChange={handleChange} />
+          </div>
+
+          <button type="submit" className="register-btn" disabled={isLoading}>
+            {isLoading ? "กำลังสมัคร..." : "สมัครสมาชิก"}
+          </button>
+        </form>
+
+        <div className="action-buttons">
+          <Link href="/login" className="action-btn secondary">เข้าสู่ระบบ</Link>
+        </div>
+      </div>
     </div>
   )
 }
