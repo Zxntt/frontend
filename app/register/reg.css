@@ -1,61 +1,69 @@
-/* Responsive Racing Design */
 @media (max-width: 768px) {
   .register-card {
-    padding: 3rem 2.5rem;
-    max-width: 500px;
+    padding: 2.5rem 2rem;
+    max-width: 480px;
+    margin: 1rem;
   }
   
   .card-header h1 {
-    font-size: 2rem;
+    font-size: 2.2rem;
     letter-spacing: 2px;
   }
   
   .avatar {
-    width: 85px;
-    height: 85px;
+    width: 80px;
+    height: 80px;
   }
   
   .avatar-icon {
-    font-size: 2.5rem;
+    font-size: 2.2rem;
+  }
+  
+  .register-btn {
+    font-size: 1.1rem;
+    padding: 1.4rem 2rem;
   }
 }
 
 :root {
-  /* MotoGP Racing Colors - Black Red Blue Theme */
-  --racing-black: #000000;
-  --carbon-black: #111111;
-  --matte-black: #0a0a0a;
+  /* Enhanced MotoGP Racing Palette */
+  --racing-black: #0a0a0a;
+  --carbon-black: #151515;
+  --matte-black: #1a1a1a;
   --racing-red: #e60012;
-  --flame-red: #ff0000;
-  --neon-red: #ff1744;
+  --flame-red: #ff2d00;
+  --neon-red: #ff073a;
   --racing-blue: #003d82;
-  --electric-blue: #0066cc;
+  --electric-blue: #0066ff;
   --neon-blue: #2196f3;
-  --chrome-silver: #c0c0c0;
-  --titanium: #8a8a8a;
+  --chrome-silver: #e8e8e8;
+  --titanium: #b0b0b0;
   --racing-white: #ffffff;
+  --gold-accent: #ffd700;
   
-  /* MotoGP Gradients */
-  --gradient-fire: linear-gradient(135deg, #ff0000 0%, #e60012 50%, #000000 100%);
-  --gradient-speed: linear-gradient(135deg, #2196f3 0%, #0066cc 50%, #003d82 100%);
-  --gradient-carbon: linear-gradient(145deg, #000000 0%, #111111 50%, #000000 100%);
-  --gradient-chrome: linear-gradient(135deg, #c0c0c0 0%, #ffffff 50%, #8a8a8a 100%);
-  --gradient-motogp: linear-gradient(45deg, #e60012 0%, #000000 33%, #2196f3 66%, #e60012 100%);
-  --gradient-engine: radial-gradient(ellipse at center, #ff1744 0%, #e60012 40%, #000000 100%);
+  /* Premium Gradients */
+  --gradient-fire: linear-gradient(135deg, #ff073a 0%, #e60012 40%, #000 100%);
+  --gradient-speed: linear-gradient(135deg, #2196f3 0%, #0066ff 50%, #003d82 100%);
+  --gradient-carbon: linear-gradient(145deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  --gradient-chrome: linear-gradient(135deg, #ffffff 0%, #e8e8e8 50%, #b0b0b0 100%);
+  --gradient-motogp: linear-gradient(45deg, #e60012 0%, #000 25%, #2196f3 50%, #ffd700 75%, #e60012 100%);
+  --gradient-engine: radial-gradient(ellipse at center, #ff073a 0%, #e60012 30%, #000 100%);
+  --gradient-premium: linear-gradient(135deg, #ffd700 0%, #e60012 50%, #000 100%);
   
-  /* MotoGP Shadows */
-  --shadow-aggressive: 
-    0 25px 60px rgba(230, 0, 18, 0.4),
-    0 15px 40px rgba(0, 0, 0, 0.8),
-    0 8px 25px rgba(255, 23, 68, 0.3);
+  /* Enhanced Shadows */
+  --shadow-premium: 
+    0 30px 80px rgba(230, 0, 18, 0.3),
+    0 20px 60px rgba(0, 0, 0, 0.8),
+    0 10px 30px rgba(255, 7, 58, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   --shadow-speed: 
-    0 20px 50px rgba(0, 61, 130, 0.4),
-    0 10px 30px rgba(0, 0, 0, 0.6),
-    0 5px 15px rgba(33, 150, 243, 0.3);
-  --shadow-engine: 
-    0 30px 80px rgba(255, 23, 68, 0.5),
-    0 20px 50px rgba(0, 0, 0, 0.8),
-    inset 0 2px 0 rgba(255, 255, 255, 0.1);
+    0 25px 60px rgba(33, 150, 243, 0.3),
+    0 15px 40px rgba(0, 0, 0, 0.6),
+    0 8px 20px rgba(0, 102, 255, 0.2);
+  --shadow-glow: 
+    0 0 30px rgba(230, 0, 18, 0.4),
+    0 0 60px rgba(33, 150, 243, 0.2),
+    0 0 90px rgba(255, 215, 0, 0.1);
 }
 
 * {
@@ -69,11 +77,12 @@ body {
   background: var(--racing-black);
   color: var(--racing-white);
   overflow-x: hidden;
-  perspective: 1500px;
+  perspective: 2000px;
   position: relative;
+  min-height: 100vh;
 }
 
-/* Racing Track Background with Tire Marks */
+/* Enhanced Racing Track Background */
 body::before {
   content: '';
   position: fixed;
@@ -82,12 +91,50 @@ body::before {
   right: 0;
   bottom: 0;
   background: 
-    repeating-linear-gradient(45deg, transparent 0px, transparent 2px, rgba(230, 0, 18, 0.03) 3px, rgba(230, 0, 18, 0.03) 5px),
-    repeating-linear-gradient(-45deg, transparent 0px, transparent 8px, rgba(33, 150, 243, 0.02) 9px, rgba(33, 150, 243, 0.02) 12px),
-    radial-gradient(circle at 20% 20%, rgba(230, 0, 18, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(33, 150, 243, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 25% 25%, rgba(230, 0, 18, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(33, 150, 243, 0.06) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, rgba(255, 215, 0, 0.04) 0%, transparent 70%),
+    repeating-linear-gradient(45deg, transparent 0px, transparent 3px, rgba(230, 0, 18, 0.02) 4px, rgba(230, 0, 18, 0.02) 6px),
+    repeating-linear-gradient(-45deg, transparent 0px, transparent 12px, rgba(33, 150, 243, 0.015) 13px, rgba(33, 150, 243, 0.015) 16px),
     var(--racing-black);
+  z-index: -2;
+}
+
+/* Animated Racing Lines */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 100%;
+  background: 
+    linear-gradient(90deg, 
+      transparent 0%, 
+      rgba(255, 255, 255, 0.02) 1%, 
+      transparent 2%,
+      transparent 15%,
+      rgba(230, 0, 18, 0.03) 16%,
+      transparent 17%,
+      transparent 35%,
+      rgba(33, 150, 243, 0.02) 36%,
+      transparent 37%,
+      transparent 55%,
+      rgba(255, 215, 0, 0.02) 56%,
+      transparent 57%,
+      transparent 75%,
+      rgba(255, 255, 255, 0.01) 76%,
+      transparent 77%
+    );
+  animation: speedBoost 4s linear infinite;
+  pointer-events: none;
   z-index: -1;
+}
+
+@keyframes speedBoost {
+  0% { transform: translateX(-50%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(50%); opacity: 0; }
 }
 
 /* Main Racing Arena */
@@ -99,51 +146,32 @@ body::before {
   position: relative;
   padding: 2rem 1rem;
   background: 
-    conic-gradient(from 45deg at 50% 0%, transparent 0deg, rgba(230, 0, 18, 0.05) 45deg, transparent 90deg),
-    conic-gradient(from 225deg at 50% 100%, transparent 0deg, rgba(33, 150, 243, 0.05) 45deg, transparent 90deg);
+    conic-gradient(from 0deg at 30% 20%, transparent 0deg, rgba(230, 0, 18, 0.06) 60deg, transparent 120deg),
+    conic-gradient(from 180deg at 70% 80%, transparent 0deg, rgba(33, 150, 243, 0.05) 60deg, transparent 120deg),
+    conic-gradient(from 90deg at 50% 50%, transparent 0deg, rgba(255, 215, 0, 0.03) 45deg, transparent 90deg);
 }
 
-/* Racing Speed Lines */
-.register-page::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: 
-    linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.02) 1%, transparent 2%),
-    linear-gradient(90deg, transparent 20%, rgba(230, 0, 18, 0.03) 21%, transparent 22%),
-    linear-gradient(90deg, transparent 40%, rgba(33, 150, 243, 0.02) 41%, transparent 42%),
-    linear-gradient(90deg, transparent 60%, rgba(251, 191, 36, 0.02) 61%, transparent 62%),
-    linear-gradient(90deg, transparent 80%, rgba(255, 255, 255, 0.01) 81%, transparent 82%);
-  animation: speedLines 3s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes speedLines {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
-}
-
-/* Racing Engine - Register Card */
+/* Premium Racing Engine - Register Card */
 .register-card {
-  background: var(--gradient-carbon), linear-gradient(145deg, rgba(230, 0, 18, 0.05), rgba(33, 150, 243, 0.03));
-  backdrop-filter: blur(30px) saturate(180%) contrast(120%);
-  border: 3px solid;
+  background: 
+    linear-gradient(145deg, rgba(26, 26, 26, 0.95), rgba(10, 10, 10, 0.98)),
+    linear-gradient(45deg, rgba(230, 0, 18, 0.04), rgba(33, 150, 243, 0.02));
+  backdrop-filter: blur(25px) saturate(150%) contrast(110%);
+  border: 2px solid;
   border-image: var(--gradient-motogp) 1;
-  border-radius: 25px;
+  border-radius: 30px;
   padding: 3.5rem 3rem;
   width: 100%;
-  max-width: 550px;
+  max-width: 520px;
   position: relative;
   z-index: 10;
-  box-shadow: var(--shadow-engine);
+  box-shadow: var(--shadow-premium);
   transform-style: preserve-3d;
-  transform: translateZ(0) rotateX(5deg) rotateY(-1deg);
+  transform: translateZ(0) rotateX(2deg) rotateY(-1deg);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
-/* Carbon Fiber Texture */
+/* Enhanced Carbon Fiber Texture */
 .register-card::before {
   content: '';
   position: absolute;
@@ -154,126 +182,193 @@ body::before {
   background: 
     repeating-linear-gradient(
       45deg,
-      rgba(26, 26, 26, 0.8) 0px,
-      rgba(26, 26, 26, 0.8) 2px,
-      rgba(15, 15, 15, 0.9) 2px,
-      rgba(15, 15, 15, 0.9) 4px
+      rgba(40, 40, 40, 0.6) 0px,
+      rgba(40, 40, 40, 0.6) 1px,
+      rgba(20, 20, 20, 0.8) 1px,
+      rgba(20, 20, 20, 0.8) 2px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      rgba(30, 30, 30, 0.4) 0px,
+      rgba(30, 30, 30, 0.4) 1px,
+      rgba(15, 15, 15, 0.6) 1px,
+      rgba(15, 15, 15, 0.6) 2px
     );
-  border-radius: 22px;
-  opacity: 0.6;
+  border-radius: 28px;
+  opacity: 0.4;
   z-index: -1;
 }
 
-/* Racing Glow Effect */
+/* Premium Glow Effect */
 .register-card::after {
   content: '';
   position: absolute;
-  top: -5px;
-  left: -5px;
-  right: -5px;
-  bottom: -5px;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
   background: var(--gradient-motogp);
-  border-radius: 30px;
+  border-radius: 34px;
   z-index: -2;
-  opacity: 0.7;
-  animation: enginePulse 2s ease-in-out infinite alternate;
-  filter: blur(8px);
+  opacity: 0.6;
+  animation: premiumPulse 3s ease-in-out infinite alternate;
+  filter: blur(10px);
 }
 
-@keyframes enginePulse {
+@keyframes premiumPulse {
   0% { 
-    opacity: 0.5; 
-    transform: scale(0.98);
-    filter: blur(8px) hue-rotate(0deg);
+    opacity: 0.4; 
+    transform: scale(0.99);
+    filter: blur(10px) hue-rotate(0deg);
   }
   100% { 
-    opacity: 0.9; 
-    transform: scale(1.02);
-    filter: blur(12px) hue-rotate(45deg);
+    opacity: 0.8; 
+    transform: scale(1.01);
+    filter: blur(15px) hue-rotate(90deg);
   }
 }
 
 .register-card:hover {
-  transform: translateY(-10px) translateZ(30px) rotateX(3deg) rotateY(-0.5deg);
+  transform: translateY(-15px) translateZ(40px) rotateX(1deg) rotateY(-0.5deg);
   box-shadow: 
-    0 40px 100px rgba(230, 0, 18, 0.3),
-    0 25px 70px rgba(0, 0, 0, 0.6),
-    0 15px 40px rgba(33, 150, 243, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 50px 120px rgba(230, 0, 18, 0.25),
+    0 30px 80px rgba(0, 0, 0, 0.6),
+    0 20px 50px rgba(33, 150, 243, 0.15),
+    0 0 100px rgba(255, 215, 0, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.12);
 }
 
 /* Racing Header */
 .card-header {
   text-align: center;
   margin-bottom: 3rem;
+  position: relative;
 }
 
-/* Racing Helmet Avatar */
+/* Enhanced Racing Helmet Avatar */
 .avatar {
   width: 100px;
   height: 100px;
   background: var(--gradient-engine);
   border-radius: 50%;
-  margin: 0 auto 1.5rem;
+  margin: 0 auto 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: var(--shadow-aggressive);
+  box-shadow: 
+    0 20px 50px rgba(230, 0, 18, 0.4),
+    0 10px 30px rgba(0, 0, 0, 0.6),
+    0 0 40px rgba(255, 7, 58, 0.3),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.avatar::before {
+  content: '';
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  right: -3px;
+  bottom: -3px;
+  background: var(--gradient-motogp);
+  border-radius: 50%;
+  z-index: -1;
+  animation: avatarGlow 2s ease-in-out infinite alternate;
+  filter: blur(8px);
+}
+
+@keyframes avatarGlow {
+  0% { opacity: 0.6; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.05); }
+}
+
+.avatar:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 
+    0 25px 60px rgba(230, 0, 18, 0.5),
+    0 15px 40px rgba(0, 0, 0, 0.7),
+    0 0 50px rgba(255, 7, 58, 0.4);
 }
 
 .avatar-icon {
   font-size: 3rem;
   color: white;
-  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.9));
+  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
 }
 
 .card-header h1 {
   font-family: 'Orbitron', monospace;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   font-weight: 900;
-  background: var(--gradient-motogp);
-  letter-spacing: 3px;
+  background: var(--gradient-premium);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 4px;
   text-transform: uppercase;
+  text-shadow: 0 2px 10px rgba(230, 0, 18, 0.3);
+  margin-bottom: 0.5rem;
 }
 
 .card-header p {
-  color: var(--titanium);
+  color: var(--chrome-silver);
   font-size: 1.1rem;
   font-weight: 500;
   opacity: 0.9;
+  letter-spacing: 1px;
 }
 
-/* ===== FORM STYLE ===== */
+/* Enhanced Form Styling */
 .form-group {
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.6rem;
+  margin-bottom: 0.8rem;
   font-size: 1rem;
   font-weight: 600;
   color: var(--chrome-silver);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   font-family: 'Orbitron', monospace;
-  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
 }
 
 .input-container {
   position: relative;
   display: flex;
   align-items: center;
-  background: var(--gradient-carbon);
+  background: 
+    linear-gradient(145deg, rgba(26, 26, 26, 0.8), rgba(10, 10, 10, 0.9));
   border: 2px solid rgba(230, 0, 18, 0.3);
-  border-radius: 20px;
-  padding-left: 1rem;
+  border-radius: 25px;
+  padding-left: 1.2rem;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  backdrop-filter: blur(10px);
+}
+
+.input-container:focus-within {
+  border-color: var(--neon-red);
+  box-shadow: 
+    0 0 20px rgba(230, 0, 18, 0.3),
+    0 0 40px rgba(255, 7, 58, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 .input-icon {
-  margin-right: 1rem;
-  font-size: 1.2rem;
+  margin-right: 1.2rem;
+  font-size: 1.3rem;
   color: var(--chrome-silver);
+  transition: all 0.3s ease;
+}
+
+.input-container:focus-within .input-icon {
+  color: var(--neon-red);
+  text-shadow: 0 0 10px rgba(230, 0, 18, 0.5);
 }
 
 .input-container input,
@@ -282,60 +377,64 @@ body::before {
   background: transparent;
   border: none;
   outline: none;
-  padding: 1rem;
+  padding: 1.2rem 1rem;
   font-size: 1rem;
   font-weight: 600;
   color: var(--racing-white);
-  text-transform: uppercase;
+  font-family: 'Rajdhani', sans-serif;
 }
 
 .input-container input::placeholder {
   color: var(--titanium);
   opacity: 0.7;
   font-weight: 500;
+  text-transform: none;
 }
 
-/* Special for date */
+/* Enhanced Date Input */
 .input-container input[type="date"] {
   color-scheme: dark;
   cursor: pointer;
 }
 
 .input-container input[type="date"]::-webkit-calendar-picker-indicator {
-  filter: invert(1) sepia(1) saturate(5) hue-rotate(180deg);
+  filter: invert(1) sepia(1) saturate(5) hue-rotate(340deg);
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 5px;
+  border-radius: 5px;
 }
 
 .input-container input[type="date"]::-webkit-calendar-picker-indicator:hover {
   transform: scale(1.2);
+  background: rgba(230, 0, 18, 0.2);
 }
 
-/* Racing Button - The Beast */
+/* Premium Racing Button */
 .register-btn {
   width: 100%;
   background: var(--gradient-fire);
   border: none;
-  border-radius: 20px;
-  padding: 1.6rem 2.5rem;
+  border-radius: 25px;
+  padding: 1.8rem 3rem;
   font-family: 'Orbitron', monospace;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   font-weight: 900;
   color: white;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.320, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: var(--shadow-aggressive);
-  margin-top: 2rem;
+  box-shadow: var(--shadow-premium);
+  margin-top: 2.5rem;
   transform: translateZ(10px);
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(255, 255, 255, 0.15);
 }
 
-/* Engine Fire Effect */
+/* Enhanced Fire Effect */
 .register-btn::before {
   content: '';
   position: absolute;
@@ -344,89 +443,72 @@ body::before {
   width: 300%;
   height: 300%;
   background: 
-    radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.3) 30%, transparent 70%);
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    radial-gradient(circle, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.4) 20%, transparent 50%);
+  transition: all 0.8s cubic-bezier(0.23, 1, 0.320, 1);
   transform: rotate(45deg);
+  opacity: 0;
 }
 
-/* Racing Exhaust Glow */
+/* Enhanced Exhaust Glow */
 .register-btn::after {
   content: '';
   position: absolute;
-  top: -3px;
-  left: -3px;
-  right: -3px;
-  bottom: -3px;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
   background: var(--gradient-motogp);
-  border-radius: 23px;
+  border-radius: 29px;
   z-index: -1;
-  filter: blur(6px);
-  opacity: 0.8;
-  animation: exhaustGlow 1.5s ease-in-out infinite alternate;
+  filter: blur(8px);
+  opacity: 0.7;
+  animation: exhaustFlame 2s ease-in-out infinite alternate;
 }
 
-@keyframes exhaustGlow {
+@keyframes exhaustFlame {
   0% { 
-    opacity: 0.6; 
-    transform: scale(1);
-    filter: blur(6px) hue-rotate(0deg);
+    opacity: 0.5; 
+    transform: scale(0.98);
+    filter: blur(8px) hue-rotate(0deg);
   }
   100% { 
     opacity: 1; 
-    transform: scale(1.05);
-    filter: blur(8px) hue-rotate(180deg);
+    transform: scale(1.03);
+    filter: blur(12px) hue-rotate(180deg);
   }
 }
 
 .register-btn:hover {
-  transform: translateY(-8px) translateZ(20px) rotateX(-8deg) scale(1.05);
+  transform: translateY(-12px) translateZ(30px) rotateX(-5deg) scale(1.05);
   box-shadow: 
-    0 25px 70px rgba(230, 0, 18, 0.5),
-    0 15px 45px rgba(255, 7, 58, 0.4),
-    0 10px 30px rgba(0, 0, 0, 0.6);
+    0 35px 90px rgba(230, 0, 18, 0.4),
+    0 20px 60px rgba(255, 7, 58, 0.3),
+    0 15px 40px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(255, 215, 0, 0.2);
   background: 
-    linear-gradient(135deg, #ff073a 0%, #ff2d00 30%, #dc143c 60%, #ff6600 100%);
+    linear-gradient(135deg, #ff073a 0%, #ff2d00 25%, #e60012 50%, #ffd700 75%, #ff073a 100%);
 }
 
 .register-btn:hover::before {
-  top: -50%;
-  left: -50%;
-  transform: rotate(45deg) scale(1.2);
+  top: -30%;
+  left: -30%;
+  opacity: 1;
+  transform: rotate(45deg) scale(1.5);
 }
 
 .register-btn:active {
-  transform: translateY(-4px) translateZ(15px) rotateX(-4deg) scale(1.02);
+  transform: translateY(-6px) translateZ(20px) rotateX(-3deg) scale(1.02);
   box-shadow: 
-    0 15px 40px rgba(230, 0, 18, 0.4),
-    0 8px 25px rgba(0, 0, 0, 0.5);
+    0 20px 50px rgba(230, 0, 18, 0.3),
+    0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-/* Responsive Racing Design */
-@media (max-width: 768px) {
-  .register-card {
-    padding: 3rem 2.5rem;
-    transform: translateZ(0) rotateX(3deg);
-  }
-  
-  .card-header h1 {
-    font-size: 2.5rem;
-    letter-spacing: 3px;
-  }
-  
-  .avatar {
-    width: 85px;
-    height: 85px;
-  }
-  
-  .avatar-icon {
-    font-size: 2.5rem;
-  }
-}
-
+/* Enhanced Responsive Design */
 @media (max-width: 480px) {
   .register-card {
-    padding: 2.5rem 2rem;
-    margin: 1rem;
+    padding: 2rem 1.5rem;
+    margin: 0.5rem;
+    transform: translateZ(0) rotateX(1deg);
   }
   
   .card-header h1 {
@@ -435,23 +517,45 @@ body::before {
   }
   
   .avatar {
-    width: 75px;
-    height: 75px;
+    width: 70px;
+    height: 70px;
   }
   
   .avatar-icon {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .register-btn {
-    font-size: 1.1rem;
+    font-size: 1rem;
     letter-spacing: 2px;
+    padding: 1.5rem 2rem;
+  }
+  
+  .input-container {
+    padding-left: 1rem;
+  }
+  
+  .input-container input,
+  .input-container select {
+    padding: 1rem 0.8rem;
   }
 }
 
-/* Racing Accessibility */
+/* Performance Optimizations */
+.register-card,
+.input-container,
+.register-btn,
+.avatar {
+  will-change: transform, filter;
+  backface-visibility: hidden;
+  contain: layout style paint;
+}
+
+/* Accessibility Enhancements */
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -461,16 +565,40 @@ body::before {
     transform: none;
   }
   
-  .avatar {
-    transform: none;
+  body::after {
+    display: none;
   }
 }
 
-/* High Performance Mode */
-.register-card,
-.input-container,
-.register-btn,
-.avatar {
-  will-change: transform, filter;
-  backface-visibility: hidden;
+/* Focus Indicators for Accessibility */
+.register-btn:focus-visible,
+.input-container input:focus-visible {
+  outline: 3px solid var(--neon-blue);
+  outline-offset: 2px;
+}
+
+/* Loading State for Button */
+.register-btn.loading {
+  background: var(--gradient-carbon);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.register-btn.loading::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
