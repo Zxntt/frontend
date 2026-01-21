@@ -35,11 +35,13 @@ export default function RegisterPage() {
 
     setIsLoading(true)
     try {
-      const res = await fetch('https://backend-nextjs-virid.vercel.app/api/users', {
+      const token = localStorage.getItem('token')
+      const res = await fetch('https://backend-1-six-lime.vercel.app/api/auth/register', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
+          Authorization: `Bearer ${token}`
         },
         body: JSON.stringify(formData),
       })

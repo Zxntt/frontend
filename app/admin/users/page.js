@@ -1,41 +1,60 @@
-'use client';
-import Link from 'next/link'
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation'
-import Swal from 'sweetalert2'
+"use client";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function User() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [error, setError] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [deleteLoading, setDeleteLoading] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (!token) {
-      router.push('/adminlogin');
+      router.push("/adminlogin");
       return;
     }
 
     async function getUsers() {
       try {
-        setError('');
-        const res = await fetch('https://backend-nextjs-virid.vercel.app/api/users');
+        // setError(''); // Optional: Clear error on re-fetch if desired
+        const currentToken = localStorage.getItem("token");
+
+        const res = await fetch(
+          "https://backend-1-six-lime.vercel.app/api/users",
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${currentToken}`, // <--- Add this
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        if (res.status === 401 || res.status === 403) {
+          // Token expired or invalid
+          localStorage.removeItem("token");
+          router.push("/adminlogin");
+          return;
+        }
+
         if (!res.ok) {
-          throw new Error('ไม่สามารถดึงข้อมูลได้');
+          throw new Error("ไม่สามารถดึงข้อมูลได้");
         }
         const data = await res.json();
         setItems(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
-        setError('เกิดข้อผิดพลาดในการโหลดข้อมูล');
+        console.error("Error fetching data:", error);
+        setError("เกิดข้อผิดพลาดในการโหลดข้อมูล");
       } finally {
         setLoading(false);
       }
     }
- 
+
     getUsers();
     const interval = setInterval(getUsers, 10000); // 10 วินาที
     return () => clearInterval(interval);
@@ -43,47 +62,52 @@ export default function User() {
 
   const handleDelete = async (id, username) => {
     const result = await Swal.fire({
-      title: 'ยืนยันการลบ',
+      title: "ยืนยันการลบ",
       text: `คุณต้องการลบผู้ใช้ ${username} หรือไม่?`,
-      icon: 'warning',
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'ลบ',
-      cancelButtonText: 'ยกเลิก'
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "ลบ",
+      cancelButtonText: "ยกเลิก",
     });
 
     if (result.isConfirmed) {
       try {
         setDeleteLoading(id);
-        const res = await fetch(`https://backend-nextjs-virid.vercel.app/api/users/${id}`, {
-          method: 'DELETE',
-          headers: {
-            Accept: 'application/json',
+        const token = localStorage.getItem('token');
+        const res = await fetch(
+          `https://backend-1-six-lime.vercel.app/api/users/${id}`,
+          {
+            method: "DELETE",
+            headers: {
+              Authorization: `Bearer ${token}`, // <--- Add this
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
           },
-        });
-        
+        );
+
         if (res.ok) {
           // อัพเดท state ทันที
-          setItems(prevItems => prevItems.filter(item => item.id !== id));
-          
+          setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+
           Swal.fire({
-            icon: 'success',
-            title: 'ลบสำเร็จ!',
+            icon: "success",
+            title: "ลบสำเร็จ!",
             text: `ลบผู้ใช้ ${username} แล้ว`,
             timer: 2000,
-            showConfirmButton: false
+            showConfirmButton: false,
           });
         } else {
-          throw new Error('ไม่สามารถลบได้');
+          throw new Error("ไม่สามารถลบได้");
         }
-        
       } catch (error) {
-        console.error('Error deleting user:', error);
+        console.error("Error deleting user:", error);
         Swal.fire({
-          icon: 'error',
-          title: 'เกิดข้อผิดพลาด',
-          text: 'ไม่สามารถลบผู้ใช้ได้'
+          icon: "error",
+          title: "เกิดข้อผิดพลาด",
+          text: "ไม่สามารถลบผู้ใช้ได้",
         });
       } finally {
         setDeleteLoading(null);
@@ -92,22 +116,30 @@ export default function User() {
   };
 
   // Filter items based on search
-  const filteredItems = items.filter(item =>
-    item.firstname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.lastname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.address?.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredItems = items.filter(
+    (item) =>
+      item.firstname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.lastname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.username?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.address?.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   // Loading screen
   if (loading) {
     return (
       <>
-        <br /><br /><br /><br />
+        <br />
+        <br />
+        <br />
+        <br />
         <div className="container">
           <div className="text-center">
-            <div className="spinner-border text-primary" role="status" style={{ width: '3rem', height: '3rem' }}>
+            <div
+              className="spinner-border text-primary"
+              role="status"
+              style={{ width: "3rem", height: "3rem" }}
+            >
               <span className="visually-hidden">Loading...</span>
             </div>
             <h3 className="mt-3 text-primary">กำลังโหลดข้อมูล...</h3>
@@ -122,14 +154,17 @@ export default function User() {
   if (error) {
     return (
       <>
-        <br /><br /><br /><br />
+        <br />
+        <br />
+        <br />
+        <br />
         <div className="container">
           <div className="alert alert-danger text-center" role="alert">
             <h4 className="alert-heading">เกิดข้อผิดพลาด!</h4>
             <p>{error}</p>
             <hr />
-            <button 
-              className="btn btn-danger" 
+            <button
+              className="btn btn-danger"
               onClick={() => window.location.reload()}
             >
               ลองใหม่อีกครั้ง
@@ -142,13 +177,21 @@ export default function User() {
 
   return (
     <>
-      <br /><br /><br />
-      
+      <br />
+      <br />
+      <br />
+
       <div className="container-fluid px-4">
         {/* Header Section */}
         <div className="row mb-4">
           <div className="col-12">
-            <div className="card shadow-lg border-0" style={{ background: 'linear-gradient(135deg, #eb2424ff 0%, #111ee2ff 100%)' }}>
+            <div
+              className="card shadow-lg border-0"
+              style={{
+                background:
+                  "linear-gradient(135deg, #eb2424ff 0%, #111ee2ff 100%)",
+              }}
+            >
               <div className="card-body text-white">
                 <div className="row align-items-center">
                   <div className="col-md-8">
@@ -161,7 +204,8 @@ export default function User() {
                       จำนวนผู้ใช้ทั้งหมด: <strong>{items.length}</strong> คน
                       {searchTerm && (
                         <span className="ms-3">
-                          | ผลการค้นหา: <strong>{filteredItems.length}</strong> คน
+                          | ผลการค้นหา: <strong>{filteredItems.length}</strong>{" "}
+                          คน
                         </span>
                       )}
                     </p>
@@ -182,7 +226,7 @@ export default function User() {
                         <button
                           className="btn btn-outline-light"
                           type="button"
-                          onClick={() => setSearchTerm('')}
+                          onClick={() => setSearchTerm("")}
                         >
                           <i className="fas fa-times"></i>
                         </button>
@@ -208,10 +252,15 @@ export default function User() {
               <div className="card-body p-0">
                 {filteredItems.length === 0 ? (
                   <div className="text-center py-5">
-                    <i className="fas fa-search text-muted" style={{ fontSize: '3rem' }}></i>
+                    <i
+                      className="fas fa-search text-muted"
+                      style={{ fontSize: "3rem" }}
+                    ></i>
                     <h4 className="text-muted mt-3">ไม่พบข้อมูล</h4>
                     <p className="text-muted">
-                      {searchTerm ? 'ลองค้นหาด้วยคำอื่น' : 'ยังไม่มีผู้ใช้ในระบบ'}
+                      {searchTerm
+                        ? "ลองค้นหาด้วยคำอื่น"
+                        : "ยังไม่มีผู้ใช้ในระบบ"}
                     </p>
                   </div>
                 ) : (
@@ -250,7 +299,10 @@ export default function User() {
                       </thead>
                       <tbody>
                         {filteredItems.map((item, index) => (
-                          <tr key={item.id} className={index % 2 === 0 ? 'table-light' : ''}>
+                          <tr
+                            key={item.id}
+                            className={index % 2 === 0 ? "table-light" : ""}
+                          >
                             <td className="text-center">
                               <span className="badge bg-primary rounded-pill">
                                 #{item.id}
@@ -258,54 +310,71 @@ export default function User() {
                             </td>
                             <td>
                               <span className="text-dark fw-medium">
-                                {item.firstname || '-'}
+                                {item.firstname || "-"}
                               </span>
                             </td>
                             <td>
                               <span className="text-dark fw-medium">
-                                {item.fullname || '-'}
+                                {item.fullname || "-"}
                               </span>
                             </td>
                             <td>
                               <span className="text-dark fw-medium">
-                                {item.lastname || '-'}
+                                {item.lastname || "-"}
                               </span>
                             </td>
                             <td>
                               <span className="badge bg-success">
-                                {item.username || '-'}
+                                {item.username || "-"}
                               </span>
                             </td>
-                            <td className="text-truncate" style={{ maxWidth: '200px' }}>
+                            <td
+                              className="text-truncate"
+                              style={{ maxWidth: "200px" }}
+                            >
                               <small className="text-muted">
-                                {item.address || '-'}
+                                {item.address || "-"}
                               </small>
                             </td>
                             <td>
-                              <span className={`badge ${
-                                item.sex === 'ชาย' ? 'bg-info' : 
-                                item.sex === 'หญิง' ? 'bg-warning' : 'bg-secondary'
-                              }`}>
-                                {item.sex || '-'}
+                              <span
+                                className={`badge ${
+                                  item.sex === "ชาย"
+                                    ? "bg-info"
+                                    : item.sex === "หญิง"
+                                      ? "bg-warning"
+                                      : "bg-secondary"
+                                }`}
+                              >
+                                {item.sex || "-"}
                               </span>
                             </td>
                             <td>
                               <small className="text-muted">
-                                {item.birthday ? new Date(item.birthday).toLocaleDateString('th-TH') : '-'}
+                                {item.birthday
+                                  ? new Date(item.birthday).toLocaleDateString(
+                                      "th-TH",
+                                    )
+                                  : "-"}
                               </small>
                             </td>
                             <td className="text-center">
-                              <div className="btn-group btn-group-sm" role="group">
-                                <Link 
+                              <div
+                                className="btn-group btn-group-sm"
+                                role="group"
+                              >
+                                <Link
                                   href={`/admin/users/edit/${item.id}`}
                                   className="btn btn-warning btn-sm"
                                   title="แก้ไขข้อมูล"
                                 >
                                   <i className="fas fa-edit"></i> แก้ไข
                                 </Link>
-                                <button 
+                                <button
                                   className="btn btn-danger btn-sm"
-                                  onClick={() => handleDelete(item.id, item.username)}
+                                  onClick={() =>
+                                    handleDelete(item.id, item.username)
+                                  }
                                   disabled={deleteLoading === item.id}
                                   title="ลบข้อมูล"
                                 >
@@ -342,7 +411,7 @@ export default function User() {
                   <div className="col-md-6">
                     <small className="text-muted">
                       <i className="fas fa-clock me-2"></i>
-                      อัพเดทล่าสุด: {new Date().toLocaleString('th-TH')}
+                      อัพเดทล่าสุด: {new Date().toLocaleString("th-TH")}
                     </small>
                   </div>
                   <div className="col-md-6 text-md-end">
@@ -357,8 +426,9 @@ export default function User() {
           </div>
         </div>
       </div>
-      
-      <br /><br />
+
+      <br />
+      <br />
     </>
   );
 }

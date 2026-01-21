@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Swal from 'sweetalert2'
 import { useParams, useRouter } from 'next/navigation'
 
-export default function Page() {
+export default function EditUserPage() {
   const router = useRouter()
   const params = useParams();
   const id = params.id;
@@ -14,7 +14,9 @@ export default function Page() {
   const [lastname, setLastname] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [items, setItems] = useState([]);
+  const [address, setAddress] = useState('')
+  const [sex, setSex] = useState('')
+  const [birthday, setBirthday] = useState('')
   
   // Status states
   const [loading, setLoading] = useState(true)
@@ -22,28 +24,46 @@ export default function Page() {
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
 
+  // 1. Fetch Data
   useEffect(() => {
-    async function getUsers() {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      router.push('/adminlogin');
+      return;
+    }
+
+    async function getUser() {
       try {
         setLoading(true)
         setError('')
         
-        const res = await fetch(`https://backend-nextjs-virid.vercel.app/api/users/${id}`);
+        const res = await fetch(`https://backend-1-six-lime.vercel.app/api/users/${id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
         if (!res.ok) {
           throw new Error('ไม่สามารถดึงข้อมูลผู้ใช้ได้');
         }
         
         const data = await res.json();
-        setItems(data);
+        
+        // เช็คเผื่อ API ส่งมาเป็น array
+        const user = Array.isArray(data) ? data[0] : data;
 
-        // กำหนดค่า state เริ่มต้นจาก API
-        if (data.length > 0) {
-          const user = data[0];
+        if (user) {
           setFirstname(user.firstname || '');
           setFullname(user.fullname || '');
           setLastname(user.lastname || '');
           setUsername(user.username || '');
-          setPassword(user.password || '');
+          setAddress(user.address || '');
+          setSex(user.sex || '');
+          if (user.birthday) {
+            setBirthday(user.birthday.split('T')[0]);
+          }
         } else {
           setError('ไม่พบข้อมูลผู้ใช้')
         }
@@ -55,48 +75,71 @@ export default function Page() {
         setLoading(false)
       }
     }
- 
-    getUsers();
-  }, [id]);
 
+    if (id) {
+        getUser();
+    }
+  }, [id, router]);
+
+  // 2. Update Data
   const handleUpdateSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true)
     setError('')
     
+    if (!firstname || !fullname || !lastname || !username || !address || !sex || !birthday) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'ข้อมูลไม่ครบ',
+            text: 'กรุณากรอกข้อมูลให้ครบทุกช่องที่มีเครื่องหมาย *',
+            confirmButtonColor: '#ffc107'
+        });
+        setSubmitting(false);
+        return;
+    }
+
     try {
-      const res = await fetch('https://backend-nextjs-virid.vercel.app/api/users', {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`https://backend-1-six-lime.vercel.app/api/users/${id}`, {
         method: 'PUT',
         headers: {
-          Accept: 'application/json',
+          'Accept': 'application/json',
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ id, firstname, fullname, lastname, username, password }),
+        body: JSON.stringify({ 
+            id, 
+            firstname, 
+            fullname, 
+            lastname, 
+            username, 
+            password: password || undefined,
+            address,
+            sex,
+            birthday
+        }),
       })
       
       const result = await res.json();
-      console.log(result);
       
       if (res.ok) {
         Swal.fire({
           icon: 'success',
           title: 'สำเร็จ!',
-          html: '<h5 class="text-success">✅ ปรับปรุงข้อมูลเรียบร้อยแล้ว</h5><p class="text-muted">ข้อมูลของคุณได้รับการอัปเดตเรียบร้อยแล้ว</p>',
+          html: '<h5 class="text-success">✅ ปรับปรุงข้อมูลเรียบร้อยแล้ว</h5>',
           showConfirmButton: false,
-          timer: 2500,
+          timer: 2000,
           timerProgressBar: true
         }).then(function () {
           router.push('/admin/users')
         });
         
       } else {
-        throw new Error(result.message || 'เกิดข้อผิดพลาดในการปรับปรุงข้อมูل');
+        throw new Error(result.message || 'เกิดข้อผิดพลาดในการปรับปรุงข้อมูล');
       }
       
     } catch (error) {
       console.error('Update error:', error);
-      setError(error.message || 'ไม่สามารถเชื่อมต่อเซิร์ฟเวอร์ได้');
-      
       Swal.fire({
         icon: 'error',
         title: '❌ เกิดข้อผิดพลาด',
@@ -109,54 +152,24 @@ export default function Page() {
     }
   }
 
-  // Loading state
   if (loading) {
     return (
-      <>
-        <br /><br /><br />
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-              <div className="card shadow-sm">
-                <div className="card-body text-center py-5">
-                  <div className="spinner-border text-primary mb-3" style={{ width: '3rem', height: '3rem' }}>
-                    <span className="visually-hidden">Loading...</span>
-                  </div>
-                  <h4 className="text-primary">กำลังโหลดข้อมูล...</h4>
-                  <p className="text-muted">โปรดรอสักครู่</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </>
+      <div className="container py-5 text-center">
+         <div className="spinner-border text-primary" role="status"><span className="visually-hidden">Loading...</span></div>
+         <p className="mt-2">กำลังโหลดข้อมูล...</p>
+      </div>
     )
   }
 
-  // Error state
-  if (error && items.length === 0) {
+  if (error) {
     return (
-      <>
-        <br /><br /><br />
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-md-6">
-              <div className="alert alert-danger text-center" role="alert">
-                <h1 className="display-1">⚠️</h1>
-                <h4 className="alert-heading">เกิดข้อผิดพลาด!</h4>
+        <div className="container py-5">
+            <div className="alert alert-danger text-center">
+                <h4>เกิดข้อผิดพลาด</h4>
                 <p>{error}</p>
-                <hr />
-                <button 
-                  className="btn btn-danger"
-                  onClick={() => window.location.reload()}
-                >
-                  <i className="fas fa-redo me-2"></i>ลองใหม่อีกครั้ง
-                </button>
-              </div>
+                <button className="btn btn-danger" onClick={() => window.location.reload()}>ลองใหม่</button>
             </div>
-          </div>
         </div>
-      </>
     )
   }
 
@@ -182,14 +195,6 @@ export default function Page() {
               </div>
             </div>
 
-            {/* Error Alert */}
-            {error && (
-              <div className="alert alert-danger d-flex align-items-center mb-4" role="alert">
-                <i className="fas fa-exclamation-triangle me-2"></i>
-                <div>{error}</div>
-              </div>
-            )}
-
             {/* Form Card */}
             <div className="card shadow-sm border-0">
               <div className="card-header bg-light border-0">
@@ -200,17 +205,13 @@ export default function Page() {
               </div>
               
               <div className="card-body p-4">
-                {items.map((item) => (
-                  <form key={item.id} onSubmit={handleUpdateSubmit}>
+                  {/* *** จุดที่แก้ไข: ไม่มีการใช้ items.map แล้ว *** */}
+                  <form onSubmit={handleUpdateSubmit}>
                     
                     {/* คำนำหน้า */}
                     <div className="mb-3">
-                      <label className="form-label fw-bold">
-                        <i className="fas fa-user-tag me-2 text-primary"></i>
-                        คำนำหน้า <span className="text-danger">*</span>
-                      </label>
+                      <label className="form-label fw-bold">คำนำหน้า <span className="text-danger">*</span></label>
                       <select 
-                        name="firstname" 
                         value={firstname}
                         onChange={(e) => setFirstname(e.target.value)} 
                         className="form-select form-select-lg"
@@ -223,50 +224,80 @@ export default function Page() {
                       </select>
                     </div>
 
-                    {/* ชื่อ */}
-                    <div className="mb-3">
-                      <label className="form-label fw-bold">
-                        <i className="fas fa-user me-2 text-success"></i>
-                        ชื่อ <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="กรอกชื่อ"
-                        value={fullname}
-                        onChange={(e) => setFullname(e.target.value)}
-                        className="form-control form-control-lg"
-                        required
-                      />
+                    {/* ชื่อ - นามสกุล */}
+                    <div className="row mb-3">
+                        <div className="col-md-6">
+                            <label className="form-label fw-bold">ชื่อ <span className="text-danger">*</span></label>
+                            <input
+                                type="text"
+                                className="form-control form-control-lg"
+                                value={fullname}
+                                onChange={(e) => setFullname(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label fw-bold">นามสกุล <span className="text-danger">*</span></label>
+                            <input
+                                type="text"
+                                className="form-control form-control-lg"
+                                value={lastname}
+                                onChange={(e) => setLastname(e.target.value)}
+                                required
+                            />
+                        </div>
                     </div>
 
-                    {/* นามสกุล */}
+                    {/* ที่อยู่ */}
                     <div className="mb-3">
-                      <label className="form-label fw-bold">
-                        <i className="fas fa-user me-2 text-info"></i>
-                        นามสกุล <span className="text-danger">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="กรอกนามสกุล"
-                        value={lastname}
-                        onChange={(e) => setLastname(e.target.value)}
-                        className="form-control form-control-lg"
-                        required
-                      />
+                        <label className="form-label fw-bold">ที่อยู่ <span className="text-danger">*</span></label>
+                        <textarea 
+                            className="form-control" 
+                            rows="3"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                            required
+                        ></textarea>
                     </div>
+
+                    {/* เพศ และ วันเกิด */}
+                    <div className="row mb-3">
+                        <div className="col-md-6">
+                            <label className="form-label fw-bold">เพศ <span className="text-danger">*</span></label>
+                            <select 
+                                className="form-select form-select-lg"
+                                value={sex}
+                                onChange={(e) => setSex(e.target.value)}
+                                required
+                            >
+                                <option value="">ระบุเพศ</option>
+                                <option value="ชาย">ชาย</option>
+                                <option value="หญิง">หญิง</option>
+                                <option value="อื่นๆ">อื่นๆ</option>
+                            </select>
+                        </div>
+                        <div className="col-md-6">
+                            <label className="form-label fw-bold">วันเกิด <span className="text-danger">*</span></label>
+                            <input 
+                                type="date" 
+                                className="form-control form-control-lg"
+                                value={birthday}
+                                onChange={(e) => setBirthday(e.target.value)}
+                                required
+                            />
+                        </div>
+                    </div>
+
+                    <hr className="my-4" />
 
                     {/* Username */}
                     <div className="mb-3">
-                      <label className="form-label fw-bold">
-                        <i className="fas fa-at me-2 text-warning"></i>
-                        ชื่อผู้ใช้ <span className="text-danger">*</span>
-                      </label>
+                      <label className="form-label fw-bold">ชื่อผู้ใช้ <span className="text-danger">*</span></label>
                       <input
                         type="text"
-                        placeholder="กรอกชื่อผู้ใช้"
+                        className="form-control form-control-lg bg-light"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
-                        className="form-control form-control-lg"
                         required
                       />
                     </div>
@@ -274,17 +305,15 @@ export default function Page() {
                     {/* Password */}
                     <div className="mb-4">
                       <label className="form-label fw-bold">
-                        <i className="fas fa-key me-2 text-danger"></i>
-                        รหัสผ่าน <span className="text-danger">*</span>
+                        รหัสผ่าน <small className="text-muted fw-normal">(เว้นว่างไว้หากไม่ต้องการเปลี่ยน)</small>
                       </label>
                       <div className="input-group input-group-lg">
                         <input
                           type={showPassword ? "text" : "password"}
-                          placeholder="กรอกรหัสผ่าน"
+                          placeholder="กรอกรหัสผ่านใหม่"
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
                           className="form-control"
-                          required
                         />
                         <button
                           className="btn btn-outline-secondary"
@@ -296,30 +325,17 @@ export default function Page() {
                       </div>
                     </div>
 
-                    {/* Submit Button */}
+                    {/* Buttons */}
                     <div className="d-grid gap-2 mb-3">
                       <button
                         type="submit"
                         disabled={submitting}
-                        className={`btn btn-lg ${
-                          submitting ? 'btn-secondary' : 'btn-primary'
-                        }`}
+                        className={`btn btn-lg ${submitting ? 'btn-secondary' : 'btn-primary'}`}
                       >
-                        {submitting ? (
-                          <>
-                            <span className="spinner-border spinner-border-sm me-2"></span>
-                            กำลังปรับปรุงข้อมูล...
-                          </>
-                        ) : (
-                          <>
-                            <i className="fas fa-save me-2"></i>
-                            ปรับปรุงข้อมูล
-                          </>
-                        )}
+                        {submitting ? 'กำลังบันทึก...' : 'บันทึกการเปลี่ยนแปลง'}
                       </button>
                     </div>
 
-                    {/* Back Button */}
                     <div className="d-grid">
                       <button
                         type="button"
@@ -327,38 +343,11 @@ export default function Page() {
                         className="btn btn-outline-secondary btn-lg"
                         disabled={submitting}
                       >
-                        <i className="fas fa-arrow-left me-2"></i>
-                        กลับไปหน้ารายการ
+                        ยกเลิก / กลับ
                       </button>
                     </div>
 
                   </form>
-                ))}
-              </div>
-            </div>
-
-            {/* Info Card */}
-            <div className="card border-0 bg-light mt-4">
-              <div className="card-body">
-                <div className="row">
-                  <div className="col-md-6">
-                    <h6 className="text-primary">
-                      <i className="fas fa-info-circle me-2"></i>
-                      คำแนะนำ:
-                    </h6>
-                    <ul className="list-unstyled small text-muted mb-0">
-                      <li><i className="fas fa-check me-2 text-success"></i>กรอกข้อมูลให้ครบถ้วนทุกช่อง</li>
-                      <li><i className="fas fa-check me-2 text-success"></i>รหัสผ่านควรมีความปลอดภัยสูง</li>
-                      <li><i className="fas fa-check me-2 text-success"></i>ตรวจสอบข้อมูลให้ถูกต้องก่อนบันทึก</li>
-                    </ul>
-                  </div>
-                  <div className="col-md-6 text-md-end">
-                    <small className="text-muted">
-                      <i className="fas fa-clock me-2"></i>
-                      อัพเดทล่าสุด: {new Date().toLocaleString('th-TH')}
-                    </small>
-                  </div>
-                </div>
               </div>
             </div>
 
