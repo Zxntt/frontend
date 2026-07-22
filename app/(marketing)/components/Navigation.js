@@ -125,9 +125,9 @@ export default function Navigation() {
               </li>
               <li className="nav-item">
                 <Link
-                  href="/standings"
+                  href="/history"
                   className={`nav-link ${
-                    pathname === "/standings" ? "active fw-bold text-accent" : "nav-link-hover"
+                    pathname === "/่history" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
                   History
@@ -135,9 +135,9 @@ export default function Navigation() {
               </li>
               <li className="nav-item">
                 <Link
-                  href="/information/manager"
+                  href="/information/setting"
                   className={`nav-link ${
-                    pathname === "/information/manager" ? "active fw-bold text-accent" : "nav-link-hover"
+                    pathname === "/information/setting" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
                   Settings

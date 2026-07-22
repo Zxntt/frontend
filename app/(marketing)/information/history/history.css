@@ -1,0 +1,126 @@
+.page-history {
+  position: relative;
+  min-height: 100vh;
+}
+
+.page-history .container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.page-history h1 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--color-text-primary, #1a1a1a);
+  margin-bottom: 2rem;
+}
+
+/* FILTER TABS */
+.filter-btn {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: transparent;
+  color: var(--color-text-secondary, #6b7280);
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.filter-btn:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.filter-btn.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+/* CLIP LIST */
+.clip-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: var(--color-bg-soft, #f5f6f8);
+  border-radius: 10px;
+  padding: 10px 14px;
+  transition: background 0.15s ease;
+}
+
+.clip-row:hover {
+  background: #eef1f5;
+  cursor: pointer;
+}
+
+.clip-thumb {
+  width: 56px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
+  border-radius: 6px;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.clip-info {
+  flex: 1;
+}
+
+.clip-label {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text-primary, #1a1a1a);
+}
+
+.clip-time {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+/* TYPE BADGE */
+.badge-type {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.badge-type.motion {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+}
+
+.badge-type.person {
+  background: rgba(220, 38, 38, 0.1);
+  color: #dc2626;
+}
+
+/* EMPTY STATE */
+.empty-state {
+  text-align: center;
+  color: var(--color-text-secondary, #6b7280);
+  padding: 2.5rem 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  .page-history .container {
+    padding: 2rem 1rem;
+  }
+
+  .page-history h1 {
+    font-size: 1.4rem;
+  }
+
+  .clip-time {
+    display: none;
+  }
+}
