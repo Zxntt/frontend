@@ -1,62 +1,116 @@
 "use client";
 
-import styles from './manager.css'; 
+import { useState } from "react";
 
 export default function Manager() {
-  const riders = [
-    { id: 1, name: "Rider 1", image: "/images/team/1.png", manager: "Paolo Bonora  Massimo Rivola " },
-    { id: 2, name: "Rider 2", image: "/images/team/2.png", manager: "Nadia Padovani " },
-    { id: 3, name: "Rider 3", image: "/images/team/3.png", manager: "Davide Tardozzi  Luigi Dall’Igna" },
-    { id: 4, name: "Rider 4", image: "/images/team/4.png", manager: "Tetsuhiro Kuwata " },
-    { id: 5, name: "Rider 5", image: "/images/team/5.png", manager: "Lucio Cecchinello " },
-    { id: 6, name: "Rider 6", image: "/images/team/6.png", manager: "Paolo Pavesio  Maio Meregalli" },
-    { id: 7, name: "Rider 7", image: "/images/team/7.png", manager: "Pablo Nieto  Valentino Rossi" },
-    { id: 8, name: "Rider 8", image: "/images/team/8.png", manager: "Gino Borsoi  PaoloCampinoti" },
-    { id: 9, name: "Rider 9", image: "/images/team/9.png", manager: "Pit Beirer  Aki Ajo" },
-    { id: 10, name: "Rider 10", image: "/images/team/10.png", manager: "Hervé Poncharal  Nicolas Goyon" },
-    { id: 11, name: "Rider 11", image: "/images/team/11.png", manager: "WilcoZeelenberg  Davide Brivio" },
-  ];
+  const [cameraName, setCameraName] = useState("Front door");
+  const [sensitivity, setSensitivity] = useState(60);
+  const [notifyMotion, setNotifyMotion] = useState(true);
+  const [notifyPerson, setNotifyPerson] = useState(true);
+  const [recordAlways, setRecordAlways] = useState(false);
+  const [saved, setSaved] = useState(false);
 
-  const rows = [];
-  for (let i = 0; i < riders.length; i += 4) {
-    rows.push(riders.slice(i, i + 4));
-  }
+  const handleSave = () => {
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2000);
+  };
 
   return (
     <div className="page-manager">
-      <div className="container py-5">
-        <h1 className="display-5 fw-bold text-center text-danger mb-5">
-          - Manager -
+      <div className="container py-5" style={{ maxWidth: "640px" }}>
+        <h1 className="fw-bold mb-4" style={{ fontSize: "1.6rem" }}>
+          Settings
         </h1>
 
-        <table className="table table-bordered text-center align-middle">
-          <tbody>
-            {rows.map((row, idx) => (
-              <tr key={idx}>
-                {row.map((rider) => (
-                  <td key={rider.id} style={{ width: "25%", verticalAlign: "top" }}>
-                    <img
-                      src={rider.image}
-                      alt={rider.name}
-                      style={{
-                        width: "100%",
-                        height: "180px",
-                        objectFit: "cover",
-                        borderBottom: "2px solid #dc3545",
-                      }}
-                    />
-                    <div className="mt-2 fw-semibold text-danger">{rider.manager}</div>
-                  </td>
-                ))}
-                {row.length < 4 &&
-                  Array.from({ length: 4 - row.length }).map((_, i) => (
-                    <td key={"empty-" + i}></td>
-                  ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        {/* CAMERA SECTION */}
+        <div className="settings-card mb-3">
+          <h2 className="section-title">Camera</h2>
+
+          <label className="form-label">Camera name</label>
+          <input
+            type="text"
+            className="form-control mb-3"
+            value={cameraName}
+            onChange={(e) => setCameraName(e.target.value)}
+          />
+
+          <label className="form-label d-flex justify-content-between">
+            <span>Motion sensitivity</span>
+            <span className="text-secondary">{sensitivity}%</span>
+          </label>
+          <input
+            type="range"
+            className="form-range"
+            min="0"
+            max="100"
+            value={sensitivity}
+            onChange={(e) => setSensitivity(Number(e.target.value))}
+          />
+        </div>
+
+        {/* NOTIFICATIONS SECTION */}
+        <div className="settings-card mb-3">
+          <h2 className="section-title">Notifications</h2>
+
+          <div className="form-check form-switch d-flex justify-content-between align-items-center mb-3">
+            <label className="form-check-label">Motion detected</label>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              checked={notifyMotion}
+              onChange={() => setNotifyMotion(!notifyMotion)}
+            />
+          </div>
+
+          <div className="form-check form-switch d-flex justify-content-between align-items-center mb-3">
+            <label className="form-check-label">Person detected</label>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              checked={notifyPerson}
+              onChange={() => setNotifyPerson(!notifyPerson)}
+            />
+          </div>
+
+          <div className="form-check form-switch d-flex justify-content-between align-items-center">
+            <label className="form-check-label">Record continuously</label>
+            <input
+              className="form-check-input"
+              type="checkbox"
+              checked={recordAlways}
+              onChange={() => setRecordAlways(!recordAlways)}
+            />
+          </div>
+        </div>
+
+        {/* ACCOUNT SECTION */}
+        <div className="settings-card mb-4">
+          <h2 className="section-title">Account</h2>
+          <label className="form-label">Email</label>
+          <input type="email" className="form-control mb-3" placeholder="you@example.com" />
+          <button className="btn btn-outline btn-sm">Change password</button>
+        </div>
+
+        <button className="btn btn-primary" onClick={handleSave}>
+          {saved ? "Saved" : "Save changes"}
+        </button>
       </div>
+
+      <style jsx>{`
+        .settings-card {
+          background: var(--color-bg-soft, #f5f6f8);
+          border-radius: 12px;
+          padding: 1.25rem 1.5rem;
+        }
+        .section-title {
+          font-size: 1rem;
+          font-weight: 600;
+          margin-bottom: 1rem;
+        }
+        .form-check-input {
+          cursor: pointer;
+        }
+      `}</style>
     </div>
   );
 }
