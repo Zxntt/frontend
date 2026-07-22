@@ -94,7 +94,7 @@ export default function Navigation() {
             className="navbar-brand fw-bold d-flex align-items-center gap-2"
           >
             <i className="bi bi-bell-fill fs-4 text-accent"></i>
-            <span className="brand-text">NestBell</span>
+            <span className="brand-text">SmartDoorBell</span>
           </Link>
 
           {/* TOGGLER */}
