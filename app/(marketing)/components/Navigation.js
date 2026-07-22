@@ -12,10 +12,10 @@ export default function Navigation() {
   const [user, setUser] = useState(null);
   const lastScrollY = useRef(0);
 
-  // ✅ เพิ่ม State สำหรับคุม Dropdown เอง (แก้ปัญหากดไม่ติด)
+  // State คุม Dropdown เอง
   const [openDropdown, setOpenDropdown] = useState(null); // 'info' | 'profile' | null
 
-  // ✅ Theme toggle
+  // Theme toggle
   useEffect(() => {
     if (theme === "dark") {
       document.body.classList.add("bg-black", "text-white");
@@ -26,7 +26,7 @@ export default function Navigation() {
     }
   }, [theme]);
 
-  // ✅ Scroll logic
+  // Scroll logic
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -34,7 +34,7 @@ export default function Navigation() {
 
       if (currentScrollY > lastScrollY.current && currentScrollY > 50) {
         setShowNavbar(false);
-        setOpenDropdown(null); // ปิด Dropdown เมื่อเลื่อนหน้าจอ
+        setOpenDropdown(null);
       } else {
         setShowNavbar(true);
       }
@@ -45,10 +45,10 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // ✅ Click Outside to Close (คลิกพื้นที่อื่นเพื่อปิด Dropdown)
+  // Click outside to close
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.dropdown-container')) {
+      if (!event.target.closest(".dropdown-container")) {
         setOpenDropdown(null);
       }
     };
@@ -56,7 +56,7 @@ export default function Navigation() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // ✅ Login Check
+  // Login check
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn") === "true";
     const adminStatus = localStorage.getItem("isAdminConfirmed") === "true";
@@ -100,16 +100,10 @@ export default function Navigation() {
           {/* LOGO */}
           <Link
             href="/"
-            className="navbar-brand fw-bold d-flex align-items-center gap-2 text-danger"
+            className="navbar-brand fw-bold d-flex align-items-center gap-2"
           >
-            <img
-              src={
-                theme === "dark" ? "/images/logo/1.png" : "/images/logo/2.png"
-              }
-              alt="Logo"
-              width={180}
-              height={100}
-            />
+            <i className="bi bi-bell-fill fs-4 text-accent"></i>
+            <span className="brand-text">NestBell</span>
           </Link>
 
           {/* TOGGLER */}
@@ -132,42 +126,43 @@ export default function Navigation() {
                 <Link
                   href="/"
                   className={`nav-link ${
-                    pathname === "/"
-                      ? "active fw-bold text-danger"
-                      : "nav-link-hover"
+                    pathname === "/" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
                   Home
                 </Link>
               </li>
 
-              {/* DROPDOWN: Information (ใช้ State คุมเอง) */}
+              {/* DROPDOWN: Products */}
               <li className="nav-item dropdown dropdown-container">
                 <button
-                  className={`nav-link dropdown-toggle nav-link-hover btn btn-link ${openDropdown === 'info' ? 'show' : ''}`}
-                  onClick={() => toggleDropdown('info')}
+                  className={`nav-link dropdown-toggle nav-link-hover btn btn-link ${
+                    openDropdown === "info" ? "show" : ""
+                  }`}
+                  onClick={() => toggleDropdown("info")}
                   style={{ textDecoration: "none" }}
                 >
-                  Information
+                  Products
                 </button>
-                <ul className={`dropdown-menu shadow-sm rounded-3 border-0 ${openDropdown === 'info' ? 'show' : ''}`}
-                    style={{ marginTop: '0' }}
+                <ul
+                  className={`dropdown-menu shadow-sm rounded-3 border-0 ${
+                    openDropdown === "info" ? "show" : ""
+                  }`}
+                  style={{ marginTop: "0" }}
                 >
                   {[
-                    { href: "/information/team", label: "Team", icon: "bi-people-fill" },
-                    { href: "/information/rider", label: "Rider", icon: "bi-person-bounding-box" },
-                    { href: "/information/car", label: "Car", icon: "bi-truck-front-fill" },
-                    { href: "/information/manager", label: "GGG", icon: "bi-person-gear" },
+                    { href: "/information/car", label: "Devices", icon: "bi-camera-video-fill" },
+                    { href: "/information/rider", label: "Features", icon: "bi-shield-check" },
+                    { href: "/information/team", label: "About us", icon: "bi-people-fill" },
+                    { href: "/information/manager", label: "Support", icon: "bi-headset" },
                   ].map((item) => (
                     <li key={item.href}>
                       <Link
                         href={item.href}
                         className={`dropdown-item dropdown-item-hover ${
-                          pathname === item.href
-                            ? "active text-danger fw-bold"
-                            : ""
+                          pathname === item.href ? "active text-accent fw-bold" : ""
                         }`}
-                        onClick={() => setOpenDropdown(null)} // ปิดเมื่อคลิก
+                        onClick={() => setOpenDropdown(null)}
                       >
                         <i className={`bi ${item.icon} me-2`}></i>
                         {item.label}
@@ -181,12 +176,10 @@ export default function Navigation() {
                 <Link
                   href="/standings"
                   className={`nav-link ${
-                    pathname === "/standings"
-                      ? "active fw-bold text-danger"
-                      : "nav-link-hover"
+                    pathname === "/standings" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
-                  Standings
+                  Reviews
                 </Link>
               </li>
 
@@ -194,12 +187,10 @@ export default function Navigation() {
                 <Link
                   href="/register"
                   className={`nav-link ${
-                    pathname === "/register"
-                      ? "active fw-bold text-danger"
-                      : "nav-link-hover"
+                    pathname === "/register" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
-                  Register
+                  Register device
                 </Link>
               </li>
             </ul>
@@ -209,30 +200,30 @@ export default function Navigation() {
               {/* THEME TOGGLE */}
               <button
                 onClick={toggleTheme}
-                className="btn btn-outline-danger btn-sm d-flex align-items-center gap-2 px-3 py-1 rounded-pill"
-                title="Toggle Theme"
+                className="btn btn-outline-accent btn-sm d-flex align-items-center gap-2 px-3 py-1 rounded-pill"
+                title="Toggle theme"
               >
                 {theme === "dark" ? (
                   <>
-                    <i className="bi bi-sun-fill fs-5 text-warning"></i>
-                    <span className="d-none d-md-inline fw-semibold">
-                      Light
-                    </span>
+                    <i className="bi bi-sun-fill fs-6"></i>
+                    <span className="d-none d-md-inline fw-semibold">Light</span>
                   </>
                 ) : (
                   <>
-                    <i className="bi bi-moon-stars-fill fs-5 text-danger"></i>
+                    <i className="bi bi-moon-stars-fill fs-6"></i>
                     <span className="d-none d-md-inline fw-semibold">Dark</span>
                   </>
                 )}
               </button>
 
-              {/* LOGIN / PROFILE (ใช้ State คุมเอง) */}
+              {/* LOGIN / PROFILE */}
               {isLoggedIn ? (
                 <div className="dropdown dropdown-container">
                   <button
-                    className={`btn btn-profile d-flex align-items-center gap-2 px-3 py-1 rounded-pill dropdown-toggle ${openDropdown === 'profile' ? 'show' : ''}`}
-                    onClick={() => toggleDropdown('profile')}
+                    className={`btn btn-profile d-flex align-items-center gap-2 px-3 py-1 rounded-pill dropdown-toggle ${
+                      openDropdown === "profile" ? "show" : ""
+                    }`}
+                    onClick={() => toggleDropdown("profile")}
                   >
                     <div className="profile-avatar d-flex justify-content-center align-items-center fw-bold">
                       {user?.username ? user.username[0].toUpperCase() : "U"}
@@ -242,8 +233,10 @@ export default function Navigation() {
                     </span>
                   </button>
                   <ul
-                    className={`dropdown-menu dropdown-menu-end profile-menu ${openDropdown === 'profile' ? 'show' : ''}`}
-                    style={{ marginTop: '10px' }}
+                    className={`dropdown-menu dropdown-menu-end profile-menu ${
+                      openDropdown === "profile" ? "show" : ""
+                    }`}
+                    style={{ marginTop: "10px" }}
                   >
                     <li>
                       <div className="dropdown-item-text d-flex align-items-center gap-2">
@@ -251,10 +244,8 @@ export default function Navigation() {
                           {user?.username ? user.username[0].toUpperCase() : "U"}
                         </div>
                         <div>
-                          <div className="fw-bold">
-                            {user?.username || "User"}
-                          </div>
-                          <small className="text-muted">Rider Member</small>
+                          <div className="fw-bold">{user?.username || "User"}</div>
+                          <small className="text-muted">Device owner</small>
                         </div>
                       </div>
                     </li>
@@ -265,18 +256,18 @@ export default function Navigation() {
                       <button
                         className="dropdown-item text-primary fw-semibold"
                         onClick={() => {
-                            setOpenDropdown(null);
-                            window.location.href = "/admin/users";
+                          setOpenDropdown(null);
+                          window.location.href = "/admin/users";
                         }}
                       >
-                        <i className="bi bi-box-arrow-right me-2"></i>{" "}
+                        <i className="bi bi-speedometer2 me-2"></i>
                         เข้าสู่หน้าระบบจัดการ
                       </button>
                       <button
                         className="dropdown-item text-danger fw-semibold"
                         onClick={handleLogout}
                       >
-                        <i className="bi bi-box-arrow-right me-2"></i>{" "}
+                        <i className="bi bi-box-arrow-right me-2"></i>
                         ออกจากระบบ
                       </button>
                     </li>
@@ -287,7 +278,7 @@ export default function Navigation() {
                   href="/login"
                   className="btn btn-login fw-semibold d-flex align-items-center gap-2 px-3 py-1"
                 >
-                  <i className="bi bi-box-arrow-in-right fs-5"></i>
+                  <i className="bi bi-box-arrow-in-right fs-6"></i>
                   <span className="fw-bold">Login</span>
                 </Link>
               )}
@@ -298,24 +289,24 @@ export default function Navigation() {
 
       {/* STYLES */}
       <style jsx>{`
-        /* ... Styles เดิม ... */
+        .text-accent {
+          color: #2563eb !important;
+        }
+
         .nav-link-hover {
           color: inherit;
-          transition: color 0.3s ease, transform 0.2s ease;
+          transition: color 0.2s ease;
         }
         .nav-link-hover:hover {
-          color: #dc3545;
-          transform: scale(1.05);
-          text-shadow: 0 0 8px rgba(220, 53, 69, 0.6);
+          color: #2563eb;
         }
 
         nav.navbar {
-          transition: background-color 0.4s ease, transform 0.3s ease, opacity 0.3s ease;
-          backdrop-filter: saturate(180%) blur(10px);
-          -webkit-backdrop-filter: saturate(180%) blur(10px);
+          transition: background-color 0.3s ease, transform 0.3s ease, opacity 0.3s ease;
           position: sticky;
           top: 0;
-          z-index: 9999; /* Z-Index สูงสุด */
+          z-index: 9999;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .nav-hidden {
@@ -330,80 +321,60 @@ export default function Navigation() {
           pointer-events: auto;
         }
 
+        .brand-text {
+          letter-spacing: 0.2px;
+        }
+
+        .btn-outline-accent {
+          border: 1px solid rgba(37, 99, 235, 0.4);
+          color: inherit;
+          background: transparent;
+        }
+        .btn-outline-accent:hover {
+          background: rgba(37, 99, 235, 0.1);
+        }
+
         .btn-login {
-          position: relative;
-          background: linear-gradient(135deg, #ff0000, #dc3545, #a00028);
-          border: 2px solid rgba(255, 255, 255, 0.15);
+          background: #2563eb;
+          border: none;
           color: #fff !important;
-          font-weight: 700;
-          letter-spacing: 1px;
-          text-transform: uppercase;
-          border-radius: 50px;
-          padding: 0.6rem 1.4rem;
-          transition: all 0.4s ease;
-          box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+          font-weight: 600;
+          border-radius: 8px;
+          padding: 0.5rem 1.2rem;
+          transition: background 0.2s ease;
           display: flex;
           align-items: center;
           gap: 0.4rem;
-          overflow: hidden;
-          z-index: 1;
-        }
-
-        .btn-login::before {
-          content: "";
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          width: 150%;
-          height: 150%;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(255, 0, 0, 0.5) 0%, transparent 70%);
-          transform: translate(-50%, -50%) scale(0.8);
-          opacity: 0.6;
-          z-index: -1;
-          pointer-events: none;
-          animation: pulseGlow 2s infinite ease-in-out;
-        }
-
-        @keyframes pulseGlow {
-          0% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
-          50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.3; }
-          100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.6; }
         }
 
         .btn-login:hover {
-          background: linear-gradient(135deg, #ff3333, #ff1a1a, #dc143c);
-          box-shadow: 0 0 25px rgba(255, 0, 0, 0.9), 0 0 50px rgba(255, 0, 0, 0.7);
-          transform: scale(1.05);
+          background: #1d4ed8;
         }
 
         .btn-profile {
-          background: #111;
-          border: 1px solid #dc3545;
-          color: #fff;
-          transition: all 0.3s ease;
+          background: transparent;
+          border: 1px solid rgba(37, 99, 235, 0.4);
+          color: inherit;
+          transition: background 0.2s ease;
         }
         .btn-profile:hover {
-          background: #dc3545;
-          border-color: #ff4d4d;
-          box-shadow: 0 0 12px rgba(220, 53, 69, 0.8);
+          background: rgba(37, 99, 235, 0.1);
         }
 
         .profile-avatar {
           width: 28px;
           height: 28px;
           border-radius: 50%;
-          background: linear-gradient(145deg, #dc3545, #a00028);
+          background: #2563eb;
           color: #fff;
-          font-size: 0.9rem;
-          box-shadow: 0 0 6px rgba(220, 53, 69, 0.7);
+          font-size: 0.85rem;
         }
 
         .profile-menu {
-          background: #fffdfdff;
-          border: 1px solid #dc3545;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           border-radius: 10px;
-          box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
         }
       `}</style>
     </>
