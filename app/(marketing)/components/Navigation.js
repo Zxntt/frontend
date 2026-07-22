@@ -157,7 +157,7 @@ export default function Navigation() {
                     { href: "/information/team", label: "Team", icon: "bi-people-fill" },
                     { href: "/information/rider", label: "Rider", icon: "bi-person-bounding-box" },
                     { href: "/information/car", label: "Car", icon: "bi-truck-front-fill" },
-                    { href: "/information/manager", label: "Manager", icon: "bi-person-gear" },
+                    { href: "/information/manager", label: "GGG", icon: "bi-person-gear" },
                   ].map((item) => (
                     <li key={item.href}>
                       <Link
