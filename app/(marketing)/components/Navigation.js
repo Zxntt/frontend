@@ -151,10 +151,7 @@ export default function Navigation() {
                   style={{ marginTop: "0" }}
                 >
                   {[
-                    { href: "/information/car", label: "Devices", icon: "bi-camera-video-fill" },
-                    { href: "/information/rider", label: "Features", icon: "bi-shield-check" },
-                    { href: "/information/team", label: "About us", icon: "bi-people-fill" },
-                    { href: "/information/manager", label: "Support", icon: "bi-headset" },
+
                   ].map((item) => (
                     <li key={item.href}>
                       <Link
