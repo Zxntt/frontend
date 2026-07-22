@@ -7,7 +7,7 @@ export default function Footer() {
         {/* COPYRIGHT */}
         <p className="mb-3 fs-6">
           &copy; {new Date().getFullYear()}{" "}
-          <strong className="brand-name">MyBrand</strong>. All rights reserved.
+          <strong className="brand-name">NestBell</strong>. All rights reserved.
         </p>
 
         {/* SOCIAL ICONS */}
@@ -45,14 +45,14 @@ export default function Footer() {
       {/* STYLES */}
       <style jsx>{`
         .footer {
-          background: linear-gradient(135deg, #1a1a1a, #0d0d0d);
+          background: #0b0b0b;
           color: #aaa;
           border-top: 1px solid rgba(255, 255, 255, 0.08);
           transition: background-color 0.4s ease, color 0.3s ease;
         }
 
         .brand-name {
-          color: #dc3545; /* ใช้สีหลักเดียวกับปุ่ม/ธีม */
+          color: #2563eb; /* ใช้สีหลักเดียวกับปุ่ม/ธีม */
         }
 
         .social-link {
@@ -62,7 +62,7 @@ export default function Footer() {
 
         .social-link:hover {
           transform: scale(1.25);
-          color: #dc3545; /* default hover เป็นสีแดง theme */
+          color: #2563eb; /* default hover เป็นสีฟ้า theme */
         }
 
         .social-link.facebook:hover {
