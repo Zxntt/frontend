@@ -125,9 +125,9 @@ export default function Navigation() {
               </li>
               <li className="nav-item">
                 <Link
-                  href="/history"
+                  href="/information//history"
                   className={`nav-link ${
-                    pathname === "/่history" ? "active fw-bold text-accent" : "nav-link-hover"
+                    pathname === "/information//่history" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
                   History
