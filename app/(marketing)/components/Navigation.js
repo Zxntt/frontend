@@ -12,10 +12,8 @@ export default function Navigation() {
   const [user, setUser] = useState(null);
   const lastScrollY = useRef(0);
 
-  // State คุม Dropdown เอง
-  const [openDropdown, setOpenDropdown] = useState(null); // 'info' | 'profile' | null
+  const [openDropdown, setOpenDropdown] = useState(null); // 'profile' | null
 
-  // Theme toggle
   useEffect(() => {
     if (theme === "dark") {
       document.body.classList.add("bg-black", "text-white");
@@ -26,7 +24,6 @@ export default function Navigation() {
     }
   }, [theme]);
 
-  // Scroll logic
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -45,7 +42,6 @@ export default function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Click outside to close
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".dropdown-container")) {
@@ -56,7 +52,6 @@ export default function Navigation() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Login check
   useEffect(() => {
     const loginStatus = localStorage.getItem("isLoggedIn") === "true";
     const adminStatus = localStorage.getItem("isAdminConfirmed") === "true";
@@ -72,11 +67,7 @@ export default function Navigation() {
   const toggleTheme = () => setTheme(theme === "dark" ? "light" : "dark");
 
   const toggleDropdown = (menuName) => {
-    if (openDropdown === menuName) {
-      setOpenDropdown(null);
-    } else {
-      setOpenDropdown(menuName);
-    }
+    setOpenDropdown(openDropdown === menuName ? null : menuName);
   };
 
   const handleLogout = () => {
@@ -129,46 +120,9 @@ export default function Navigation() {
                     pathname === "/" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
-                  Home
+                  Live
                 </Link>
               </li>
-
-              {/* DROPDOWN: Products */}
-              <li className="nav-item dropdown dropdown-container">
-                <button
-                  className={`nav-link dropdown-toggle nav-link-hover btn btn-link ${
-                    openDropdown === "info" ? "show" : ""
-                  }`}
-                  onClick={() => toggleDropdown("info")}
-                  style={{ textDecoration: "none" }}
-                >
-                  Products
-                </button>
-                <ul
-                  className={`dropdown-menu shadow-sm rounded-3 border-0 ${
-                    openDropdown === "info" ? "show" : ""
-                  }`}
-                  style={{ marginTop: "0" }}
-                >
-                  {[
-
-                  ].map((item) => (
-                    <li key={item.href}>
-                      <Link
-                        href={item.href}
-                        className={`dropdown-item dropdown-item-hover ${
-                          pathname === item.href ? "active text-accent fw-bold" : ""
-                        }`}
-                        onClick={() => setOpenDropdown(null)}
-                      >
-                        <i className={`bi ${item.icon} me-2`}></i>
-                        {item.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-
               <li className="nav-item">
                 <Link
                   href="/standings"
@@ -176,24 +130,29 @@ export default function Navigation() {
                     pathname === "/standings" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
-                  Reviews
+                  History
                 </Link>
               </li>
-
               <li className="nav-item">
                 <Link
-                  href="/register"
+                  href="/information/manager"
                   className={`nav-link ${
-                    pathname === "/register" ? "active fw-bold text-accent" : "nav-link-hover"
+                    pathname === "/information/manager" ? "active fw-bold text-accent" : "nav-link-hover"
                   }`}
                 >
-                  Register device
+                  Settings
                 </Link>
               </li>
             </ul>
 
             {/* RIGHT MENU */}
             <div className="d-flex align-items-center gap-3">
+              {/* CAMERA STATUS */}
+              <div className="d-flex align-items-center gap-2 status-badge">
+                <span className="status-dot"></span>
+                <span className="d-none d-md-inline">Online</span>
+              </div>
+
               {/* THEME TOGGLE */}
               <button
                 onClick={toggleTheme}
@@ -242,7 +201,7 @@ export default function Navigation() {
                         </div>
                         <div>
                           <div className="fw-bold">{user?.username || "User"}</div>
-                          <small className="text-muted">Device owner</small>
+                          <small className="text-muted">Camera owner</small>
                         </div>
                       </div>
                     </li>
@@ -320,6 +279,18 @@ export default function Navigation() {
 
         .brand-text {
           letter-spacing: 0.2px;
+        }
+
+        .status-badge {
+          font-size: 0.85rem;
+          color: #4ade80;
+        }
+        .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background: #4ade80;
+          display: inline-block;
         }
 
         .btn-outline-accent {
