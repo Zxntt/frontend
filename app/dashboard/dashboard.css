@@ -309,3 +309,23 @@ transform:translateY(0);
 }
 
 }
+.sidebar li{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px;
+    margin-bottom:12px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.sidebar li i{
+    font-size:20px;
+    width:25px;
+    color:#60a5fa;
+}
+
+.sidebar li span{
+    font-size:16px;
+}
