@@ -1,11 +1,5 @@
-import Carousel from "./(marketing)/components/Carousel";
-import Card from "./(marketing)/components/Card";
+import Dashboard from "./dashboard/Dashboard";
 
 export default function Home() {
-  return (
-    <>
-      <Carousel />
-      <Card />
-    </>
-  );
+  return <Dashboard />;
 }
