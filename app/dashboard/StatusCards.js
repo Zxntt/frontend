@@ -1,40 +1,29 @@
 "use client";
 
+const cards = [
+  { icon: "🌡", label: "Temperature", value: "28°C", tint: "rgba(245,158,11,.15)" },
+  { icon: "💧", label: "Humidity", value: "65%", tint: "rgba(59,130,246,.15)" },
+  { icon: "🚶", label: "Motion", value: "Detected", tint: "rgba(34,197,94,.15)" },
+  { icon: "🔔", label: "Alarm", value: "OFF", tint: "rgba(148,163,184,.15)" },
+];
+
 export default function StatusCards() {
   return (
     <div className="status-grid">
 
-      <div className="status-card">
+      {cards.map((c) => (
+        <div className="status-card" key={c.label}>
 
-        <h4>🌡 Temperature</h4>
+          <div className="status-icon" style={{ background: c.tint }}>
+            {c.icon}
+          </div>
 
-        <h2>28°C</h2>
+          <h4>{c.label}</h4>
 
-      </div>
+          <h2>{c.value}</h2>
 
-      <div className="status-card">
-
-        <h4>💧 Humidity</h4>
-
-        <h2>65%</h2>
-
-      </div>
-
-      <div className="status-card">
-
-        <h4>🚶 Motion</h4>
-
-        <h2>Detected</h2>
-
-      </div>
-
-      <div className="status-card">
-
-        <h4>🔔 Alarm</h4>
-
-        <h2>OFF</h2>
-
-      </div>
+        </div>
+      ))}
 
     </div>
   );

@@ -1,6 +1,11 @@
 "use client";
 
+import { useState } from "react";
+import { CameraVideoOff } from "react-bootstrap-icons";
+
 export default function CameraView() {
+  const [imgError, setImgError] = useState(false);
+
   return (
     <div className="camera-card">
 
@@ -29,11 +34,21 @@ export default function CameraView() {
 
       ==================================================== */}
 
-      <img
-        src="/images/camera-placeholder.png"
-        alt="Camera Preview"
-        className="camera-image"
-      />
+      <div className="camera-frame">
+        {!imgError ? (
+          <img
+            src="/images/camera-placeholder.png"
+            alt="Camera Preview"
+            className="camera-image"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          <div className="camera-placeholder">
+            <CameraVideoOff size={40} />
+            <span>Waiting for ESP32-CAM stream…</span>
+          </div>
+        )}
+      </div>
 
       <p className="camera-note">
         Camera stream will appear here after connecting ESP32-CAM.

@@ -8,6 +8,13 @@ import {
     BoxArrowRight
 } from "react-bootstrap-icons";
 
+const links = [
+    { icon: <House />, label: "Dashboard" },
+    { icon: <CameraVideo />, label: "Cameras" },
+    { icon: <ClockHistory />, label: "History" },
+    { icon: <Gear />, label: "Settings" },
+];
+
 export default function Sidebar() {
 
     return (
@@ -20,27 +27,14 @@ export default function Sidebar() {
 
             <ul>
 
-                <li>
-                    <House />
-                    Dashboard
-                </li>
+                {links.map((item, i) => (
+                    <li key={item.label} className={i === 0 ? "active" : ""}>
+                        {item.icon}
+                        {item.label}
+                    </li>
+                ))}
 
-                <li>
-                    <CameraVideo />
-                    Cameras
-                </li>
-
-                <li>
-                    <ClockHistory />
-                    History
-                </li>
-
-                <li>
-                    <Gear />
-                    Settings
-                </li>
-
-                <li>
+                <li className="logout">
                     <BoxArrowRight />
                     Logout
                 </li>
